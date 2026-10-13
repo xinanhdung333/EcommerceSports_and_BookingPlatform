@@ -638,7 +638,7 @@
 </style>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
-<body>
+<body class="{{ auth()->check() && auth()->user()->role === 'user' ? 'user-amazon-surface' : '' }}">
 <div class="page-transition-overlay" id="pageTransition"></div>
 {{-- ===== NAVBAR WRAPPER ===== --}}
 @if(auth()->check() && auth()->user()->role === 'user')
@@ -1024,6 +1024,49 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMega();});
     @yield('content')
 
     </div>
+
+@if(auth()->check() && auth()->user()->role === 'user')
+<style id="user-amazon-design-system">
+:root{--az-primary:#131921;--az-secondary:#232f3e;--az-page:#eaeded;--az-card:#fff;--az-border:#d5d9d9;--az-text:#0f1111;--az-muted:#565959;--az-link:#007185;--az-yellow:#ffd814;--az-yellow-border:#fcd200;--az-orange:#ff9900;--az-danger:#cc0c39;--az-success:#067d62;--az-star:#ffa41c}
+.user-amazon-surface{background:var(--az-page)!important;color:var(--az-text);font-family:Inter,Roboto,Arial,sans-serif;font-size:14px;line-height:20px}
+.user-amazon-surface .site-content{max-width:1480px;margin:0 auto!important;padding:16px!important;background:var(--az-page)!important}
+.user-amazon-surface .navbar{background:var(--az-primary)!important;box-shadow:none!important;border:0!important}
+.user-amazon-surface .navbar .nav-link,.user-amazon-surface .navbar .navbar-brand{color:#fff!important;font-size:14px}
+.user-amazon-surface .navbar .nav-link:hover{border:1px solid #fff;background:transparent!important}
+.user-amazon-surface .offcanvas,.user-amazon-surface .dropdown-menu{background:var(--az-secondary)!important;border:1px solid #3a4553!important;border-radius:4px!important}
+.user-amazon-surface .card,.user-amazon-surface .ad-card,.user-amazon-surface .product-card{background:var(--az-card)!important;border:1px solid var(--az-border)!important;border-radius:8px!important;box-shadow:0 2px 5px rgba(15,17,17,.15)!important}
+.user-amazon-surface h1{font-size:21px!important;font-weight:700!important;color:var(--az-text)!important}
+.user-amazon-surface h2,.user-amazon-surface h3,.user-amazon-surface h4,.user-amazon-surface h5,.user-amazon-surface h6{color:var(--az-text)}
+.user-amazon-surface a{color:var(--az-link)}
+.user-amazon-surface .btn-primary,.user-amazon-surface .btn-warning,.user-amazon-surface button[type=submit]{background:var(--az-yellow)!important;border:1px solid var(--az-yellow-border)!important;color:var(--az-text)!important;border-radius:8px!important;box-shadow:none!important}
+.user-amazon-surface .btn-secondary,.user-amazon-surface .btn-outline-secondary{background:#fff!important;border:1px solid var(--az-border)!important;color:var(--az-text)!important;border-radius:8px!important;box-shadow:none!important}
+.user-amazon-surface input,.user-amazon-surface select,.user-amazon-surface textarea{border:1px solid var(--az-border)!important;border-radius:4px!important;box-shadow:none!important}
+.user-amazon-surface .text-muted{color:var(--az-muted)!important}
+.user-amazon-surface .az-mega{background:#fff!important;color:var(--az-text)!important;border-right:1px solid var(--az-border);box-shadow:0 2px 5px rgba(15,17,17,.15)!important}
+.user-amazon-surface .az-mega-header{background:var(--az-primary)!important;color:#fff!important}
+.user-amazon-surface .az-mega-section{color:var(--az-muted)!important;font-size:12px!important;font-weight:700!important;text-transform:uppercase;border-bottom:1px solid #eaeded;padding:14px 0 8px}
+.user-amazon-surface .az-mega-item{color:var(--az-link)!important;border-radius:4px!important;padding:9px 6px!important;font-size:14px!important}
+.user-amazon-surface .az-mega-item:hover{background:#f0f2f2!important;color:var(--az-text)!important}
+.user-amazon-surface .az-mega-item i{color:var(--az-muted)!important}
+.user-amazon-surface .az-mega-footer{background:#fff!important;border-top:1px solid var(--az-border)!important}
+.user-amazon-surface .az-mega-footer .az-mega-item{color:var(--az-text)!important;background:var(--az-yellow)!important;border:1px solid var(--az-yellow-border)!important;border-radius:8px!important;text-align:center!important}
+.user-amazon-surface .badge.bg-danger,.user-amazon-surface .bg-danger{background:var(--az-danger)!important}
+.user-amazon-surface .bg-success{background:var(--az-success)!important}
+/* User chat widget */
+.user-amazon-surface #mascot{width:56px;height:56px;background:#fff;border:1px solid var(--az-border);padding:10px;box-shadow:0 2px 5px rgba(0,0,0,.15)!important}
+.user-amazon-surface #chat-box{border:1px solid var(--az-border);border-radius:8px!important;box-shadow:0 2px 5px rgba(15,17,17,.15)!important;background:#fff}
+.user-amazon-surface .chat-header{background:var(--az-primary)!important;border-radius:0!important}
+.user-amazon-surface .chat-tabs{background:var(--az-secondary)!important;margin:0!important;width:100%!important;border-radius:0!important}
+.user-amazon-surface .chat-tab.active{background:#fff!important;color:var(--az-text)!important}
+.user-amazon-surface .chat-body,.user-amazon-surface .admin-chat-body{background:#fff!important}
+.user-amazon-surface .message-user,.user-amazon-surface .admin-message.mine{background:#f0f2f2!important;color:var(--az-text)!important;border:1px solid var(--az-border)!important;border-radius:8px!important;box-shadow:none!important}
+.user-amazon-surface .message-bot,.user-amazon-surface .admin-message{background:#fff!important;color:var(--az-text)!important;border:1px solid var(--az-border)!important;border-radius:8px!important;box-shadow:none!important}
+.user-amazon-surface .chat-footer,.user-amazon-surface .admin-chat-footer{background:#fff!important;border-top:1px solid var(--az-border)!important}
+.user-amazon-surface .chat-input input,.user-amazon-surface .admin-chat-form input{border-radius:8px!important}
+.user-amazon-surface .chat-input button,.user-amazon-surface .admin-chat-form button{background:var(--az-yellow)!important;border:1px solid var(--az-yellow-border)!important;color:var(--az-text)!important;border-radius:8px!important}
+@media(max-width:768px){.user-amazon-surface .site-content{padding:10px!important}.user-amazon-surface #chat-box{right:10px;left:10px;width:auto}}
+</style>
+@endif
 
 @include('partials.visitor.footer')
 

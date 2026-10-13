@@ -24,9 +24,10 @@
         align-items: end;
         padding: clamp(16px, 2.2vw, 24px);
         border-radius: 8px;
-        color: #fff;
-        background: linear-gradient(135deg, rgba(238, 77, 45, .96), rgba(255, 115, 55, .94));
-        box-shadow: 0 16px 36px rgba(238, 77, 45, .22);
+        color: #0f1111;
+        background: #fff;
+        border: 1px solid #d5d9d9;
+        box-shadow: 0 2px 5px rgba(15,17,17,.15);
     }
 
     .voucher-hero h1 {
@@ -39,18 +40,19 @@
     .voucher-hero p {
         margin: 0;
         max-width: 620px;
-        color: rgba(255,255,255,.9);
+        color: #565959;
         font-size: clamp(.95rem, 2vw, 1.05rem);
     }
 
     .voucher-hero-icon {
         width: clamp(78px, 12vw, 128px);
         aspect-ratio: 1;
-        border: 2px dashed rgba(255,255,255,.72);
+        border: 1px dashed #d5d9d9;
         border-radius: 8px;
         display: grid;
         place-items: center;
-        background: rgba(255,255,255,.12);
+        background: #f0f2f2;
+        color: #ff9900;
         font-size: clamp(2rem, 6vw, 3.4rem);
     }
 
@@ -71,7 +73,7 @@
         border: 1px solid #e6e8ef;
         border-radius: 8px;
         background: #fff;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, .06);
+        box-shadow: 0 2px 5px rgba(15,17,17,.15);
     }
 
     .voucher-search input {
@@ -106,9 +108,9 @@
     }
 
     .voucher-filter a.active {
-        color: #ee4d2d;
-        border-color: #ee4d2d;
-        background: #fff5f1;
+        color: #0f1111;
+        border-color: #fcd200;
+        background: #ffd814;
     }
 
     .voucher-grid {
@@ -126,7 +128,7 @@
         border-radius: 8px;
         overflow: hidden;
         background: #fff;
-        box-shadow: 0 10px 26px rgba(15, 23, 42, .08);
+        box-shadow: 0 2px 5px rgba(15,17,17,.15);
     }
 
     .voucher-card::before,
@@ -150,8 +152,8 @@
         align-items: center;
         justify-content: center;
         gap: 6px;
-        color: #fff;
-        background: linear-gradient(160deg, #ee4d2d, #ff7337);
+        color: #0f1111;
+        background: #f0f2f2;
         text-align: center;
         padding: 12px 8px;
     }
@@ -175,7 +177,7 @@
     }
 
     .voucher-value {
-        color: #ee4d2d;
+        color: #cc0c39;
         font-size: clamp(1.18rem, 2vw, 1.45rem);
         font-weight: 900;
         line-height: 1.1;
@@ -192,11 +194,11 @@
     .voucher-code {
         flex: 1;
         min-width: 0;
-        border: 1px dashed #ff8b66;
+        border: 1px dashed #d5d9d9;
         border-radius: 8px;
         padding: 7px 9px;
         color: #0d47a1;
-        background: #fff8f5;
+        background: #f3f3f3;
         font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
         font-weight: 800;
         overflow: hidden;
@@ -206,11 +208,11 @@
 
     .voucher-copy {
         flex: 0 0 auto;
-        border: 0;
+        border: 1px solid #fcd200;
         border-radius: 8px;
         padding: 8px 11px;
-        color: #fff;
-        background: #ee4d2d;
+        color: #0f1111;
+        background: #ffd814;
         font-weight: 800;
     }
 

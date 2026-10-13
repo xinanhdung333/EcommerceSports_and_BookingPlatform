@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div style="max-width:1200px; margin:20px auto; padding:0 10px;">
+<div class="services-page-shell" style="max-width:1200px; margin:20px auto; padding:0 10px;">
 
     <!-- ===== HEADER SHOPEE STYLE ===== -->
     <div class="services-header-wrap">
@@ -78,6 +78,33 @@
 
     </form>
 </br>
+    <div class="product-category-strip">
+        <a href="{{ route('user.services') }}" class="{{ !request('category_id') ? 'active' : '' }}">Tất cả</a>
+        @foreach($categories as $category)
+            <a href="{{ route('user.services', ['category_id' => $category->id]) }}" class="{{ (string) request('category_id') === (string) $category->id ? 'active' : '' }}">{{ $category->name }}</a>
+        @endforeach
+    </div>
+    <div class="services-catalog">
+    <aside class="services-filter-sidebar">
+        <strong>Filtered by</strong>
+        @if(request('category_id') || request('q'))
+            <div class="active-filter">{{ request('q') ?: 'Danh mục đã chọn' }}</div>
+            <a href="{{ route('user.services') }}" class="clear-filter">Clear Filters</a>
+        @endif
+        <h4>Department</h4>
+        <label><input type="radio" checked disabled> Tất cả</label>
+        @foreach($categories as $category)
+            <label><input type="radio" onclick="window.location='{{ route('user.services', ['category_id' => $category->id]) }}'" @checked((string) request('category_id') === (string) $category->id)> {{ $category->name }}</label>
+        @endforeach
+        <a href="{{ route('user.services') }}" class="see-more">⌄ Xem thêm</a>
+        <h4>Customer Reviews</h4>
+        <label><input type="radio" checked disabled> All</label>
+        <label class="stars-filter"><input type="radio" disabled> <span>★★★★☆</span> & up</label>
+        <h4>Discount</h4>
+        <strong>0% – 100%</strong>
+        <input class="discount-range" type="range" min="0" max="100" value="100" aria-label="Mức giảm giá">
+    </aside>
+    <div class="services-results">
     <!-- ===== PRODUCTS ===== -->
     <div id="productList" class="product-grid">
 
@@ -114,21 +141,21 @@
             </div>
 
             @if(($service->discount_percent ?? 0) > 0)
-                <div style="position:absolute; top:10px; left:10px; background:#ff0000; color:#fff; font-size:12px; padding:3px 6px; border-radius:5px;">
+                <div style="position:absolute; top:10px; left:10px; background:#cc0c39; color:#fff; font-size:12px; padding:3px 6px; border-radius:4px;">
                     -{{ round($service->discount_percent) }}%
                 </div>
             @endif
 
             <div style="padding:5px 8px;">
                 @if(($service->discount_percent ?? 0) > 0)
-                    <div style="color:#e53935; font-weight:bold;">
+                    <div style="color:#0f1111; font-weight:bold;">
                         {{ number_format($service->final_price,0,',','.') }} đ
                     </div>
                     <div style="text-decoration:line-through; font-size:12px; color:#999;">
                         {{ number_format($service->price,0,',','.') }} đ
                     </div>
                 @else
-                    <div style="font-weight:bold; color:#e53935;">
+                    <div style="font-weight:bold; color:#0f1111;">
                         {{ number_format($service->price,0,',','.') }} đ
                     </div>
                 @endif
@@ -152,6 +179,7 @@
         @endforeach
 
     </div>
+    </div>
 
     @if($services->hasPages())
         <div class="d-flex justify-content-center mt-4">
@@ -162,6 +190,7 @@
 </div>
 
 <style>
+.services-page-shell{max-width:1480px!important;width:100%;padding-left:16px!important;padding-right:16px!important}
 .services-header-wrap {
     display:flex; align-items:center; gap:15px; flex-wrap:wrap;
 }
@@ -171,7 +200,7 @@
 }
 
 .flash-sale-banner {
-    flex:1; min-width:0; text-align:center; background:linear-gradient(90deg,#ff4d4f,#ff0000); color:#fff; padding:10px 15px; border-radius:10px;
+    flex:1; min-width:0; text-align:center; background:#fff; color:#0f1111; padding:10px 15px; border:1px solid #d5d9d9; border-left:5px solid #cc0c39; border-radius:8px;
 }
 .flash-sale-inner {
     display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap;
@@ -181,40 +210,45 @@
     display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;
 }
 .search-input {
-    flex:1; min-width: 200px; padding:10px; border:1px solid #ddd; border-radius:6px;
+    flex:1; min-width: 200px; padding:10px; border:1px solid #d5d9d9; border-radius:4px;
 }
 .search-select {
-    padding:10px; border:1px solid #ddd; border-radius:6px;
+    padding:10px; border:1px solid #d5d9d9; border-radius:4px;
 }
 .search-btn {
-    padding:10px 15px; background:#007bff; color:#fff; border:none; border-radius:6px; white-space:nowrap;
+    padding:10px 15px; background:#ffd814; color:#0f1111; border:1px solid #fcd200; border-radius:8px; white-space:nowrap;
 }
+.product-category-strip{display:flex;gap:8px;overflow-x:auto;padding:8px 0 14px}.product-category-strip a{padding:9px 14px;border:1px solid #aab7c4;border-radius:8px;background:#fff;color:#0f1111;text-decoration:none;white-space:nowrap}.product-category-strip a.active{border:2px solid #007185;padding:8px 13px;font-weight:700}
+.services-catalog{display:grid;grid-template-columns:210px minmax(0,1fr);gap:18px;align-items:start;width:100%;max-width:100%;overflow:visible}.services-filter-sidebar{position:sticky;top:16px;align-self:start;background:transparent;padding:4px 0;color:#0f1111;font-size:14px;min-width:0}.services-filter-sidebar h4{font-size:14px;margin:22px 0 8px;padding-top:12px;border-top:1px solid #d5d9d9}.services-filter-sidebar label{display:block;padding:7px 0;cursor:pointer;white-space:nowrap}.services-filter-sidebar input{accent-color:#216aa5;margin-right:6px}.active-filter{display:inline-block;margin:10px 0 6px;padding:7px 10px;border:2px solid #216aa5;border-radius:8px;font-weight:700;background:#fff}.clear-filter,.see-more{display:block;color:#007185;text-decoration:none;margin:6px 0}.stars-filter span{color:#ff9900;font-size:17px}.discount-range{width:100%;accent-color:#216aa5;margin-top:14px}.services-results{min-width:0;max-width:100%;overflow:hidden}
 
 .product-grid{
     display:grid;
     grid-template-columns:repeat(5,minmax(0,1fr));
-    gap:15px;
+    gap:16px;
 }
+@media (min-width: 1200px){.product-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
 
 .service-product-image {
     display:block;
     width:100%;
     height:210px;
-    object-fit:cover;
+    object-fit:contain;
+    background:#f3f3f3;
 }
 
 .product-card{
     position:relative;
     background:#fff;
-    border-radius:10px;
+    border:1px solid #f0f0f0;
+    border-radius:8px;
     overflow:hidden;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
-    transition:0.2s;
+    box-shadow:none;
+    transition:border-color .15s,box-shadow .15s;
 }
 
 .product-card:hover{
-    transform:translateY(-3px);
-    box-shadow:0 6px 18px rgba(0,0,0,0.15);
+    border-color:#d5d9d9;
+    box-shadow:0 2px 5px rgba(15,17,17,.15);
 }
 
 .product-rating{
@@ -234,16 +268,16 @@
 }
 
 .rating-stars .is-filled{
-    color:#ffc107;
+    color:#ffa41c;
 }
 
 .btn-add-cart{
     width:36px;
-    height:36px;
-    border-radius:50%;
-    border:none;
-    background:#28a745;
-    color:#fff;
+    height:32px;
+    border-radius:8px;
+    border:1px solid #fcd200;
+    background:#ffd814;
+    color:#0f1111;
     font-weight:bold;
     flex:0 0 auto;
 }
@@ -254,8 +288,10 @@
 }
 
 @media (max-width: 768px) {
+    .services-catalog{grid-template-columns:1fr}.services-filter-sidebar{display:none}
     .product-grid { grid-template-columns: repeat(3, 1fr); }
 }
+@media (min-width:769px) and (max-width:1100px){.services-catalog{grid-template-columns:180px minmax(0,1fr)}.product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.services-page-shell{padding-left:10px!important;padding-right:10px!important}}
 
 @media (max-width: 576px) {
     .product-grid { 

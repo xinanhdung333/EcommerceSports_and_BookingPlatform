@@ -169,6 +169,18 @@
         </ul>
         <div style="padding-top:10px;border-top:1px solid #f0f0f0;margin-top:4px;"><a href="{{ route('user.services') }}" style="color:var(--az-link);font-size:.82rem;text-decoration:none;">Xem thêm ▼</a></div>
     </div>
+    <div class="az-sb-box az-user-menu-box">
+        <p class="az-sb-title">MENU TÀI KHOẢN</p>
+        <ul class="az-cat-list">
+            <a href="{{ route('user.dashboard') }}" class="az-cat-item">Trang chủ <span>›</span></a>
+            <a href="{{ route('user.profile') }}" class="az-cat-item">Hồ sơ của tôi <span>›</span></a>
+            <a href="{{ route('user.myServices') }}" class="az-cat-item">Đơn hàng đã mua <span>›</span></a>
+            <a href="{{ route('user.wishlist') }}" class="az-cat-item">Yêu thích <span>›</span></a>
+            <a href="{{ route('user.vouchers') }}" class="az-cat-item">Voucher của tôi <span class="az-cat-count">HOT</span></a>
+            <a href="{{ route('user.fields') }}" class="az-cat-item">Đặt sân <span>›</span></a>
+            <a href="{{ route('user.chat.index') }}" class="az-cat-item">Hỗ trợ <span>›</span></a>
+        </ul>
+    </div>
     <div class="az-sb-box">
         <p class="az-sb-title">Giá</p>
         <ul class="az-price-list">
