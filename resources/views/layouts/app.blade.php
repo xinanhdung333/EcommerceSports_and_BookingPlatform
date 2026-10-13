@@ -729,7 +729,6 @@
     <a href="{{ route('user.vouchers') }}" class="az-navlink">Ưu đãi</a>
     <a href="{{ route('user.myServices') }}" class="az-navlink hl">Đã mua</a>
     <a href="{{ route('cart.index') }}" class="az-navlink">Giỏ hàng</a>
-    <a href="{{ route('user.chat.index') }}" class="az-navlink">Hỗ trợ</a>
     <a href="{{ route('user.fields') }}" class="az-navlink">Đặt sân</a>
     <a href="{{ route('user.profile') }}" class="az-navlink">Hồ sơ</a>
     <form method="POST" action="{{ route('logout') }}" style="margin:0;">@csrf<button type="submit" class="az-navlink" style="background:none;border:none;cursor:pointer;color:#fff;font-size:.82rem;padding:5px 10px;">Đăng xuất</button></form>
@@ -1033,6 +1032,12 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMega();});
 .user-amazon-surface .navbar{background:var(--az-primary)!important;box-shadow:none!important;border:0!important}
 .user-amazon-surface .navbar .nav-link,.user-amazon-surface .navbar .navbar-brand{color:#fff!important;font-size:14px}
 .user-amazon-surface .navbar .nav-link:hover{border:1px solid #fff;background:transparent!important}
+.user-amazon-surface .az-navlink{color:#fff!important}
+.user-amazon-surface .az-navlink:hover{color:#fff!important;border-color:#fff!important}
+.user-amazon-surface .az-navlink.hl{background:var(--az-yellow)!important;border-color:var(--az-yellow-border)!important;color:var(--az-text)!important}
+.user-amazon-surface .az-action-btn,.user-amazon-surface .az-cart-btn{color:#fff!important}
+.user-amazon-surface .az-action-btn span,.user-amazon-surface .az-action-btn strong{color:#fff!important}
+.user-amazon-surface .az-search-cat{color:var(--az-text)!important}
 .user-amazon-surface .offcanvas,.user-amazon-surface .dropdown-menu{background:var(--az-secondary)!important;border:1px solid #3a4553!important;border-radius:4px!important}
 .user-amazon-surface .card,.user-amazon-surface .ad-card,.user-amazon-surface .product-card{background:var(--az-card)!important;border:1px solid var(--az-border)!important;border-radius:8px!important;box-shadow:0 2px 5px rgba(15,17,17,.15)!important}
 .user-amazon-surface h1{font-size:21px!important;font-weight:700!important;color:var(--az-text)!important}
@@ -1064,6 +1069,23 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMega();});
 .user-amazon-surface .chat-footer,.user-amazon-surface .admin-chat-footer{background:#fff!important;border-top:1px solid var(--az-border)!important}
 .user-amazon-surface .chat-input input,.user-amazon-surface .admin-chat-form input{border-radius:8px!important}
 .user-amazon-surface .chat-input button,.user-amazon-surface .admin-chat-form button{background:var(--az-yellow)!important;border:1px solid var(--az-yellow-border)!important;color:var(--az-text)!important;border-radius:8px!important}
+/* Cross-page user normalization: keep legacy page-specific components in the same system. */
+.user-amazon-surface [style*="linear-gradient"]{background:var(--az-card)!important;color:var(--az-text)!important}
+.user-amazon-surface .flash-sale-banner,.user-amazon-surface .ad-card.orange{background:var(--az-card)!important;color:var(--az-text)!important;border:1px solid var(--az-border)!important;box-shadow:0 2px 5px rgba(15,17,17,.15)!important}
+.user-amazon-surface .flash-sale-banner .flash-sale-inner{color:var(--az-danger)!important}
+.user-amazon-surface .product-card,.user-amazon-surface .voucher-card,.user-amazon-surface .wishlist-card,.user-amazon-surface .order-card{border:1px solid var(--az-border)!important;border-radius:8px!important;box-shadow:0 2px 5px rgba(15,17,17,.15)!important;background:#fff!important}
+.user-amazon-surface .product-card:hover,.user-amazon-surface .voucher-card:hover{transform:none!important;box-shadow:0 2px 5px rgba(15,17,17,.15)!important}
+.user-amazon-surface .btn-danger,.user-amazon-surface .btn-success{border-radius:8px!important;box-shadow:none!important}
+.user-amazon-surface .btn-danger{background:var(--az-danger)!important;border-color:var(--az-danger)!important}
+.user-amazon-surface .btn-success{background:var(--az-success)!important;border-color:var(--az-success)!important}
+.user-amazon-surface .modal-content,.user-amazon-surface .modal-dialog>div{border:1px solid var(--az-border)!important;border-radius:8px!important;box-shadow:0 2px 5px rgba(15,17,17,.15)!important}
+.user-amazon-surface .modal-header{background:var(--az-secondary)!important;color:#fff!important}
+.user-amazon-surface .form-control:focus,.user-amazon-surface select:focus{border-color:#007185!important;box-shadow:0 0 0 2px rgba(0,113,133,.15)!important}
+.user-amazon-surface .order-btn-row{display:flex!important;flex-wrap:wrap;gap:6px;min-width:0}
+.user-amazon-surface .order-btn-row .btn{border-radius:8px!important;white-space:nowrap!important;max-width:100%}
+.user-amazon-surface .shipping-status-badge{background:#f0f2f2!important;color:#0f1111!important;border:1px solid #d5d9d9!important;border-radius:8px!important}
+.user-amazon-surface .order-price{color:var(--az-text)!important}
+.user-amazon-surface .card-body,.user-amazon-surface .col-sm-8{min-width:0;overflow-wrap:anywhere}
 @media(max-width:768px){.user-amazon-surface .site-content{padding:10px!important}.user-amazon-surface #chat-box{right:10px;left:10px;width:auto}}
 </style>
 @endif
