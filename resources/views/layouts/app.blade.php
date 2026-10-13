@@ -640,31 +640,159 @@
 </head>
 <body>
 <div class="page-transition-overlay" id="pageTransition"></div>
+{{-- ===== NAVBAR WRAPPER ===== --}}
+@if(auth()->check() && auth()->user()->role === 'user')
+{{-- ===== AMAZON-STYLE USER NAVBAR ===== --}}
+<style>
+:root{--az-dark:#131921;--az-navy:#232f3e;--az-yellow:#f0c14b;--az-orange:#ff9900;--az-red:#cc0c39;--az-text:#0f1111;--az-link:#007185;--az-border:#ddd;--az-muted:#767676;}
+.az-topbar{background:var(--az-dark);padding:7px 0;width:100%;position:sticky;top:0;z-index:1060;}
+.az-topbar-inner{max-width:1500px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:8px;}
+.az-logo{color:#fff;font-size:1.3rem;font-weight:900;text-decoration:none;display:flex;align-items:center;gap:6px;white-space:nowrap;padding:4px 8px;border:1px solid transparent;border-radius:2px;transition:border-color .15s;}
+.az-logo:hover{color:#fff;border-color:#fff;}.az-logo .vn{font-size:.58rem;opacity:.75;display:block;line-height:1;}
+.az-deliver{color:#ccc;font-size:.7rem;display:flex;flex-direction:column;padding:4px 8px;border:1px solid transparent;border-radius:2px;cursor:pointer;transition:border-color .15s;}
+.az-deliver:hover{border-color:#fff;}.az-deliver strong{color:#fff;font-size:.82rem;}
+.az-search{flex:1;display:flex;border-radius:4px;overflow:hidden;min-width:0;}
+.az-search-cat{background:#f3f3f3;border:none;padding:0 10px;font-size:.78rem;color:var(--az-text);cursor:pointer;}
+.az-search input{flex:1;border:none;outline:none;padding:0 12px;font-size:.93rem;color:var(--az-text);}
+.az-search-btn{background:var(--az-orange);border:none;padding:0 16px;font-size:1.1rem;color:#111;cursor:pointer;transition:background .15s;}
+.az-search-btn:hover{background:#e88900;}
+.az-actions{display:flex;align-items:center;gap:2px;flex-shrink:0;}
+.az-action-btn{color:#fff;text-decoration:none;font-size:.72rem;display:flex;flex-direction:column;padding:4px 8px;border:1px solid transparent;border-radius:2px;transition:border-color .15s;background:none;cursor:pointer;line-height:1.3;}
+.az-action-btn:hover{color:#fff;border-color:#fff;}.az-action-btn .top{color:#ccc;font-size:.68rem;}.az-action-btn .bot{color:#fff;font-size:.8rem;font-weight:700;}
+.az-cart-btn{color:#fff;text-decoration:none;display:flex;align-items:center;gap:5px;font-size:.82rem;font-weight:700;padding:4px 8px;border:1px solid transparent;border-radius:2px;transition:border-color .15s;}
+.az-cart-btn:hover{color:#fff;border-color:#fff;}.az-cart-btn i{font-size:1.6rem;position:relative;}
+.az-cart-count{position:absolute;top:-6px;right:-4px;background:var(--az-orange);color:#111;font-size:.68rem;font-weight:800;border-radius:50%;min-width:16px;height:16px;display:flex;align-items:center;justify-content:center;padding:0 3px;}
+/* NAV ROW */
+.az-navrow{background:var(--az-navy);padding:5px 0;width:100%;}
+.az-navrow-inner{max-width:1500px;margin:0 auto;padding:0 8px;display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;}
+.az-navrow-inner::-webkit-scrollbar{display:none;}
+.az-navlink{color:#fff;text-decoration:none;font-size:.82rem;padding:5px 10px;white-space:nowrap;border:1px solid transparent;border-radius:2px;transition:border-color .15s;}
+.az-navlink:hover{color:#fff;border-color:#fff;}.az-navlink.hl{border-color:#febd69;color:#febd69;}
+.az-all-btn{background:transparent;border:1px solid transparent;color:#fff;font-size:.82rem;font-weight:700;padding:5px 10px;border-radius:2px;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;transition:border-color .15s;}
+.az-all-btn:hover{border-color:#fff;}
+/* MEGA MENU */
+.az-mega{position:fixed;top:0;left:0;width:280px;height:100vh;background:#fff;z-index:9998;box-shadow:4px 0 20px rgba(0,0,0,.25);transform:translateX(-100%);transition:transform .28s cubic-bezier(.22,1,.36,1);display:flex;flex-direction:column;}
+.az-mega.open{transform:translateX(0);}
+.az-mega-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9997;opacity:0;pointer-events:none;transition:opacity .28s;}
+.az-mega-overlay.open{opacity:1;pointer-events:auto;}
+.az-mega-header{background:var(--az-dark);color:#fff;padding:16px 18px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:.95rem;flex-shrink:0;}
+.az-mega-header i{font-size:1.1rem;}
+.az-mega-close{margin-left:auto;cursor:pointer;font-size:1.1rem;opacity:.8;}
+.az-mega-close:hover{opacity:1;}
+.az-mega-body{flex:1;overflow-y:auto;padding:8px 0;}
+.az-mega-section{padding:10px 18px 4px;font-size:.75rem;font-weight:700;color:var(--az-muted);text-transform:uppercase;letter-spacing:.5px;}
+.az-mega-item{display:flex;align-items:center;justify-content:space-between;padding:10px 18px;font-size:.9rem;color:var(--az-text);text-decoration:none;transition:background .12s;}
+.az-mega-item:hover{background:#f5f5f5;color:var(--az-text);}
+.az-mega-item .badge2{font-size:.68rem;color:var(--az-muted);background:#f0f0f0;padding:2px 7px;border-radius:999px;}
+.az-mega-item .new-badge{font-size:.65rem;color:#fff;background:#067d62;padding:1px 6px;border-radius:2px;font-weight:700;}
+.az-mega-footer{border-top:1px solid var(--az-border);padding:12px 18px;}
+.az-mega-footer a{display:block;color:var(--az-link);font-size:.85rem;text-decoration:none;padding:4px 0;}
+.az-mega-footer a:hover{color:#c7511f;text-decoration:underline;}
+@media(max-width:576px){.az-deliver{display:none;}.az-action-btn.hide-sm{display:none;}.az-search{order:3;flex:0 0 calc(100% - 32px);}
+.az-topbar-inner{flex-wrap:wrap;}.az-actions{order:2;margin-left:auto;}}
+</style>
+
+{{-- TOP BAR --}}
+<div class="az-topbar">
+<div class="az-topbar-inner">
+    <a href="{{ route('user.dashboard') }}" class="az-logo"><i class="bi bi-dribbble"></i><span>SportsHub<span class="vn">.vn</span></span></a>
+    <div class="az-deliver"><span><i class="bi bi-geo-alt-fill"></i> Giao đến</span><strong>Việt Nam</strong></div>
+    <form class="az-search" action="{{ route('user.services') }}" method="GET">
+        @php $cats = \App\Models\Category::take(10)->get(); @endphp
+        <select class="az-search-cat" name="_cat">
+            <option value="">Tất cả ▾</option>
+            @foreach($cats as $c)<option value="{{ $c->id }}">{{ $c->name }}</option>@endforeach
+        </select>
+        <input type="text" name="search" placeholder="Tìm kiếm SportsHub" autocomplete="off">
+        <button type="submit" class="az-search-btn"><i class="bi bi-search"></i></button>
+    </form>
+    <div class="az-actions">
+        <div class="az-action-btn hide-sm">
+            <span class="top">Xin chào, {{ auth()->user()->name }}</span>
+            <span class="bot">Tài khoản &amp; DS ▾</span>
+        </div>
+        <a href="{{ route('user.myServices') }}" class="az-action-btn hide-sm"><span class="top">Trả hàng</span><span class="bot">&amp; Đơn hàng</span></a>
+        <a href="{{ route('cart.index') }}" class="az-cart-btn">
+            <span style="position:relative;"><i class="bi bi-cart3"></i><span class="az-cart-count">0</span></span>
+            <span>Giỏ hàng</span>
+        </a>
+    </div>
+</div>
+</div>
+
+{{-- NAV ROW --}}
+<div class="az-navrow">
+<div class="az-navrow-inner">
+    <button class="az-all-btn" onclick="toggleMega()"><i class="bi bi-list"></i> Tất cả</button>
+    <a href="{{ route('user.dashboard') }}" class="az-navlink">Trang chủ</a>
+    <a href="{{ route('user.services') }}" class="az-navlink">Sản phẩm</a>
+    <a href="{{ route('user.vouchers') }}" class="az-navlink">Ưu đãi</a>
+    <a href="{{ route('user.myServices') }}" class="az-navlink hl">Đã mua</a>
+    <a href="{{ route('cart.index') }}" class="az-navlink">Giỏ hàng</a>
+    <a href="{{ route('user.chat.index') }}" class="az-navlink">Hỗ trợ</a>
+    <a href="{{ route('user.fields') }}" class="az-navlink">Đặt sân</a>
+    <a href="{{ route('user.profile') }}" class="az-navlink">Hồ sơ</a>
+    <form method="POST" action="{{ route('logout') }}" style="margin:0;">@csrf<button type="submit" class="az-navlink" style="background:none;border:none;cursor:pointer;color:#fff;font-size:.82rem;padding:5px 10px;">Đăng xuất</button></form>
+</div>
+</div>
+
+{{-- MEGA MENU OVERLAY --}}
+<div class="az-mega-overlay" id="megaOverlay" onclick="closeMega()"></div>
+<div class="az-mega" id="megaMenu">
+    <div class="az-mega-header">
+        <i class="bi bi-person-circle"></i>
+        <span>Xin chào, {{ auth()->user()->name }}</span>
+        <span class="az-mega-close" onclick="closeMega()"><i class="bi bi-x-lg"></i></span>
+    </div>
+    <div class="az-mega-body">
+        <div class="az-mega-section">Tài khoản</div>
+        <a href="{{ route('user.dashboard') }}" class="az-mega-item"><span><i class="bi bi-house me-2"></i>Trang chủ</span></a>
+        <a href="{{ route('user.profile') }}" class="az-mega-item"><span><i class="bi bi-person me-2"></i>Hồ sơ của tôi</span></a>
+        <a href="{{ route('user.myServices') }}" class="az-mega-item"><span><i class="bi bi-bag-check me-2"></i>Đơn hàng đã mua</span></a>
+        <a href="{{ route('user.wishlist') }}" class="az-mega-item"><span><i class="bi bi-heart me-2"></i>Yêu thích</span></a>
+        <a href="{{ route('user.vouchers') }}" class="az-mega-item"><span><i class="bi bi-ticket-perforated me-2"></i>Voucher của tôi</span><span class="new-badge">HOT</span></a>
+
+        <div class="az-mega-section">Mua sắm</div>
+        <a href="{{ route('user.services') }}" class="az-mega-item"><span><i class="bi bi-shop me-2"></i>Tất cả sản phẩm</span></a>
+        @foreach($cats as $c)
+        <a href="{{ route('user.services', ['category' => $c->id]) }}" class="az-mega-item"><span><i class="bi bi-tag me-2"></i>{{ $c->name }}</span><span class="badge2">{{ $c->services_count ?? '' }}</span></a>
+        @endforeach
+        <a href="{{ route('cart.index') }}" class="az-mega-item"><span><i class="bi bi-cart3 me-2"></i>Giỏ hàng</span></a>
+
+        <div class="az-mega-section">Dịch vụ khác</div>
+        <a href="{{ route('user.fields') }}" class="az-mega-item"><span><i class="bi bi-trophy me-2"></i>Đặt sân thể thao</span></a>
+        <a href="{{ route('user.myBookings') }}" class="az-mega-item"><span><i class="bi bi-calendar-check me-2"></i>Sân đã đặt</span></a>
+        <a href="{{ route('user.chat.index') }}" class="az-mega-item"><span><i class="bi bi-chat-left-text me-2"></i>Chat hỗ trợ</span></a>
+        <a href="{{ route('user.feedback') }}" class="az-mega-item"><span><i class="bi bi-chat-dots me-2"></i>Đánh giá</span></a>
+        <a href="{{ route('about') }}" class="az-mega-item"><span><i class="bi bi-info-circle me-2"></i>Giới thiệu</span></a>
+    </div>
+    <div class="az-mega-footer">
+        <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="az-mega-item" style="background:none;border:none;width:100%;text-align:left;padding:6px 0;cursor:pointer;color:var(--az-red);font-size:.88rem;"><i class="bi bi-box-arrow-right me-2"></i>Đăng xuất</button></form>
+    </div>
+</div>
+<script>
+function toggleMega(){const m=document.getElementById('megaMenu'),o=document.getElementById('megaOverlay');m.classList.toggle('open');o.classList.toggle('open');document.body.style.overflow=m.classList.contains('open')?'hidden':'';}
+function closeMega(){document.getElementById('megaMenu').classList.remove('open');document.getElementById('megaOverlay').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMega();});
+</script>
+
+@else
+{{-- ===== OLD NAVBAR (admin / boss / shipper / guest) ===== --}}
 <div class="desktop-layout">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
     @if(auth()->check() && auth()->user()->role === 'boss')
-      <a class="navbar-brand" href="{{ route('boss.home') }}">
-    <i class="bi bi-dribbble"></i> SportsHub
-</a>
+      <a class="navbar-brand" href="{{ route('boss.home') }}"><i class="bi bi-dribbble"></i> SportsHub</a>
     @elseif(auth()->check() && auth()->user()->role === 'admin')
-      <a class="navbar-brand" href="{{ route('admin.home') }}">
-    <i class="bi bi-dribbble"></i> SportsHub
-</a>
+      <a class="navbar-brand" href="{{ route('admin.home') }}"><i class="bi bi-dribbble"></i> SportsHub</a>
     @elseif(auth()->check() && auth()->user()->role === 'shipper')
-      <a class="navbar-brand" href="{{ route('shipper.dashboard') }}">
-    <i class="bi bi-dribbble"></i> SportsHub
-</a>
+      <a class="navbar-brand" href="{{ route('shipper.dashboard') }}"><i class="bi bi-dribbble"></i> SportsHub</a>
     @else
-      <a class="navbar-brand" href="{{ route('user.home') }}">
-    <i class="bi bi-dribbble"></i> SportsHub
-</a>
-   @endif
-
+      <a class="navbar-brand" href="{{ route('user.home') }}"><i class="bi bi-dribbble"></i> SportsHub</a>
+    @endif
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
             <div class="offcanvas-header border-bottom border-secondary">
                 <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><i class="bi bi-dribbble"></i> SportsHub Menu</h5>
@@ -673,53 +801,8 @@
             <div class="offcanvas-body">
                 <ul class="navbar-nav ms-auto align-items-lg-center">
                 @auth
-                    @if(auth()->user()->role === 'user')
-                        <li class="nav-item"><a class="nav-link" href="{{ route('user.dashboard') }}"><i class="bi bi-house"></i> Trang chủ</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('user.services') }}"><i class="bi bi-bag"></i> Sản phẩm</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('user.vouchers') }}"><i class="bi bi-ticket-perforated"></i> Ưu đãi</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-bag-check"></i> Sản phẩm đã mua
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="background:#1e1e1e;">
-                                <li><a class="dropdown-item text-white" href="{{ route('user.myServices') }}"><i class="bi bi-receipt me-2"></i>Đơn hàng đã mua</a></li>
-                                <li><hr class="dropdown-divider border-secondary"></li>
-                                <li>
-                                    <a class="dropdown-item text-white d-flex align-items-center justify-content-between" href="{{ route('user.wishlist') }}">
-                                        <span><i class="bi bi-heart me-2"></i>Danh sách yêu thích</span>
-                                        <span class="badge bg-danger rounded-pill ms-2" id="navWishlistBadge" style="display:none;">0</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('cart.index') }}"><i class="bi bi-cart-fill"></i> Giỏ hàng</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('user.chat.index') }}"><i class="bi bi-chat-left-text"></i> Hỗ trợ</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-grid-3x3-gap"></i> Dịch vụ khác</a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="background:#1e1e1e;">
-                                <li><a class="dropdown-item text-white" href="{{ route('user.fields') }}"><i class="bi bi-trophy me-2"></i>Đặt sân</a></li>
-                                <li><a class="dropdown-item text-white" href="{{ route('user.myBookings') }}"><i class="bi bi-calendar-check me-2"></i>Sân đã đặt</a></li>
-                                <li><hr class="dropdown-divider border-secondary"></li>
-                                <li><a class="dropdown-item text-white" href="{{ route('user.feedback') }}"><i class="bi bi-chat-dots me-2"></i>Đánh giá</a></li>
-                                <li><a class="dropdown-item text-white" href="{{ route('about') }}"><i class="bi bi-info-circle me-2"></i>Giới thiệu</a></li>
-                            </ul>
-                        </li>
-                        
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            <i class="bi bi-person"></i> {{ auth()->user()->name }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" style="background:#1e1e1e;">
-                            <li><a class="dropdown-item text-white" href="{{ route('user.profile') }}">Hồ sơ</a></li>
-                            <li><hr class="dropdown-divider border-secondary"></li>
-                            <li><form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="dropdown-item text-white">Đăng xuất</button></form></li>
-                        </ul>
-                    </li> 
-                    @endif
-
                     @if(auth()->user()->role === 'admin')
-                        <li class="nav-item dropdown w-100">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-boxes"></i> Quản lý dịch vụ</a>
+                        <li class="nav-item dropdown w-100"><a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-boxes"></i> Quản lý dịch vụ</a>
                             <ul class="dropdown-menu admin-nav-dropdown shadow border-0">
                                 <li><a class="dropdown-item" href="{{ route('admin.manage.services') }}"><i class="bi bi-bag me-2"></i>Sản phẩm</a></li>
                                 <li><a class="dropdown-item" href="{{ route('admin.manage.categories') }}"><i class="bi bi-tags me-2"></i>Danh mục</a></li>
@@ -730,10 +813,7 @@
                         </li>
                         <li class="nav-item w-100"><a class="nav-link" href="{{ route('admin.manage.orders') }}"><i class="bi bi-bag-check"></i> Chi tiết mua hàng</a></li>
                         <li class="nav-item w-100"><a class="nav-link" href="{{ route('admin.manage.feedback') }}"><i class="bi bi-chat-dots"></i> Quản lý Feedback</a></li>
-                        <li class="nav-item dropdown w-100">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-chat-left-text"></i> Chat Admin
-                            </a>
+                        <li class="nav-item dropdown w-100"><a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-chat-left-text"></i> Chat Admin</a>
                             <ul class="dropdown-menu admin-nav-dropdown shadow border-0">
                                 <li><a class="dropdown-item" href="{{ route('admin.chat.index') }}"><i class="bi bi-chat-left-text me-2"></i>Chat với người dùng</a></li>
                                 <li><a class="dropdown-item" href="{{ route('admin.chatbot.index') }}"><i class="bi bi-robot me-2"></i>Quản lý Chatbot</a></li>
@@ -742,37 +822,25 @@
                         <li class="nav-item w-100"><a class="nav-link" href="{{ route('admin.invoices') }}"><i class="bi bi-file-earmark-pdf"></i> Quản lý hóa đơn</a></li>
                         <li class="nav-item w-100"><a class="nav-link" href="{{ route('admin.manage.users') }}"><i class="bi bi-people"></i> Quản lý người dùng</a></li>
                         <li class="nav-item w-100"><a class="nav-link" href="{{ route('admin.statistics') }}"><i class="bi bi-bar-chart"></i> Thống kê</a></li>
-
-                    <li class="nav-item dropdown w-100">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            <i class="bi bi-person"></i> {{ auth()->user()->name }}
-                        </a>
-                        <ul class="dropdown-menu admin-nav-dropdown dropdown-menu-end admin-account-menu">
-                          <li>  <a class="dropdown-item" href="{{ route('admin.settings') }}">
-    <i class="bi bi-gear me-2"></i> Pricing Settings
-</a></li>
-                            <li><a class="dropdown-item" href="{{ route('admin.profile') }}">Hồ sơ</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="dropdown-item">Đăng xuất</button></form></li>
-                        </ul>
-                    </li> 
+                        <li class="nav-item dropdown w-100"><a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"><i class="bi bi-person"></i> {{ auth()->user()->name }}</a>
+                            <ul class="dropdown-menu admin-nav-dropdown dropdown-menu-end admin-account-menu">
+                                <li><a class="dropdown-item" href="{{ route('admin.settings') }}"><i class="bi bi-gear me-2"></i>Pricing Settings</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.profile') }}">Hồ sơ</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="dropdown-item">Đăng xuất</button></form></li>
+                            </ul>
+                        </li>
                     @endif
-
                     @if(auth()->user()->role === 'shipper')
                         <li class="nav-item"><a class="nav-link" href="{{ route('shipper.dashboard') }}"><i class="bi bi-truck"></i> Đơn giao hàng</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                <i class="bi bi-person"></i> {{ auth()->user()->name }}
-                            </a>
+                        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"><i class="bi bi-person"></i> {{ auth()->user()->name }}</a>
                             <ul class="dropdown-menu dropdown-menu-end admin-nav-dropdown">
                                 <li><form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="dropdown-item">Đăng xuất</button></form></li>
                             </ul>
                         </li>
                     @endif
-
                     @if(auth()->user()->role === 'boss')
-                        <li class="nav-item dropdown w-100">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-boxes"></i> Quản lý dịch vụ</a>
+                        <li class="nav-item dropdown w-100"><a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-boxes"></i> Quản lý dịch vụ</a>
                             <ul class="dropdown-menu admin-nav-dropdown shadow border-0">
                                 <li><a class="dropdown-item" href="{{ route('boss.manage.services') }}"><i class="bi bi-bag me-2"></i>Sản phẩm</a></li>
                                 <li><a class="dropdown-item" href="{{ route('boss.manage.categories') }}"><i class="bi bi-tags me-2"></i>Danh mục</a></li>
@@ -786,41 +854,36 @@
                         <li class="nav-item w-100"><a class="nav-link" href="{{ route('boss.invoices') }}"><i class="bi bi-file-earmark-pdf"></i> Quản lý hóa đơn</a></li>
                         <li class="nav-item w-100"><a class="nav-link" href="{{ route('boss.manage.users') }}"><i class="bi bi-people"></i> Quản lý người dùng</a></li>
                         <li class="nav-item w-100"><a class="nav-link" href="{{ route('boss.statistics') }}"><i class="bi bi-bar-chart"></i> Thống kê</a></li>
-                        
-                    <li class="nav-item dropdown w-100">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            <i class="bi bi-person"></i> {{ auth()->user()->name }}
-                        </a>
-                        <ul class="dropdown-menu admin-nav-dropdown dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{{ route('boss.profile') }}">Hồ sơ</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="dropdown-item">Đăng xuất</button></form></li>
-                        </ul>
-                    </li> 
-                    @endif
-
-                @else
-                       <li class="nav-item w-100"><a class="nav-link" href="{{ route('visitor.dashboard') }}"><i class="bi bi-house"></i> Trang chủ</a></li>
-                       <li class="nav-item w-100"><a class="nav-link" href="{{ route('myServices') }}"><i class="bi bi-bag"></i> Sản phẩm</a></li>
-
-                        <li class="nav-item dropdown w-100">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-grid-3x3-gap"></i> Dịch vụ khác</a>
-                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 text-bg-dark text-lg-bg-light">
-                                <li><a class="dropdown-item" href="{{ route('visitor.fields') }}"><i class="bi bi-trophy me-2"></i>Đặt sân</a></li>
-                                <li><a class="dropdown-item" href="{{ route('visitor.feedback') }}"><i class="bi bi-chat-dots me-2"></i>Đánh giá</a></li>
-                                <li><a class="dropdown-item" href="{{ route('about') }}"><i class="bi bi-info-circle me-2"></i>Giới thiệu</a></li>
+                        <li class="nav-item dropdown w-100"><a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"><i class="bi bi-person"></i> {{ auth()->user()->name }}</a>
+                            <ul class="dropdown-menu admin-nav-dropdown dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{{ route('boss.profile') }}">Hồ sơ</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><form method="POST" action="{{ route('logout') }}">@csrf<button type="submit" class="dropdown-item">Đăng xuất</button></form></li>
                             </ul>
                         </li>
-
+                    @endif
+                @else
+                    <li class="nav-item w-100"><a class="nav-link" href="{{ route('visitor.dashboard') }}"><i class="bi bi-house"></i> Trang chủ</a></li>
+                    <li class="nav-item w-100"><a class="nav-link" href="{{ route('myServices') }}"><i class="bi bi-bag"></i> Sản phẩm</a></li>
+                    <li class="nav-item dropdown w-100"><a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-grid-3x3-gap"></i> Dịch vụ khác</a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 text-bg-dark text-lg-bg-light">
+                            <li><a class="dropdown-item" href="{{ route('visitor.fields') }}"><i class="bi bi-trophy me-2"></i>Đặt sân</a></li>
+                            <li><a class="dropdown-item" href="{{ route('visitor.feedback') }}"><i class="bi bi-chat-dots me-2"></i>Đánh giá</a></li>
+                            <li><a class="dropdown-item" href="{{ route('about') }}"><i class="bi bi-info-circle me-2"></i>Giới thiệu</a></li>
+                        </ul>
+                    </li>
                     <li class="nav-item w-100"><a class="nav-link" href="{{ route('login') }}"><i class="bi bi-box-arrow-in-right"></i> Đăng nhập</a></li>
                     <li class="nav-item w-100"><a class="nav-link" href="{{ route('register') }}"><i class="bi bi-person-plus"></i> Đăng ký</a></li>
-
                 @endauth
+                </ul>
             </div>
         </div>
     </div>
 </nav>
 </div>
+@endif
+{{-- ===== END NAVBAR WRAPPER ===== --}}
+
 
 
 <!-- Chat button -->
