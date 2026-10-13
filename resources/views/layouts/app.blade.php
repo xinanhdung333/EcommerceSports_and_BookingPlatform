@@ -638,7 +638,7 @@
 </style>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
-<body class="{{ auth()->check() && auth()->user()->role === 'user' ? 'user-amazon-surface' : '' }}">
+<body class="{{ auth()->check() && auth()->user()->role === 'user' ? 'user-amazon-surface' : (auth()->check() && auth()->user()->role === 'admin' ? 'admin-amazon-surface' : '') }}">
 <div class="page-transition-overlay" id="pageTransition"></div>
 {{-- ===== NAVBAR WRAPPER ===== --}}
 @if(auth()->check() && auth()->user()->role === 'user')
@@ -647,7 +647,10 @@
 :root{--az-dark:#131921;--az-navy:#232f3e;--az-yellow:#f0c14b;--az-orange:#ff9900;--az-red:#cc0c39;--az-text:#0f1111;--az-link:#007185;--az-border:#ddd;--az-muted:#767676;}
 .az-topbar{background:var(--az-dark);padding:7px 0;width:100%;position:sticky;top:0;z-index:1060;}
 .az-topbar-inner{max-width:1500px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:8px;}
-.az-logo{color:#fff;font-size:1.3rem;font-weight:900;text-decoration:none;display:flex;align-items:center;gap:6px;white-space:nowrap;padding:4px 8px;border:1px solid transparent;border-radius:2px;transition:border-color .15s;}
+.az-logo{color:#fff;font-size:1.3rem;font-weight:900;text-decoration:none;display:flex;align-items:center;gap:8px;white-space:nowrap;padding:4px 8px;border:1px solid transparent;border-radius:2px;transition:border-color .15s;}
+.az-logo-mark{width:40px;height:40px;border-radius:8px;background:#ffd814;color:#0f1111;display:grid;place-items:center;font-size:20px;line-height:1;}
+.az-logo-copy{display:flex;flex-direction:column;line-height:1.05;}
+.az-logo-copy small{font-size:8px;letter-spacing:1.5px;color:#aeb4bc;margin-top:5px;font-weight:600;}
 .az-logo:hover{color:#fff;border-color:#fff;}.az-logo .vn{font-size:.58rem;opacity:.75;display:block;line-height:1;}
 .az-deliver{color:#ccc;font-size:.7rem;display:flex;flex-direction:column;padding:4px 8px;border:1px solid transparent;border-radius:2px;cursor:pointer;transition:border-color .15s;}
 .az-deliver:hover{border-color:#fff;}.az-deliver strong{color:#fff;font-size:.82rem;}
@@ -695,7 +698,7 @@
 {{-- TOP BAR --}}
 <div class="az-topbar">
 <div class="az-topbar-inner">
-    <a href="{{ route('user.dashboard') }}" class="az-logo"><i class="bi bi-dribbble"></i><span>SportsHub<span class="vn">.vn</span></span></a>
+    <a href="{{ route('user.dashboard') }}" class="az-logo"><span class="az-logo-mark">ϟ</span><span class="az-logo-copy">SPORTSHUB<small>SPORTS EQUIPMENT &amp; SERVICES</small></span></a>
     <div class="az-deliver"><span><i class="bi bi-geo-alt-fill"></i> Giao đến</span><strong>Việt Nam</strong></div>
     <form class="az-search" action="{{ route('user.services') }}" method="GET">
         @php $cats = \App\Models\Category::take(10)->get(); @endphp
@@ -781,13 +784,13 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMega();});
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
     @if(auth()->check() && auth()->user()->role === 'boss')
-      <a class="navbar-brand" href="{{ route('boss.home') }}"><i class="bi bi-dribbble"></i> SportsHub</a>
+      <a class="navbar-brand" href="{{ route('boss.home') }}"><span class="az-logo-mark d-inline-grid me-2">ϟ</span> SportsHub</a>
     @elseif(auth()->check() && auth()->user()->role === 'admin')
-      <a class="navbar-brand" href="{{ route('admin.home') }}"><i class="bi bi-dribbble"></i> SportsHub</a>
+      <a class="navbar-brand" href="{{ route('admin.home') }}"><span class="az-logo-mark d-inline-grid me-2">ϟ</span> SportsHub</a>
     @elseif(auth()->check() && auth()->user()->role === 'shipper')
-      <a class="navbar-brand" href="{{ route('shipper.dashboard') }}"><i class="bi bi-dribbble"></i> SportsHub</a>
+      <a class="navbar-brand" href="{{ route('shipper.dashboard') }}"><span class="az-logo-mark d-inline-grid me-2">ϟ</span> SportsHub</a>
     @else
-      <a class="navbar-brand" href="{{ route('user.home') }}"><i class="bi bi-dribbble"></i> SportsHub</a>
+      <a class="navbar-brand" href="{{ route('user.home') }}"><span class="az-logo-mark d-inline-grid me-2">ϟ</span> SportsHub</a>
     @endif
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
@@ -1027,8 +1030,9 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMega();});
 @if(auth()->check() && auth()->user()->role === 'user')
 <style id="user-amazon-design-system">
 :root{--az-primary:#131921;--az-secondary:#232f3e;--az-page:#eaeded;--az-card:#fff;--az-border:#d5d9d9;--az-text:#0f1111;--az-muted:#565959;--az-link:#007185;--az-yellow:#ffd814;--az-yellow-border:#fcd200;--az-orange:#ff9900;--az-danger:#cc0c39;--az-success:#067d62;--az-star:#ffa41c}
-.user-amazon-surface{background:var(--az-page)!important;color:var(--az-text);font-family:Inter,Roboto,Arial,sans-serif;font-size:14px;line-height:20px}
-.user-amazon-surface .site-content{max-width:1480px;margin:0 auto!important;padding:16px!important;background:var(--az-page)!important}
+.user-amazon-surface{background:#fff!important;color:var(--az-text);font-family:Inter,Roboto,Arial,sans-serif;font-size:14px;line-height:20px}
+.user-amazon-surface .site-content,.user-amazon-surface .site-content-inner{max-width:1480px;margin:0 auto!important;padding:16px!important;background:#fff!important}
+.user-amazon-surface .az-wrap{background:#fff!important}
 .user-amazon-surface .navbar{background:var(--az-primary)!important;box-shadow:none!important;border:0!important}
 .user-amazon-surface .navbar .nav-link,.user-amazon-surface .navbar .navbar-brand{color:#fff!important;font-size:14px}
 .user-amazon-surface .navbar .nav-link:hover{border:1px solid #fff;background:transparent!important}
@@ -1087,6 +1091,30 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMega();});
 .user-amazon-surface .order-price{color:var(--az-text)!important}
 .user-amazon-surface .card-body,.user-amazon-surface .col-sm-8{min-width:0;overflow-wrap:anywhere}
 @media(max-width:768px){.user-amazon-surface .site-content{padding:10px!important}.user-amazon-surface #chat-box{right:10px;left:10px;width:auto}}
+</style>
+@endif
+
+@if(auth()->check() && auth()->user()->role === 'admin')
+<style id="admin-amazon-design-system">
+.admin-amazon-surface{background:#eaeded!important;color:#0f1111;font-family:Inter,Roboto,Arial,sans-serif}
+.admin-amazon-surface .site-content{max-width:1480px;margin:0 auto!important;padding:16px!important;background:#eaeded!important}
+.admin-amazon-surface .navbar{background:#131921!important;box-shadow:none!important}
+.admin-amazon-surface .navbar .nav-link,.admin-amazon-surface .navbar .navbar-brand{color:#fff!important}
+.admin-amazon-surface .offcanvas,.admin-amazon-surface .dropdown-menu{background:#232f3e!important;border-radius:4px!important}
+.admin-amazon-surface .card,.admin-amazon-surface .section,.admin-amazon-surface .table-responsive{background:#fff!important;border:1px solid #d5d9d9!important;border-radius:8px!important;box-shadow:0 2px 5px rgba(15,17,17,.15)!important}
+.admin-amazon-surface .settings-wrapper{max-width:1200px!important;margin:0 auto!important;display:flex;gap:20px;align-items:flex-start}
+.admin-amazon-surface .settings-wrapper .sidebar{width:260px;flex:0 0 260px;background:#fff;border:1px solid #d5d9d9;border-radius:8px;padding:16px;box-shadow:0 2px 5px rgba(15,17,17,.15);position:sticky;top:16px}
+.admin-amazon-surface .settings-wrapper .sidebar a{display:block;padding:10px 12px;border-radius:4px;color:#0f1111;text-decoration:none;margin-bottom:4px}
+.admin-amazon-surface .settings-wrapper .sidebar a:hover{background:#f0f2f2}.admin-amazon-surface .settings-wrapper .sidebar a.active{background:#f0f2f2;color:#0f1111;border-left:3px solid #ff9900;font-weight:700}
+.admin-amazon-surface .settings-wrapper .content{flex:1;min-width:0}.admin-amazon-surface .section{padding:20px;margin-bottom:16px}.admin-amazon-surface .section h3{font-size:16px;font-weight:700;margin-bottom:16px}
+.admin-amazon-surface .section .item{border-bottom:1px solid #eaeded;border-radius:4px;padding:12px}.admin-amazon-surface .section .item:hover{background:#f7f8f8}.admin-amazon-surface .section .item i{color:#565959}
+.admin-amazon-surface .btn-primary,.admin-amazon-surface .btn-warning{background:#ffd814!important;border:1px solid #fcd200!important;color:#0f1111!important;border-radius:8px!important;box-shadow:none!important}
+.admin-amazon-surface .btn-secondary,.admin-amazon-surface .btn-outline-secondary,.admin-amazon-surface .btn-outline-primary{background:#fff!important;border:1px solid #d5d9d9!important;color:#0f1111!important;border-radius:8px!important}
+.admin-amazon-surface .btn-danger{background:#cc0c39!important;border-color:#cc0c39!important}.admin-amazon-surface .btn-success{background:#067d62!important;border-color:#067d62!important}
+.admin-amazon-surface input,.admin-amazon-surface select,.admin-amazon-surface textarea{border:1px solid #d5d9d9!important;border-radius:4px!important;box-shadow:none!important}
+.admin-amazon-surface .table thead th{background:#f0f2f2!important;color:#565959!important;font-size:12px;text-transform:uppercase}.admin-amazon-surface .table tbody tr:hover{background:#f7f8f8!important}
+.admin-amazon-surface [style*="linear-gradient"]{background:#fff!important;color:#0f1111!important}
+@media(max-width:768px){.admin-amazon-surface .site-content{padding:10px!important}.admin-amazon-surface .settings-wrapper{display:block}.admin-amazon-surface .settings-wrapper .sidebar{width:100%;position:static;margin-bottom:16px}}
 </style>
 @endif
 

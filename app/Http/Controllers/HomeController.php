@@ -13,7 +13,17 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        return view('services.visitor.home', ['user' => $user]);
+
+        if ($user) {
+            return match ($user->role) {
+                'admin' => redirect()->route('admin.home'),
+                'boss' => redirect()->route('boss.home'),
+                'shipper' => redirect()->route('shipper.dashboard'),
+                default => redirect()->route('user.dashboard'),
+            };
+        }
+
+        return response()->file(storage_path('app/public/sports_e_commerce_landing_page.html'));
     }
     public function indexuser(Request $request)
     {
