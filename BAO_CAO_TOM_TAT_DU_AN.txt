@@ -1,0 +1,615 @@
+TOM TAT DU AN SPORTSHUB
+Tai lieu dau vao de Claude viet bao cao do an
+
+1. TONG QUAN DU AN
+
+SportsHub la ung dung web co dinh huong chinh la thuong mai dien tu ban san pham/do the thao. He thong ho tro khach xem san pham, gio hang, dat mua, thanh toan, giao hang va theo doi don hang. Ngoai nghiep vu ban hang, du an con co phan he dat san bong va cac dich vu di kem.
+
+README hien tai chu yeu mo ta he thong dat san bong, chua phan anh day du cac chuc nang thuong mai dien tu trong ma nguon. Khi viet bao cao, can lay website ban do the thao lam trong tam; gioi thieu dat san bong nhu mot phan he bo sung dac thu dang co trong ung dung.
+
+2. NGHIEP VU VA CHUC NANG CHINH
+
+2.1. Mua sam truc tuyen
+
+- Khach hang xem danh sach san pham va chi tiet san pham.
+- Tim kiem san pham theo ten; loc theo danh muc; sap xep theo ten, gia tang/giam hoac danh gia.
+- San pham co cac thong tin nhu ten, mo ta, gia, hinh anh, so luong ton kho, danh muc, trang thai va danh gia.
+- Ho tro khuyen mai/flash sale, tinh gia sau giam gia.
+- Khach hang them san pham vao gio hang, cap nhat so luong, xoa san pham, mua ngay, thanh toan mot phan gio hang hoac toan bo gio hang.
+- Ho tro luu dia chi giao hang, chon phuong thuc giao hang va ghi chu don hang.
+- Ho tro voucher giam gia co dinh, giam theo phan tram hoac mien phi van chuyen; voucher co the co gia tri don toi thieu, muc giam toi da va ngay het han.
+- Khach hang xem danh sach don hang, chi tiet don hang va lich su mua hang.
+- He thong kiem tra ton kho khi tao don va tru ton kho khi don hang duoc xac nhan thanh toan.
+
+Luu y ve cach dat ten trong ma nguon: san pham hien duoc luu qua model/ten bang Service/services va giao dien quan tri con co cho goi la “dich vu”. Day la cach dat ten ke thua tu phan he dat san. Trong bao cao thuong mai dien tu, co the dien giai cac doi tuong nay la san pham/hang hoa the thao. Khong nen khang dinh he thong co quan ly bien the SKU nhu size/mau neu khong co can cu trong du lieu hien tai.
+
+2.2. Quy trinh don hang va thanh toan
+
+Quy trinh tong quat:
+Khach chon san pham -> them vao gio -> chon dia chi va phuong thuc giao hang -> ap dung voucher -> chon phuong thuc thanh toan -> he thong cap nhat don hang -> khach theo doi trang thai giao hang.
+
+Phuong thuc thanh toan hien co trong ma nguon:
+
+- Tien mat: he thong cap nhat trang thai thanh toan/don hang va tru ton kho trong giao dich co so du lieu.
+- MoMo: co luong tao yeu cau thanh toan, chuyen khach sang cong thanh toan va xu ly return/IPN. Ma nguon kiem tra chu ky va so tien giao dich. Endpoint dang su dung la cong test/sandbox; can cau hinh thong tin ket noi moi co the su dung.
+- Chuyen khoan ngan hang: he thong tao/thong tin QR chuyen khoan; webhook SePay tiep nhan giao dich va xac nhan thanh toan sau khi kiem tra chu ky HMAC, thoi gian, ma don va so tien.
+
+Du lieu don hang, chi tiet don, thanh toan, dia chi giao hang va van chuyen duoc luu tach biet trong cac bang/model tuong ung. Trang thai thanh toan va don hang duoc cap nhat qua cac luong thanh toan.
+
+2.3. Van chuyen va theo doi giao hang
+
+- Quan tri phuong thuc giao hang, phu phi va nguong mien phi van chuyen.
+- Tinh phi giao hang dua tren khoang cach tu cua hang den dia chi giao hang; co the dung phi co dinh neu khong lay duoc khoang cach.
+- Chuyen dia chi thanh toa do de ho tro tinh phi va theo doi.
+- Co trang theo doi giao hang voi ma theo doi, trang thai, cac moc tien trinh, toa do va tuyen duong hien thi tren ban do.
+- Co ma nguon tich hop GHN cho du lieu dia chi va tao van don; tuy nhien cau hinh mac dinh cua GHN la demo/mo phong. Viec tao van don that can duoc cau hinh/bat rieng. Khong nen mo ta la he thong dang san sang giao hang production neu chua xac nhan cau hinh thuc te.
+- Co vai tro shipper de xem don giao va cap nhat trang thai van chuyen.
+
+2.4. Phan he dat san bong
+
+Day la phan he bo sung, song song voi cua hang truc tuyen:
+
+- Xem danh sach san bong, thong tin va gia thue theo gio.
+- Xem lich san va dat san theo ngay, gio bat dau, gio ket thuc.
+- Kiem tra trung khung gio va tinh gia dat san dua tren thoi luong.
+- Chon san pham/dich vu di kem khi dat san.
+- Xem lich su booking, tim kiem, loc theo trang thai, xem chi tiet va huy booking theo dieu kien.
+- Theo doi trang thai booking, gom cac trang thai cho xu ly, da xac nhan, dang dien ra, hoan tat, het han hoac da huy tuy theo luong.
+- Thanh toan booking bang tien mat, MoMo hoac chuyen khoan.
+
+2.5. Tai khoan, quan tri va cham soc khach hang
+
+- Dang ky, dang nhap, dang xuat, cap nhat ho so, doi/quen mat khau.
+- Ho tro dang nhap Google/Facebook qua Laravel Socialite neu da cau hinh Client ID va Client Secret.
+- Phan quyen theo vai tro: khach, nguoi dung, admin, boss va shipper.
+- Admin/boss quan ly san pham, danh muc, ton kho, don hang, booking, tai khoan, voucher, chinh sach/gia, van chuyen, feedback va thong ke.
+- Co hoa don PDF cho don hang va booking.
+- Khach hang gui feedback/danh gia; quan tri co the quan ly va phan hoi.
+- Chat ho tro giua khach va admin; backend luu hoi thoai/tin nhan, co ho tro dinh kem tep va broadcast qua WebSocket.
+- Chatbot co the tra loi mot so cau hoi san pham dua tren database, thu khop intent/keyword va response da cau hinh; neu khong khop thi co the goi Gemini khi da cau hinh API key.
+
+Luu y: trang wishlist hien co route tra ve view, nhung chua du can cu de mo ta day la tinh nang yeu thich hoan thien.
+
+3. CONG NGHE VA KIEN TRUC
+
+- Backend: PHP 8.2 tro len, Laravel Framework 12.
+- Kien truc web: Laravel MVC, controller, Eloquent ORM, middleware, request validation, migration va Blade views.
+- Giao dien: Blade render phia server; Bootstrap 5 va Bootstrap Icons duoc nap tu CDN; Vite quan ly/build tai nguyen CSS/JavaScript. CSS co Tailwind directives; JavaScript su dung Axios va cac thu vien duoc khai bao trong package.json.
+- Co so du lieu: Laravel cau hinh SQLite lam ket noi mac dinh neu moi truong khong ghi de; Docker Compose khai bao MySQL 8. Co the mo ta ung dung ho tro SQLite/MySQL va moi truong Docker dinh huong MySQL.
+- API: REST API phien ban /api/v1. Laravel Sanctum cap token cho xac thuc API. API hien co cac luong xac thuc, lay sanh sach san/san pham va dat san; chua thay API checkout/gio hang thuong mai dien tu rieng.
+- Xu ly nen: co migration va cau hinh queue/job trong Laravel.
+- Xuat hoa don: DomPDF.
+- Moi truong Docker: PHP-FPM, Nginx, MySQL, Redis, Node/Vite va WebSocket server.
+- WebSocket server rieng duoc viet bang Node.js va goi thu vien ws.
+
+4. DU LIEU NGHIEP VU CHINH
+
+Mot so entity/bang quan trong:
+
+- users: tai khoan, thong tin ca nhan va role.
+- categories: danh muc san pham/dich vu.
+- services: du lieu san pham/hang hoa theo cach dat ten hien tai cua code, gom gia, ton kho, mo ta, hinh anh, danh muc va danh gia.
+- carts, cart_items: gio hang va cac mat hang trong gio.
+- orders, order_items: don hang va chi tiet don hang.
+- payments: thanh toan don hang.
+- user_addresses: dia chi nguoi dung, co the luu thong tin ma dia chi GHN va toa do.
+- order_shipments, shipping_statuses, order_shipping_status_histories: thong tin va lich su giao van.
+- vouchers, shipping_methods, settings: ma giam gia, phuong thuc van chuyen va cau hinh cua hang.
+- fields: san bong.
+- bookings, booking_services, booking_payments: booking, dich vu/san pham di kem va thanh toan booking.
+- feedbacks: danh gia/phan hoi.
+- conversations, messages: chat ho tro.
+- chatbot_intents, chatbot_keywords, chatbot_responses, chatbot_logs: cau hinh va nhat ky chatbot.
+- invoices, activity_logs: hoa don va lich su hoat dong.
+
+5. CAC TICH HOP BEN NGOAI
+
+MoMo:
+- Thanh toan cho don mua hang va booking.
+- Ma nguon co ky du lieu, redirect, return/IPN va xu ly trang thai.
+- Dang cau hinh goi endpoint test/sandbox; can bien moi truong hop le de ket noi.
+
+Ngan hang va SePay:
+- Hien thi thong tin/QR chuyen khoan.
+- SePay webhook nhan thong bao tien vao, xac thuc HMAC-SHA256 va doi chieu ma don/so tien truoc khi cap nhat thanh toan.
+
+GHN:
+- Lay du lieu tinh/thanh pho, quan/huyen, phuong/xa va ho tro tao/theo doi van don.
+- Code co cac che do demo/test; mac dinh la mo phong, khong duoc tuyen bo rang da van hanh giao hang that.
+
+OpenRouteService:
+- Tinh khoang cach duong di va lay diem tuyen duong.
+- Duoc dung trong logic tinh phi van chuyen/theo doi.
+- Can ORS API key; ket qua duoc cache de han che goi dich vu lap lai.
+
+OpenStreetMap Nominatim:
+- Geocoding dia chi thanh toa do.
+- Duoc su dung de phuc vu tinh phi va tuyen duong.
+
+Google va Facebook OAuth:
+- Dang nhap mang xa hoi qua Socialite.
+- Chi hoat dong khi co Client ID/Secret va redirect URI phu hop.
+
+Gemini:
+- Chatbot goi Gemini API neu da cau hinh API key.
+- La luong tuy chon; chatbot van co tra loi dua tren database va rule/intent.
+
+WebSocket:
+- Node.js server phat tin nhan chat theo conversation.
+- Co endpoint health va HTTP broadcast noi bo tu Laravel.
+
+DomPDF:
+- Tao file hoa don PDF.
+
+6. PHAM VI API VA KIEM THU
+
+- API /api/v1 co dang ky/dang nhap, lay thong tin tai khoan, dang xuat, danh sach/chi tiet san bong, danh sach/chi tiet san pham, kiem tra lich trong va CRUD booking co xac thuc Sanctum.
+- API booking co request validation, resource response va kiem tra quyen so huu booking.
+- Co feature tests cho API booking, danh sach san/san pham, dang nhap token va kiem tra trung lich.
+- Co cac test auth, profile, reset password va mot so browser test.
+- Khong nen khang dinh API co day du chuc nang mua hang, gio hang hoac checkout neu chua bo sung API tuong ung.
+
+7. CAC DIEM CAN TRINH BAY CHINH XAC TRONG BAO CAO
+
+1. Xac dinh de tai la website thuong mai dien tu ban do the thao; dat san bong la phan he mo rong.
+2. Mo ta ro luong san pham, gio hang, voucher, thanh toan, ton kho, don hang va giao van.
+3. Giai thich ten ky thuat Service/services trong code dang duoc dung cho du lieu san pham.
+4. Phan biet ma nguon tich hop voi dich vu da duoc cau hinh/chay that: MoMo test, GHN mac dinh demo, Gemini/OAuth can API credentials.
+5. API hien tap trung vao booking va catalog co ban; khong tuyen bo co API thanh toan/gio hang neu khong co bang chung.
+6. Khong tu them cac tinh nang chua co bang chung nhu app di dong, quan ly size/mau san pham, ERP, quan ly kho nhieu chi nhanh hoac tich hop giao hang production.
+7. Khi noi ve SQLite/MySQL, ghi dung la cau hinh mac dinh cua Laravel la SQLite neu khong override, trong khi Docker Compose cung cap MySQL 8.
+
+
+CHUONG 3: XAY DUNG VA TRIEN KHAI HE THONG
+
+Muc tieu cua chuong:
+Mo ta cach giao dien, backend va cac chuc nang chinh cua SportsHub duoc hien thuc hoa trong ma nguon. Trong toan bo chuong, lay nghiep vu thuong mai dien tu ban do the thao lam trong tam; trinh bay dat san bong la phan he bo sung. Phan biet tinh nang da co trong code voi cac dich vu can cau hinh moi hoat dong day du.
+
+3.1. Xay dung giao dien (Frontend)
+
+3.1.1. Cong nghe va cach to chuc
+
+- Giao dien web duoc render bang Laravel Blade; cac trang duoc chia thanh layout, partial, component va view theo nhom chuc nang.
+- Bootstrap 5 va Bootstrap Icons duoc nap tu CDN trong giao dien; CSS tu du an nam trong public/assets va resources/css.
+- Vite duoc cau hinh build resources/css/app.css va resources/js/app.js. resources/js/bootstrap.js khoi tao Axios voi header XMLHttpRequest.
+- Mot so thao tac su dung request AJAX/JSON, vi du cap nhat gio hang, lay tinh trang giao hang va chat. Cac trang con lai su dung form HTML/POST va redirect theo cach xu ly cua Laravel.
+- Giao dien co cac nhom khu vuc rieng cho khach/nguoi mua, admin, boss va shipper. Quyen truy cap route duoc gioi han bang middleware auth va role.
+- Giao dien nguoi dung co cac trang san pham, chi tiet san pham, gio hang, thanh toan, don hang, dia chi, booking, ho so, feedback va chat.
+- Giao dien quan tri co cac trang quan ly san pham/danh muc, don hang, booking, tai khoan, voucher, phuong thuc giao hang, feedback, thong ke va hoi thoai chat.
+
+3.1.2. Cac man hinh va thanh phan chinh
+
+1. Trang danh sach san pham:
+   Hien thi luoi san pham, hinh anh, ten, danh muc, gia, khuyen mai va thong tin danh gia. Ho tro tim theo ten, loc danh muc, sap xep theo gia/ten/danh gia va lien ket den chi tiet san pham. View tham khao: resources/views/user/services.blade.php.
+
+2. Trang chi tiet san pham:
+   Trinh bay thong tin san pham, gia va tinh trang hang; cho phep chon so luong va them vao gio/mua ngay. Co the co danh gia/feedback lien quan. View tham khao: resources/views/user/service-detail.blade.php va route user.serviceDetail; neu ten view thuc te khac, can doi chieu PagesController::serviceDetail.
+
+3. Gio hang:
+   Hien thi cac mat hang da chon, don gia, so luong va thanh tien; ho tro chon mat hang de checkout, tang/giam so luong va xoa mat hang. Giao dien co tab lich su mua. View tham khao: resources/views/user/cart.blade.php.
+
+4. Thanh toan:
+   Hien thi dia chi giao hang, chon/cap nhat dia chi, thong tin tinh/quan/phuong, phi giao hang, phuong thuc van chuyen, voucher va phuong thuc thanh toan. Ho tro MoMo, tien mat va chuyen khoan theo route/controller. View tham khao: resources/views/user/payment-method.blade.php va cac view checkout.
+
+5. Don hang va theo doi giao hang:
+   Nguoi mua xem don hang, trang thai, chi tiet va trang tracking. Trang tracking trinh bay nha van chuyen, ma van don, dia chi, trang thai va ban do/tuyen duong neu du lieu duoc cung cap. View tham khao: resources/views/user/orders.blade.php, resources/views/user/order-detail.blade.php va resources/views/user/order-tracking.blade.php.
+
+6. Quan tri:
+   Cac trang bang du lieu/form cho admin va boss quan ly san pham, danh muc, don hang, booking, tai khoan va cau hinh. View tham khao: resources/views/admin/manage-services.blade.php, resources/views/admin/manage-orders.blade.php va cac view tuong ung trong resources/views/boss.
+
+7. Dat san va ho tro:
+   Cac view rieng cho danh sach san, lich san, booking, thanh toan booking, feedback, chat va chatbot. Day la chuc nang bo sung so voi luong ban hang.
+
+3.1.3. Thiet ke trai nghiem va xu ly giao dien
+
+- Giao dien danh sach san pham uu tien hien thi thong tin can thiet de nguoi mua so sanh va di den trang chi tiet.
+- Gio hang va thanh toan tach thanh cac buoc de nguoi mua kiem tra mat hang, so luong, dia chi, chi phi va phuong thuc tra tien.
+- Form du lieu duoc xu ly qua validation phia server; thong bao thanh cong/loi duoc hien thi qua session flash message hoac JSON response.
+- Cac trang co phan bo cuc responsive Bootstrap va mot so CSS rieng cho man hinh nho.
+- Mot so phan nhu cap nhat gio hang va tracking co the cap nhat du lieu ma khong can tai lai toan bo trang; can chup man hinh tu trinh duyet khi app dang chay de minh hoa dung thuc te.
+
+3.1.4. Huong dan bo sung anh demo vao bao cao
+
+Ma nguon khong kem anh chup man hinh da chay san trong tai lieu nay. Claude khong duoc tu tao hoac mo ta anh nhu anh that. Hay dat placeholder trong ban thao va thay bang anh chup tu ung dung sau khi nguoi thuc hien chay he thong:
+
+[Hinh 3.1. Trang chu SportsHub]
+Goi y chup: trang chu khi truy cap /, nhin thay thanh dieu huong va noi dung gioi thieu.
+
+[Hinh 3.2. Danh sach san pham va bo loc]
+Goi y chup: trang /user/services sau khi dang nhap hoac trang san pham cong khai; the hien danh muc, tim kiem, loc/sap xep va the san pham.
+
+[Hinh 3.3. Chi tiet san pham]
+Goi y chup: trang chi tiet mot san pham, co gia, anh, ton kho va thao tac them gio.
+
+[Hinh 3.4. Gio hang]
+Goi y chup: gio hang co it nhat mot san pham, so luong va tong tien.
+
+[Hinh 3.5. Man hinh thanh toan]
+Goi y chup: trang chon dia chi, phuong thuc giao hang, voucher va phuong thuc thanh toan; che thong tin ca nhan/nhay cam neu can.
+
+[Hinh 3.6. Danh sach/chi tiet don hang]
+Goi y chup: mot don hang mau va trang thai; khong de lo email, so dien thoai, ma giao dich hoac dia chi that.
+
+[Hinh 3.7. Trang quan tri san pham]
+Goi y chup: bang san pham co danh muc, gia, ton kho, trang thai.
+
+[Hinh 3.8. Trang quan tri don hang]
+Goi y chup: bang don hang va bo loc theo khach/trang thai.
+
+[Hinh 3.9. Trang theo doi giao hang]
+Goi y chup: tracking demo voi ma demo va trang thai mo phong; ghi ro la du lieu demo neu khong co van don GHN that.
+
+[Hinh 3.10. Phan he dat san bong (tuy chon)]
+Goi y chup: lich san hoac man hinh tao booking de minh hoa phan he bo sung.
+
+Moi hinh can co so thu tu, ten hinh, chu thich mot cau, va duoc chup truc tiep tu ung dung dang chay. Khong dua anh thong tin tai khoan, API key, QR thanh toan that, thong tin ca nhan that hoac du lieu giao dich that vao bao cao.
+
+3.2. Lap trinh backend (PHP + co so du lieu)
+
+3.2.1. To chuc backend
+
+- Laravel 12 ap dung mo hinh MVC: route tiep nhan request, controller dieu phoi nghiep vu, model Eloquent thao tac du lieu, Blade render trang web.
+- routes/web.php khai bao cac route web cho mua sam, gio hang, thanh toan, booking, admin, boss va shipper.
+- routes/api.php khai bao API /api/v1; cac route can dang nhap dung auth:sanctum.
+- Middleware auth va role kiem soat dang nhap/quyen. Cac route webhook thanh toan duoc cau hinh de tiep nhan callback tu ben ngoai.
+- Form request/controller validation kiem tra du lieu dau vao; quan he Eloquent mo ta lien ket giua user, order, order item, payment, service, booking va field.
+- Database migrations mo ta cau truc bang; transaction duoc dung o mot so thao tac can cap nhat dong bo, nhu tao don va tru ton kho khi xac nhan thanh toan.
+
+3.2.2. Luong backend mua hang va tao don
+
+1. Backend lay danh sach san pham tu services, lien ket category va tinh gia khuyen mai neu co rule dang hieu luc.
+2. Khi them san pham vao gio, he thong tao/lay gio hang cua user va cap nhat cart_items; kiem tra so luong yeu cau voi ton kho.
+3. Khi checkout, backend doc cac mat hang thuoc gio cua user, tinh gia dua tren du lieu trong database va kiem tra ton kho. Don hang va cac order_items duoc tao voi trang thai cho xu ly/thanh toan.
+4. Backend tinh tong tien, phi giao hang va voucher; du lieu thanh toan duoc tao/cap nhat trong payments.
+5. Sau khi thanh toan duoc chap nhan, backend cap nhat trang thai payment/order/item, tru ton kho va xoa cac mat hang tuong ung khoi gio hang theo luong xu ly.
+6. Giao dich database giup cac thay doi lien quan duoc thuc hien cung nhau trong mot so luong thanh toan, tranh cap nhat mot phan neu co loi.
+7. Nguoi mua truy van danh sach/chi tiet don cua minh; controller kiem tra quyen so huu truoc khi hien thi cac thao tac nhay cam.
+
+Can luu y: chi tiet tinh toan va thoi diem cap nhat trang thai co the khac nhau theo phuong thuc thanh toan. Khi viet bao cao, mo ta theo luong trong code, khong tu khang dinh tat ca cong thanh toan da duoc kiem thu tren production.
+
+3.2.3. Xu ly thanh toan
+
+- Tien mat: backend cap nhat payment thanh cong va order sang trang thai xac nhan; ton kho duoc tru trong transaction.
+- MoMo: backend tao request den endpoint test-payment.momo.vn, tao chu ky theo cau hinh, luu ma don MoMo, sau do xu ly return/IPN. Khi nhan ket qua, code kiem tra chu ky, resultCode va so tien truoc khi cap nhat trang thai.
+- Chuyen khoan: man hinh thanh toan tao huong dan/QR dua tren thong tin tai khoan cau hinh. Endpoint SePay nhan webhook; backend doc raw body, kiem tra HMAC-SHA256 va timestamp trong khoang cho phep, phan tich ma order/booking trong noi dung, doi chieu so tien va cap nhat giao dich.
+- Tuyet doi khong dua secret/key that vao bao cao, screenshot, commit hoac prompt cho cong cu ben ngoai.
+- Khong co bang chung ve VNPay trong routes/controller/config da kiem tra. Neu de cuong yeu cau ke VNPay, phai ghi ro “chua trien khai/chua xac nhan trong ma nguon” hoac de xuat la huong phat trien; khong viet VNPay nhu tinh nang da hoan thanh.
+
+3.2.4. Xu ly van chuyen
+
+- Dia chi giao hang duoc luu lien ket voi user va order; co cac thong tin hanh chinh GHN va/toa do neu da duoc cap nhat.
+- ShippingFeeController va OpenRouteService tinh phi theo toa do/khoang cach, nguong mien phi; khi thieu toa do hoac dich vu khong tra duoc ket qua co the dung phi co dinh theo cau hinh.
+- ShippingService tao ban ghi van chuyen, ma tracking, diem lay/giao va cac diem tuyen duong; neu khong lay duoc tuyen thuc co the dung tuyen duong demo.
+- GHNService co cac ham lay dia chi, tao don va cap nhat trang thai demo. Cac credential va mode GHN can duoc cau hinh rieng.
+
+3.2.5. Mo hinh du lieu phuc vu thuong mai dien tu
+
+- User co nhieu Order va UserAddress.
+- Order co nhieu OrderItem; moi OrderItem tham chieu mot Service/san pham, luu so luong, gia va thong tin gia goc/giam gia tai thoi diem mua.
+- Cart co nhieu CartItem; CartItem tham chieu Service/san pham va so luong.
+- Order co Payment va thong tin van chuyen; voucher va phi ship duoc ghi tren don de tinh tong phai tra.
+- Service thuoc Category va co the co feedback/danh gia.
+- Cac bang nay duoc tao/cap nhat qua Laravel migrations; SQLite duoc cau hinh cho testing, MySQL duoc cung cap trong Docker Compose.
+
+3.3. Cac chuc nang chinh da hoan thien trong ma nguon
+
+Trong bao cao, “da hoan thien” o day chi co nghia la co luong code/giao dien tuong ung trong repository; khong dong nghia da duoc kiem thu chap nhan day du tren moi moi truong.
+
+3.3.1. Tai khoan va phan quyen
+
+- Dang ky, dang nhap, dang xuat, ho so, cap nhat mat khau va quy trinh quen/tao lai mat khau.
+- Co code dang nhap Google/Facebook qua Socialite, phu thuoc vao credentials.
+- Route tach theo user/admin/boss/shipper va co middleware bao ve.
+
+3.3.2. Danh muc va san pham
+
+- Xem, tim kiem, loc va sap xep danh sach san pham.
+- Quan tri tao/sua/xoa danh muc va san pham; quan ly gia, so luong, hinh anh va trang thai.
+- Hien thi khuyen mai, gia sau giam va danh gia san pham.
+- Nen goi la “san pham/hang hoa the thao” trong bao cao, dong thoi ghi chu ten model/bang trong code la Service/services.
+
+3.3.3. Gio hang va dat mua
+
+- Them, cap nhat, xoa san pham trong gio.
+- Ho tro mua ngay, checkout mat hang duoc chon va checkout gio hang.
+- Tao Order va OrderItem; kiem tra ton kho va luu thong tin gia/so luong.
+- Quan ly dia chi giao hang, ghi chu, phuong thuc ship, phi ship va voucher.
+
+3.3.4. Thanh toan va don hang
+
+- Co luong thanh toan tien mat, MoMo test/sandbox va chuyen khoan ngan hang qua QR + webhook SePay.
+- Nguoi dung xem don hang, chi tiet, lich su va trang thai; admin/boss quan ly don, cap nhat trang thai va xuat hoa don.
+- Khong co bang chung VNPay duoc cai dat; khong xep VNPay vao danh sach tinh nang hien co.
+
+3.3.5. Van chuyen va ho tro
+
+- Quan tri phuong thuc ship va nguong mien phi.
+- Tinh phi theo dia chi/khoang cach, theo doi trang thai van chuyen; luong GHN co che do demo.
+- Chat khach hang-admin qua WebSocket, feedback va chatbot rule/AI tuy cau hinh.
+
+3.3.6. Dat san bong
+
+- Tao va quan ly booking theo ngay/gio, kiem tra trung lich va tinh tien san.
+- Thanh toan booking va chon san pham/dich vu di kem.
+- Day la mot phan he da co trong ung dung, nhung khong phai trong tam cua de tai thuong mai dien tu.
+
+3.4. Mot so hinh anh demo he thong
+
+Huong dan cho nguoi viet bao cao:
+
+- Hinh chup phai duoc tao tu ung dung dang chay va du lieu demo an toan. File tom tat nay khong chua anh chup man hinh.
+- Khong tu dung anh giao dien lay tu README, mockup hoac anh tuong tu tren Internet de nhan la anh cua he thong.
+- Moi anh can co caption “Hinh 3.x. ...” va mot cau giai thich chuc nang.
+- Uu tien chup: trang danh sach san pham; chi tiet san pham; gio hang; thanh toan; don hang; quan tri san pham; quan tri don hang; tracking van chuyen demo; lich/dat san.
+- Neu chua co screenshot that, giu placeholder [CHEN ANH CHUP MAN HINH THAT TAI DAY] va ghi chu can bo sung sau; khong tao ket qua gia.
+- An/che email, dien thoai, dia chi, token, khoa API, QR that, ma giao dich va du lieu ca nhan truoc khi dua anh vao bao cao.
+
+CHUONG 4: KIEM THU VA DANH GIA
+
+Muc tieu cua chuong:
+Trinh bay pham vi, phuong phap, test case, ket qua da quan sat va danh gia thuc te. Phan biet ro test tu dong da co, test da chay, kiem thu thu cong can thuc hien va cac tich hop chua duoc xac nhan tren moi truong that.
+
+4.1. Ke hoach kiem thu
+
+4.1.1. Muc tieu
+
+- Xac nhan cac chuc nang mua sam chinh: danh sach/chi tiet san pham, gio hang, checkout, voucher, thanh toan va quan ly don.
+- Xac nhan rang nguoi dung chi xem/sua du lieu cua chinh minh va route quan tri duoc gioi han theo role.
+- Kiem tra tinh dung dan cua kiem tra ton kho, tinh tong tien/phi ship va cap nhat trang thai.
+- Kiem tra cac luong booking bo sung: kiem tra khung gio, tao booking va thanh toan.
+- Kiem tra API v1 va cac tich hop callback trong dieu kien demo/test, khong gui giao dich that khi khong duoc phe duyet.
+- Ghi nhan loi, moi truong, du lieu test va ket qua; khong dong nhat viec “co code” voi “da pass kiem thu”.
+
+4.1.2. Pham vi kiem thu
+
+Trong pham vi:
+- Kiem thu chuc nang giao dien va backend web cho tai khoan, catalog san pham, gio hang, checkout, don hang, voucher, booking va quan tri.
+- Kiem thu API /api/v1 cho catalog va booking.
+- Kiem thu validation, phan quyen, du lieu dau vao, trang thai payment/order va ton kho.
+- Kiem tra hien thi tren desktop/mobile bang trinh duyet sau khi ung dung duoc khoi dong.
+
+Ngoai pham vi neu chua co moi truong/tai khoan:
+- Giao dich MoMo that; endpoint ma nguon hien la test/sandbox.
+- Chuyen khoan that va webhook SePay production.
+- Tao van don va tracking GHN production; cau hinh mac dinh mo phong/demo.
+- OAuth Google/Facebook production, Gemini API production va ORS voi API key production.
+- Kiem thu tai, bao mat chuyen sau va tuong thich tren toan bo trinh duyet/thiet bi.
+
+4.1.3. Moi truong va phuong phap
+
+- Backend: PHP 8.2+, Laravel 12.
+- CSDL: bo test trong phpunit.xml cau hinh SQLite :memory:. Docker Compose cung cap MySQL 8 cho moi truong chay.
+- Test tu dong: PHPUnit/Pest interface thong qua `php artisan test`; bo test hien tai gom Unit, Feature, API va mot so browser tests.
+- Test thu cong: trinh duyet tren ung dung da khoi dong, su dung tai khoan va du lieu mau rieng.
+- Kiem thu tich hop: dung sandbox/mock/webhook test co chu ky gia lap theo tai lieu; khong su dung tai khoan/credential that.
+- Moi lan ghi ket qua can kem ngay chay, commit/ban ma neu can, moi truong CSDL, lenh test, so test pass/fail/skip va bang chung/log loi.
+
+4.1.4. Tieu chi pass/fail
+
+- PASS: ket qua thuc te trung voi ket qua mong doi va khong phat sinh loi khong xu ly.
+- FAIL: ket qua khac mong doi, sai trang thai/so tien/so luong, cho phep truy cap sai quyen hoac co exception.
+- BLOCKED: khong the thuc hien do thieu credential, dich vu ngoai, du lieu hoac loi setup; ghi ro nguyen nhan.
+- NOT RUN: chua thuc hien; khong dien ket qua dua tren suy doan.
+
+4.2. Cac truong hop kiem thu (Test case)
+
+Cac test case duoi day la de xuat kiem thu nghiep vu. Cac dong ghi “Can chay” chua phai la ket qua pass. Khi Claude viet ban cuoi, hay giu cot ket qua la “Chua chay” neu chua co bang chung thuc thi.
+
+TC01 - Xem danh sach san pham
+Tien dieu kien: ung dung chay, co san pham active trong database.
+Buoc: mo trang catalog, loc theo danh muc va thu sap xep theo gia.
+Mong doi: hien thi san pham active, dung danh muc va thu tu sap xep; co the mo chi tiet.
+Ket qua hien tai: Can kiem thu giao dien thu cong.
+
+TC02 - Tim kiem san pham
+Tien dieu kien: co san pham ten khop va khong khop tu khoa.
+Buoc: nhap tu khoa vao o tim kiem va gui form.
+Mong doi: ket qua phu hop tu khoa; khong co ket qua thi hien thi trang thai rong hop ly.
+Ket qua hien tai: Can kiem thu giao dien thu cong.
+
+TC03 - Xem chi tiet san pham
+Tien dieu kien: san pham ton tai.
+Buoc: bam vao san pham tu catalog.
+Mong doi: hien thi thong tin, gia, hinh anh, ton kho, danh muc va thao tac them gio.
+Ket qua hien tai: Can kiem thu giao dien thu cong.
+
+TC04 - Them san pham vao gio
+Tien dieu kien: dang nhap, san pham active va con ton kho.
+Buoc: chon so luong hop le, them vao gio va mo trang gio hang.
+Mong doi: gio hang co dung san pham/so luong va tong tien duoc tinh dung.
+Ket qua hien tai: Can kiem thu giao dien thu cong.
+
+TC05 - Tu choi so luong vuot ton kho
+Tien dieu kien: san pham chi con mot so luong nhat dinh.
+Buoc: them hoac sua gio hang voi so luong lon hon ton kho.
+Mong doi: backend tu choi va hien thong bao; ton kho khong bi thay doi.
+Ket qua hien tai: Can kiem thu giao dien/backend.
+
+TC06 - Cap nhat/xoa gio hang
+Tien dieu kien: user co mat hang trong gio.
+Buoc: tang/giam so luong, chon mot mat hang va xoa.
+Mong doi: chi gio hang cua user hien tai thay doi; tong tien cap nhat chinh xac.
+Ket qua hien tai: Can kiem thu giao dien thu cong.
+
+TC07 - Checkout mot phan/toan bo gio hang
+Tien dieu kien: gio hang co nhieu san pham con hang.
+Buoc: checkout mot so mat hang da chon; lap lai voi checkout gio hang.
+Mong doi: chi mat hang duoc chon duoc dua vao order; order_items co dung so luong/gia; mat hang khong checkout van con trong gio.
+Ket qua hien tai: Can kiem thu tren database demo.
+
+TC08 - Ap dung voucher hop le
+Tien dieu kien: voucher active, chua het han, don hang dat muc toi thieu.
+Buoc: nhap ma voucher trong luong thanh toan.
+Mong doi: hien dung loai va muc giam; tong phai tra khong am va duoc tinh theo quy tac voucher.
+Ket qua hien tai: Can kiem thu voi du lieu mau.
+
+TC09 - Tu choi voucher khong hop le
+Tien dieu kien: ma sai/het han/khong active hoac don chua dat muc toi thieu.
+Buoc: ap dung voucher.
+Mong doi: backend tu choi, hien thong bao va khong ap dung giam gia.
+Ket qua hien tai: Can kiem thu voi du lieu mau.
+
+TC10 - Tinh phi van chuyen
+Tien dieu kien: dia chi thuoc user va co toa do hoac co the dung phi co dinh.
+Buoc: chon dia chi, gui yeu cau tinh phi; thu them don dat nguong mien phi.
+Mong doi: phi theo cau hinh/khoang cach hoac phi fallback; don dat nguong duoc ap dung mien phi neu setting bat.
+Ket qua hien tai: Can kiem thu; ket qua ORS phu thuoc API key/ket noi.
+
+TC11 - Thanh toan tien mat
+Tien dieu kien: don pending, mat hang con du ton kho.
+Buoc: chon cash va xac nhan.
+Mong doi: payment/order duoc cap nhat theo luong tien mat, ton kho tru dung mot lan, mat hang da mua duoc xoa khoi gio.
+Ket qua hien tai: Can kiem thu backend/database.
+
+TC12 - Thanh toan MoMo sandbox thanh cong
+Tien dieu kien: cau hinh MoMo sandbox hop le va endpoint test truy cap duoc.
+Buoc: tao yeu cau thanh toan, hoan tat giao dich sandbox va nhan callback/IPN hop le.
+Mong doi: chu ky va so tien duoc xac minh; payment thanh cong, order duoc xac nhan va ton kho cap nhat.
+Ket qua hien tai: Chua chay giao dich sandbox trong dot kiem thu nay; can sandbox va credentials.
+
+TC13 - Tu choi callback MoMo sai chu ky/sai so tien
+Tien dieu kien: payment test da tao.
+Buoc: gui callback co chu ky sai hoac amount khong khop.
+Mong doi: callback bi tu choi/ghi nhan that bai; khong xac nhan don va khong tru ton kho.
+Ket qua hien tai: Can kiem thu tich hop bang payload test, khong gui giao dich that.
+
+TC14 - Chuyen khoan qua webhook SePay
+Tien dieu kien: cau hinh webhook secret test, don/payment pending va payload chuyen vao dung dinh dang.
+Buoc: gui webhook co timestamp, HMAC, ma don va so tien hop le; lap lai voi signature sai, giao dich chuyen ra va amount thap.
+Mong doi: chi giao dich tien vao hop le moi xac nhan don; webhook sai/het han/khong du tien khong xac nhan.
+Ket qua hien tai: Chua chay voi SePay; can moi truong webhook test.
+
+TC15 - Xem lich su va chi tiet don cua user
+Tien dieu kien: co it nhat hai user va moi user co don hang rieng.
+Buoc: dang nhap user A, mo danh sach va thu truy cap ID don cua user B.
+Mong doi: user A chi thay don cua minh; truy cap don user B bi tu choi.
+Ket qua hien tai: Can kiem thu phan quyen thu cong/API neu co endpoint.
+
+TC16 - Quan tri san pham theo role
+Tien dieu kien: co user role admin, boss va user thuong.
+Buoc: admin/boss mo trang quan tri va thu tao/sua san pham; user thuong truy cap cung route.
+Mong doi: role duoc phep thuc hien thao tac theo route; user khong co quyen bi tu choi.
+Ket qua hien tai: Can kiem thu tren moi truong chay.
+
+TC17 - Cap nhat va theo doi trang thai van chuyen demo
+Tien dieu kien: don co shipment demo.
+Buoc: mo trang tracking, cap nhat status qua tai khoan shipper/admin duoc phep.
+Mong doi: trang thai va thoi diem cap nhat thay doi; user khong lien quan khong duoc sua.
+Ket qua hien tai: Can kiem thu; GHN production khong nam trong ket qua nay.
+
+TC18 - Kiem tra lich san trong
+Tien dieu kien: co san bong active va ngay tuong lai.
+Buoc: goi POST /api/v1/bookings/check-available voi khung gio trong.
+Mong doi: HTTP 200 va available=true.
+Ket qua hien tai: Co test tu dong trong tests/Feature/Api/V1BookingApiTest.php; trong lan chay php artisan test ngay 2026-10-08, test suite khong qua duoc migration SQLite (chi tiet tai muc 4.3).
+
+TC19 - Phat hien booking trung gio
+Tien dieu kien: da co booking cho mot san trong mot khoang gio.
+Buoc: kiem tra khung gio giao nhau voi booking hien co.
+Mong doi: available=false; khong tao booking trung.
+Ket qua hien tai: Co test tu dong trong V1BookingApiTest; chua pass trong lan chay do migration SQLite loi truoc khi test chay vao logic.
+
+TC20 - Tao booking qua API Sanctum
+Tien dieu kien: user, san va san pham di kem hop le; token duoc cap.
+Buoc: dang nhap API, kiem tra lich, POST booking, GET danh sach booking.
+Mong doi: booking pending, response resource co du lieu; booking_payment pending; user khac khong xem/sua booking nay.
+Ket qua hien tai: Co test tu dong trong V1BookingApiTest; chua pass trong lan chay do migration SQLite loi truoc khi test chay vao logic.
+
+TC21 - API danh sach san va san pham active
+Tien dieu kien: co record active.
+Buoc: GET /api/v1/fields va GET /api/v1/services.
+Mong doi: response thanh cong, chi tra record active theo resource.
+Ket qua hien tai: Co test tu dong trong V1BookingApiTest; chua pass trong lan chay do migration SQLite loi truoc khi test chay vao logic.
+
+TC22 - Dang nhap va phan quyen API
+Tien dieu kien: tai khoan hop le va khong hop le.
+Buoc: POST /api/v1/auth/login voi thong tin dung/sai; thu endpoint booking co va khong token.
+Mong doi: tai khoan dung nhan token; sai thong tin bi tu choi; endpoint bao ve tu choi request thieu token.
+Ket qua hien tai: Mot phan co test auth API trong V1BookingApiTest; can chay lai sau khi sua tuong thich migration.
+
+4.3. Ket qua kiem thu
+
+4.3.1. Ket qua chay tu dong da quan sat
+
+Lenh da chay: `php artisan test`
+Ngay chay theo phien lam viec: 2026-10-08.
+Ket qua: 33 tests tong cong; 2 passed, 31 failed; 2 assertions; thoi gian khoang 92 giay.
+
+Nguyen nhan loi chung hien thi trong output:
+Migration `2026_09_19_000003_add_shipper_role_to_users_table.php` chay SQL theo cu phap MySQL:
+`ALTER TABLE users MODIFY role ENUM('user', 'admin', 'boss', 'shipper') NOT NULL DEFAULT 'user'`
+Bo test dang cau hinh SQLite in-memory trong phpunit.xml, SQLite khong ho tro cu phap `ALTER TABLE ... MODIFY ... ENUM` nay. Loi xuat hien trong qua trinh setup database/test, truoc khi nhieu test feature co the kiem tra nghiep vu.
+
+Hai test pass duoc quan sat:
+- Tests\Unit\ExampleTest: 1 test pass.
+- Tests\Feature\ExampleTest: 1 test pass.
+
+31 test fail khong duoc dien giai thanh 31 loi nghiep vu rieng biet: phan lon bi chan boi loi tuong thich migration SQLite neu cung mot exception lap lai. Can xu ly migration de phu hop SQLite hoac chay test tren MySQL rieng roi chay lai suite; chi sau do moi ket luan pass/fail ve nghiep vu. Khong sua migration trong yeu cau tao tai lieu nay.
+
+4.3.2. Gioi han cua ket qua
+
+- Ket qua tren la ket qua thuc te cua lenh test trong moi truong hien tai, khong phai ket qua kiem thu production.
+- Test suite khong the dung lam bang chung rang MoMo, SePay, GHN, ORS, OAuth hoac Gemini da ket noi thanh cong voi tai khoan dich vu that.
+- Cac test case TC01-TC17 ngoai nhung dong ghi ro co test tu dong chua duoc chay thu cong trong dot nay.
+- Browser/Dusk tests chua duoc chay trong dot nay.
+- Khi migration duoc tuong thich voi SQLite/MySQL dung voi bo test, can chay lai va cap nhat so lieu, output va danh sach test pass/fail.
+- Neu Claude tao bang ket qua, phai giu nguyen 2 passed/31 failed cho dot chay nay va ghi ro migration SQLite la blocker; khong thay bang ket qua mong muon.
+
+4.3.3. Mau bang bao cao ket qua test case
+
+Ma test | Noi dung | Ket qua mong doi | Ket qua thuc te | Trang thai | Bang chung
+TC01 | Xem danh sach san pham | Catalog hien dung san pham active | Chua kiem thu thu cong | NOT RUN | Can screenshot/log
+TC04 | Them san pham vao gio | Mat hang va tong tien dung | Chua kiem thu thu cong | NOT RUN | Can screenshot/database
+TC08 | Ap dung voucher | Muc giam dung dieu kien | Chua kiem thu thu cong | NOT RUN | Can request/response
+TC11 | Thanh toan tien mat | Order/payment va ton kho cap nhat dung | Chua kiem thu thu cong | NOT RUN | Can database/log
+TC12 | MoMo sandbox | Callback hop le xac nhan don | Chua chay sandbox | BLOCKED | Can sandbox credentials
+TC14 | SePay webhook | HMAC hop le moi cap nhat don | Chua chay webhook test | BLOCKED | Can payload/log an toan
+TC18-TC21 | API catalog/booking | Response va booking dung mong doi | Test suite bi chan boi migration SQLite | BLOCKED | Output php artisan test
+TC22 | API authentication | Token va access control dung | Can chay lai sau migration | BLOCKED | Output test
+
+Bang tren chi la mau/tinh trang hien tai; sau khi kiem thu giao dien va sua blocker, thay cac cot “Chua kiem thu” bang ket qua thuc te, ngay chay va bang chung.
+
+4.4. Danh gia va huong phat trien
+
+4.4.1. Danh gia hien trang
+
+Uu diem:
+- Da co nhieu luong cua website ban hang: danh muc/catalog, gio hang, don hang, dia chi, voucher, thanh toan va van chuyen.
+- Backend su dung Laravel MVC, Eloquent, migrations, validation va middleware; cac chuc nang co route/controller/model tuong ung.
+- Co phan tach vai tro nguoi dung va quan tri, co luong admin/boss/shipper.
+- Co nhieu lua chon thanh toan trong ma nguon: tien mat, MoMo sandbox va chuyen khoan qua webhook.
+- Da co phan he dat san bong, API Sanctum, chatbot va chat realtime, mo rong pham vi ung dung.
+
+Han che/rui ro can neu ro:
+- Ten model/bang Service/services va chu “dich vu” tren giao dien chua dong bo voi cach goi san pham cua thuong mai dien tu; nen chuan hoa ten hien thi/tai lieu.
+- Test suite hien khong chay duoc tren SQLite do migration dung cu phap rieng MySQL; chua co co so de ket luan toan bo chuc nang pass.
+- MoMo dang dung endpoint test; GHN mac dinh demo; cac tich hop ngoai can credential va kiem thu rieng.
+- Chua co bang chung trong repository ve VNPay; khong duoc ghi VNPay la chuc nang da hoan thanh.
+- Chua co bang chung ve bien the hang hoa (size/mau), ma SKU, ERP hoac ung dung mobile rieng.
+- Giao dien va cac luong can duoc kiem thu them tren trinh duyet, kich thuoc man hinh va du lieu that da an danh.
+- Chatbot AI phu thuoc Gemini API key; khi khong cau hinh se dung response du phong/luat.
+
+4.4.2. Huong phat trien de xuat
+
+1. Chuan hoa domain catalog: doi cach dat ten Service/services thanh Product/products neu phu hop, hoac toi thieu thong nhat nhan giao dien va tai lieu; bo sung SKU, bien the size/mau, thuoc tinh va anh theo tung bien the neu pham vi ban hang can.
+2. Cai thien migration: dung migration tuong thich voi driver test (SQLite/MySQL), tranh raw SQL rieng mot he quan tri neu khong co nhanh theo driver; chay lai toan bo test.
+3. Bo sung test don vi/tich hop cho gio hang, voucher, ton kho, checkout, thanh toan cash, callback MoMo va webhook SePay; kiem tra tinh idempotent de callback lap khong tru ton kho hai lan.
+4. Tao test fixture/factory du cho san pham, danh muc, voucher, don hang, dia chi va booking.
+5. Hoan thien theo doi van chuyen production: webhook GHN, dong bo trang thai chinh thuc, xu ly retry/loi va bao mat credentials.
+6. Bo sung API catalog/cart/order/checkout neu can ket noi ung dung di dong hoac frontend tach rieng; hien tai API da thay chu yeu phuc vu booking va catalog.
+7. Chuan hoa trang thai order/payment/shipment, quy tac huy/hoan tien va xu ly ton kho khi huy/het han.
+8. Cai thien bao cao doanh thu/ton kho, tim kiem va phan trang cho quan tri khi du lieu tang.
+9. Kiem tra accessibility, responsive, bao mat upload, phan quyen va logging; them monitoring va backup cho moi truong production.
+10. Chi trien khai VNPay, loyalty, danh gia da xac minh, wishlist hoan chinh hoac ERP neu co yeu cau nghiep vu va ke hoach tich hop ro rang; day la de xuat tuong lai, khong phai tinh nang da xac nhan hien co.
+
+YEU CAU CUOI CHO CLAUDE KHI SOAN HAI CHUONG
+
+- Viet thanh van phong bao cao do an tieng Viet, co mo dau, mo ta luong va ket luan cho moi chuong.
+- Dua vao ma nguon va cac thong tin trong file nay; khong tu suy dien tinh nang chi tu ten view/controller.
+- Nhan manh thuong mai dien tu ban do the thao la muc tieu chinh; booking san bong la phan he bo sung.
+- Ghi dung cong nghe PHP/Laravel va MySQL trong de muc neu de cuong yeu cau, nhung chu thich repository cau hinh SQLite lam database cho PHPUnit va Docker Compose cung cap MySQL 8.
+- Khong ghi VNPay la phuong thuc da trien khai. Cac phuong thuc co bang chung la cash, MoMo test/sandbox va chuyen khoan ngan hang qua webhook SePay.
+- Ghi dung GHN la demo/mo phong theo cau hinh mac dinh; khong khang dinh da van hanh GHN production.
+- Trong muc ket qua kiem thu, ghi ro lan chay ngay 2026-10-08: 2 passed, 31 failed; nguyen nhan blocker la migration MySQL `ALTER TABLE ... MODIFY ... ENUM` khong chay tren SQLite in-memory. Khong bien cac test chua chay thanh PASS.
+- Khong tao anh screenshot gia. De placeholder cho hinh chup that va neu ro man hinh nao can chup.
+- Dat test case thanh bang co cac cot: Ma, chuc nang, tien dieu kien, buoc kiem thu, ket qua mong doi, ket qua thuc te, trang thai va ghi chu/bang chung.

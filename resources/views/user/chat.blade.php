@@ -2,6 +2,18 @@
 @section('content')
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap');
+@if(request()->boolean('embedded'))
+html,body{background:#f8fafc!important;overflow:hidden!important}
+body>.desktop-layout,body>nav,.desktop-layout,#mascot,#chat-box,.site-content>footer,.site-content .footer{display:none!important}
+.site-content{margin:0!important;padding:0!important}
+.site-content-inner{padding:0!important}
+.container-fluid.py-4{min-height:100%;height:100%;padding:0!important;background:#f8fafc!important}
+.container-fluid.py-4>.row.mb-3,.ads-sidebar{display:none!important}
+.chat-layout{display:block!important;height:100%;margin:0!important}
+.col-left,.col-left>.card{height:100%;}
+.card{border:0!important;border-radius:0!important;box-shadow:none!important}
+#user-chat-body{min-height:0!important;max-height:none!important;height:calc(100% - 126px);}
+@endif
 :root{--orange:#ff6b1a;--blue:#2563eb;--dark:#0f172a;--line:#eef0f6;--bg:#f5f6fb;--muted:#94a3b8}
 *{font-family:'Inter',system-ui}
 .container-fluid.py-4{background:var(--bg)!important; min-height:100vh; padding:24px 16px!important}

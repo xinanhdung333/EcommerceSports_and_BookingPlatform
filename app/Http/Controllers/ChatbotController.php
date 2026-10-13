@@ -296,14 +296,14 @@ class ChatbotController extends Controller
     }
 
     /**
-     * Kịch bản/ngữ cảnh gửi kèm cho Gemini.
-     * Đọc trực tiếp từ storage/app/chatbot_context.txt, để Gemini tự
-     * đọc và phân tích nội dung đó khi trả lời. Sửa thông tin shop
-     * (sản phẩm, giá, chính sách...) trong file txt, KHÔNG cần sửa code.
+     * Build the Gemini context from the website knowledge file and live public data.
      */
     private function getKichBan(): string
     {
-        $jsonPath = database_path('seeders/chatbot_context.json');
+        $jsonPath = app_path('Http/Controllers/site-knowledge.json');
+        if (!is_file($jsonPath)) {
+            $jsonPath = database_path('seeders/chatbot_context.json');
+        }
         $path = storage_path('app/chatbot_context.txt');
 
         $huongDan = "Bạn là trợ lý chăm sóc khách hàng của SportsHub. "
@@ -313,7 +313,7 @@ class ChatbotController extends Controller
             . "Với câu hỏi xin tư vấn chung (ví dụ thời tiết, khung giờ phù hợp, cách chuẩn bị), hãy đưa ra "
             . "gợi ý thực tế và nói rõ đó là gợi ý chung, không khẳng định lịch/sân còn trống. "
             . "Nếu thiếu thông tin để trả lời chính xác, hãy hỏi lại một câu cụ thể. Nếu dữ liệu hoàn toàn không có, nói rõ "
-            . "'Mình chưa có thông tin chính xác, mình sẽ chuyển bạn cho nhân viên hỗ trợ nhé.' "
+            . "'Mình chưa có thông tin chính xác. Bạn vui lòng đăng nhập và vào mục Chat với Admin để nhân viên kiểm tra giúp nhé.' "
             . "Không nhắc đến Gemini, API, prompt hay dữ liệu nội bộ.\n\n";
 
         if (is_file($jsonPath)) {

@@ -309,123 +309,331 @@
 
 
 <style>
-/* Floating chat button (Shopee style) */
+/* ===== Floating mascot button ===== */
 #mascot {
     position: fixed;
     bottom: 24px;
     right: 24px;
-    width: 45px;
-    height: 45px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    box-shadow: 0 4px 16px rgba(238,77,45,.45);
     cursor: pointer;
     z-index: 9999;
+    transition: transform .2s;
 }
+#mascot:hover { transform: scale(1.08); }
 
-/* Chat container */
+/* ===== Chat container ===== */
 #chat-box {
     position: fixed;
-    bottom: 100px;
+    bottom: 88px;
     right: 24px;
-    width: 360px;
-    height: 480px;
+    width: 370px;
+    height: 545px;
     flex-direction: column;
     box-sizing: border-box;
     background: #fff;
-    border-radius: 18px;
+    border-radius: 20px;
     overflow: hidden;
     display: none;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-    font-family: Arial, sans-serif;
-        z-index: 999999;
+    box-shadow: 0 12px 40px rgba(0,0,0,.22);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    z-index: 999999;
+    animation: chatSlideIn .22s ease;
 }
+@keyframes chatSlideIn { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
 
-/* Header */
+/* ===== Header ===== */
 .chat-header {
-    background: linear-gradient(90deg,#ee4d2d,#ff7337);
-    color: white;
-    padding: 14px;
-    font-weight: 600;
+    background: linear-gradient(135deg, #ff6b1a 0%, #ff8c42 100%);
+    color: #fff;
+    padding: 16px 16px 50px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    flex-shrink: 0;
 }
-
+.chat-brand { display:flex; align-items:center; gap:11px; }
+.chat-brand-icon {
+    width: 40px; height: 40px;
+    border: 2px solid rgba(255,255,255,.6);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 19px;
+    background: rgba(255,255,255,.15);
+    flex-shrink: 0;
+}
+.chat-brand-title { font-size: 14.5px; font-weight: 700; line-height: 1.2; }
+.chat-brand-subtitle { font-size: 11.5px; opacity: .88; margin-top: 2px; }
+.chat-brand .dot-green { color: #a7f3d0; }
 #close-chat {
     cursor: pointer;
     font-size: 18px;
+    opacity: .85;
+    transition: opacity .15s;
+    line-height: 1;
+    margin-top: 2px;
+}
+#close-chat:hover { opacity: 1; }
+
+/* ===== Tabs ===== */
+.chat-tabs {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 4px;
+    margin: -28px 14px 0;
+    padding: 4px;
+    background: #e85d17;
+    border-radius: 999px;
+    width: calc(100% - 28px);
+    flex-shrink: 0;
+}
+.chat-tab {
+    flex: 1;
+    border: 0;
+    border-radius: 999px;
+    padding: 7px 8px;
+    color: rgba(255,255,255,.85);
+    background: transparent;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    transition: background .18s, color .18s;
+}
+.chat-tab.active {
+    background: #fff;
+    color: #1a1a1a;
+    box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+.chat-tab-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #ef4444;
+    color: #fff;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 4px;
+    line-height: 1;
 }
 
-/* Chat body */
-.chat-body {
+/* ===== Panels ===== */
+.chat-panel { display:none; flex:1 1 auto; min-height:0; flex-direction:column; }
+.chat-panel.active { display:flex; }
+
+/* ===== Chat body ===== */
+.chat-body,
+.admin-chat-body {
     flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
-    padding: 14px;
-    background: #f6f6f6;
-}
-
-.message-user {
-    background: #ee4d2d;
-    color: white;
-    padding: 10px 14px;
-    border-radius: 16px;
-    margin-bottom: 8px;
-    max-width: 70%;
-    margin-left: auto;
-}
-
-.message-bot {
-    background: white;
-    padding: 10px 14px;
-    border-radius: 16px;
-    margin-bottom: 8px;
-    max-width: 70%;
-    border: 1px solid #eee;
-}
-
-/* Footer */
-.chat-footer {
-    flex: 0 0 auto;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 12px;
-    border-top: 1px solid #eee;
-    background: white;
-}
-
-.chat-input {
+    overflow-anchor: auto;   /* pin scroll to bottom anchor */
     display: flex;
-    gap: 8px;
+    flex-direction: column;
+    padding: 16px 14px 10px;
+    background: #f7f8fc;
+    scrollbar-width: thin;
+    scrollbar-color: #ddd transparent;
+}
+.chat-body::-webkit-scrollbar,
+.admin-chat-body::-webkit-scrollbar { width: 4px; }
+.chat-body::-webkit-scrollbar-thumb,
+.admin-chat-body::-webkit-scrollbar-thumb { background:#ddd; border-radius:4px; }
+
+/* Message row */
+.msg-row { display:flex; margin-bottom:10px; align-items:flex-end; gap:7px; }
+.msg-row.me { flex-direction: row-reverse; }
+
+/* Avatar letter */
+.msg-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: #ff6b1a;
+    color: #fff;
+    font-size: 13px; font-weight: 700;
+    display: grid; place-items: center;
+    flex-shrink: 0;
+    text-transform: uppercase;
 }
 
-.chat-input input {
-    flex: 1;
-    border-radius: 20px;
-    border: 1px solid #ddd;
-    padding: 10px;
+/* Bubble */
+.msg-bubble {
+    max-width: 220px;
+    min-width: 0;
+    padding: 10px 13px;
+    border-radius: 18px 18px 18px 4px;
+    font-size: 13px;
+    line-height: 1.45;
+    background: #fff;
+    color: #1a1a1a;
+    border: 1px solid #edf0f4;
+    box-shadow: 0 2px 6px rgba(15,23,42,.06);
+    word-break: break-word;
+    overflow: hidden;
 }
-
-.chat-input button {
-    background: #ee4d2d;
+.msg-row.me .msg-bubble {
+    border-radius: 18px 18px 4px 18px;
+    background: linear-gradient(135deg,#ff6b1a,#ff8c42);
+    color: #fff;
     border: none;
-    color: white;
-    padding: 10px 16px;
-    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(255,107,26,.3);
 }
-
-.chat-input button:hover {
-    background: #d84327;
+.msg-time {
+    font-size: 10.5px;
+    opacity: .55;
+    margin-top: 4px;
+    display: block;
+    text-align: right;
 }
+.msg-row:not(.me) .msg-time { text-align: left; }
 
-/* Mobile responsive */
+/* Legacy classes kept for JS compatibility */
+.message-user { background: linear-gradient(135deg,#ff6b1a,#ff8c42); color:#fff; padding:10px 14px; border-radius:18px 18px 4px 18px; margin-bottom:10px; max-width:72%; margin-left:auto; font-size:13px; line-height:1.45; word-break:break-word; }
+.message-bot  { background:#fff; padding:10px 14px; border-radius:18px 18px 18px 4px; margin-bottom:10px; max-width:72%; border:1px solid #edf0f4; font-size:13px; line-height:1.45; box-shadow:0 2px 6px rgba(15,23,42,.06); word-break:break-word; }
+
+/* Quick replies */
+.chat-quick-replies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 14px 6px;
+    background: #f7f8fc;
+    flex-shrink: 0;
+}
+.quick-reply-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid #e0e4ef;
+    background: #fff;
+    color: #374151;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .16s;
+    white-space: nowrap;
+}
+.quick-reply-btn:hover { background: #ff6b1a; color: #fff; border-color: #ff6b1a; }
+
+/* Link button inside bot bubble */
+.chat-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ff6b1a, #ff8c42);
+    color: #fff !important;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: opacity .15s, transform .15s;
+    box-shadow: 0 3px 8px rgba(255,107,26,.35);
+}
+.chat-link-btn:hover { opacity: .88; transform: translateY(-1px); }
+
+/* Inline image thumbnail inside bubble */
+.chat-img-thumb {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    max-height: 180px;
+    border-radius: 10px;
+    margin-top: 6px;
+    object-fit: cover;
+    cursor: zoom-in;
+    border: 1px solid rgba(0,0,0,.08);
+    transition: transform .15s, box-shadow .15s;
+}
+.chat-img-thumb:hover { transform: scale(1.03); box-shadow: 0 6px 18px rgba(0,0,0,.18); }
+
+/* ===== Footer input ===== */
+.chat-footer, .admin-chat-footer {
+    flex: 0 0 auto;
+    padding: 10px 12px 6px;
+    border-top: 1px solid #eef0f6;
+    background: #fff;
+}
+.chat-input-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #f3f4f8;
+    border-radius: 999px;
+    padding: 5px 5px 5px 14px;
+    border: 1px solid #e8ecf5;
+}
+.chat-input-bar input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 13.5px;
+    color: #1a1a1a;
+    min-width: 0;
+}
+.chat-input-bar input::placeholder { color: #aab0be; }
+.chat-icon-btn {
+    width: 32px; height: 32px;
+    border: none; background: transparent;
+    color: #94a3b8;
+    display: grid; place-items: center;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    transition: color .15s;
+    flex-shrink: 0;
+}
+.chat-icon-btn:hover { color: #ff6b1a; }
+.chat-send-btn {
+    width: 36px; height: 36px;
+    border: none;
+    background: linear-gradient(135deg,#ff6b1a,#ff8c42);
+    color: #fff;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(255,107,26,.4);
+    transition: transform .15s, box-shadow .15s;
+}
+.chat-send-btn:hover { transform: scale(1.07); box-shadow: 0 5px 14px rgba(255,107,26,.5); }
+.chat-footer-brand {
+    font-size: 10.5px;
+    color: #94a3b8;
+    text-align: center;
+    margin-top: 6px;
+    padding-bottom: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+.chat-footer-brand span { display:inline-flex; align-items:center; gap:3px; }
+.dot-green2 { width:6px; height:6px; background:#22c55e; border-radius:50%; display:inline-block; }
+
+/* Admin panel compat */
+.admin-chat-form { display:flex; gap:6px; }
+.admin-message { display:table; max-width:82%; padding:10px 13px; border-radius:16px 16px 16px 4px; background:#fff; border:1px solid #edf0f3; margin:0 0 10px; font-size:12px; line-height:1.35; box-shadow:0 2px 5px rgba(15,23,42,.05); }
+.admin-message.mine { margin-left:auto; border-radius:16px 16px 4px 16px; background:linear-gradient(135deg,#ff6b1a,#ff8c42); color:#fff; border:0; }
+.admin-chat-link { display:inline-block; padding:10px 18px; border-radius:999px; background:#ff6b1a; color:#fff; font-size:13px; font-weight:700; text-decoration:none; }
+.admin-chat-panel { align-items:stretch; justify-content:flex-start; text-align:left; padding:0; background:#f7f8fc; }
+
+/* Mobile */
 @media (max-width:768px) {
-    #chat-box {
-        right: 10px;
-        left: 10px;
-        width: auto;
-        height: 70vh;
-    }
+    #chat-box { right:10px; left:10px; width:auto; height:72vh; bottom:80px; }
 }
 </style>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
@@ -616,27 +824,135 @@
 
 
 <!-- Chat button -->
-<img class = "chatbot" src="{{ asset('assets/images/chatbot.png') }}" id="mascot" alt="Mascot">
-<!-- Chat box -->
+<img class="chatbot" src="{{ asset('assets/images/chatbot.png') }}" id="mascot" alt="Mở chat hỗ trợ">
+
+<!-- ===== Chat box ===== -->
 <div id="chat-box">
 
+    <!-- Header -->
     <div class="chat-header">
-        Chat hỗ trợ
-        <span id="close-chat">✕</span>
+        <div class="chat-brand">
+            <span class="chat-brand-icon"><i class="bi bi-headset"></i></span>
+            <span>
+                <div class="chat-brand-title">Hỗ trợ trực tuyến <span class="dot-green">●</span></div>
+                <div class="chat-brand-subtitle">Phản hồi trong vài phút ✓</div>
+            </span>
+        </div>
+        <span id="close-chat"><i class="bi bi-x-lg"></i></span>
     </div>
 
-    <div class="chat-body" id="chat-body">
-        <div class="message-bot">Xin chào 👋 Tôi có thể giúp gì cho bạn?</div>
+    <!-- Tabs -->
+    <div class="chat-tabs" role="tablist" aria-label="Kênh hỗ trợ">
+        <button type="button" class="chat-tab active" data-chat-tab="bot" role="tab" aria-selected="true">
+            <i class="bi bi-robot"></i> Chatbot
+        </button>
+        <button type="button" class="chat-tab" data-chat-tab="admin" role="tab" aria-selected="false">
+            <i class="bi bi-person-headset"></i> Chat Admin
+            @auth
+                @if(auth()->user()->role === 'user')
+                    <span class="chat-tab-badge" id="admin-tab-badge" style="display:none">0</span>
+                @endif
+            @endauth
+        </button>
     </div>
 
-    <div class="chat-footer">
-        <div class="chat-input">
-            <input type="text" id="message" placeholder="Nhập tin nhắn...">
-            <button onclick="sendMessage()">Gửi</button>
+    <!-- ===== CHATBOT PANEL ===== -->
+    <div class="chat-panel active" id="chatbot-panel">
+        <div class="chat-body" id="chat-body">
+            <!-- Welcome message -->
+            <div class="msg-row">
+                <div class="msg-avatar" style="background:#ff6b1a; font-size:16px;">🤖</div>
+                <div>
+                    <div class="msg-bubble">Xin chào 👋 Tôi có thể giúp gì cho bạn?</div>
+                </div>
+            </div>
+            <div id="chat-scroll-anchor" style="height:1px;flex-shrink:0;overflow-anchor:auto;"></div>
+        </div>
+
+        <!-- Quick replies -->
+        <div class="chat-quick-replies" id="chatbot-quick-replies">
+            <button class="quick-reply-btn"
+                data-label="Kiểm tra đơn hàng"
+                data-reply="Bạn có thể xem lịch sử đơn hàng tại đây 👇"
+                data-link="{{ route('user.myServices') }}"
+                data-link-text="📦 Xem đơn hàng của tôi"
+                onclick="sendQuickReplyLink(this)">⚡ Kiểm tra đơn hàng</button>
+            <button class="quick-reply-btn"
+                data-label="Chính sách đổi trả"
+                data-reply="Xem chi tiết chính sách đổi trả và đánh giá của chúng tôi 👇"
+                data-link="{{ route('user.feedback') }}"
+                data-link-text="💬 Xem chính sách đổi trả"
+                onclick="sendQuickReplyLink(this)">⚡ Chính sách đổi trả</button>
+            <button class="quick-reply-btn"
+                data-label="Liên hệ hỗ trợ"
+                data-reply="Bạn cần hỗ trợ trực tiếp? Chat với Admin ngay 👇"
+                data-link="{{ route('user.chat.index') }}"
+                data-link-text="💬 Chat với Admin"
+                onclick="sendQuickReplyLink(this)">⚡ Liên hệ</button>
+        </div>
+
+        <!-- Input bar -->
+        <div class="chat-footer">
+            <div class="chat-input-bar">
+                <input type="text" id="message" placeholder="Nhập tin nhắn..." autocomplete="off">
+                <button class="chat-icon-btn" type="button" title="Đính kèm"><i class="bi bi-paperclip"></i></button>
+                <button class="chat-icon-btn" type="button" title="Emoji"><i class="bi bi-emoji-smile"></i></button>
+                <button class="chat-send-btn" onclick="sendMessage()" title="Gửi"><i class="bi bi-send-fill" style="font-size:14px;margin-left:2px"></i></button>
+            </div>
+            <div class="chat-footer-brand">
+                <span>••• Tổng hợp – Chưa có đánh giá</span>
+                <span><span class="dot-green2"></span> Được hỗ trợ bởi SportsHub</span>
+            </div>
         </div>
     </div>
-          <p id="reply"></p>
-     </div>
+
+    <!-- ===== ADMIN CHAT PANEL ===== -->
+    <div class="chat-panel admin-chat-panel" id="admin-chat-panel">
+        @auth
+            @if(auth()->user()->role === 'user')
+                <div class="admin-chat-body" id="widget-admin-body">
+                    <div class="text-center text-muted small p-3">Đang tải hội thoại...</div>
+                </div>
+                <div class="admin-chat-footer">
+                    <!-- Image preview bar (hidden by default) -->
+                    <div id="widget-img-preview" style="display:none;padding:6px 12px;background:#f7f8fc;border-top:1px solid #edf0f4;">
+                        <div style="position:relative;display:inline-block;">
+                            <img id="widget-img-preview-img" src="" alt="preview" style="max-height:72px;max-width:140px;border-radius:8px;border:1px solid #e0e4ef;object-fit:cover;">
+                            <button onclick="clearWidgetImage()" style="position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:#ef4444;border:none;color:#fff;font-size:10px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+                        </div>
+                    </div>
+                    <form class="admin-chat-form" id="widget-admin-form" enctype="multipart/form-data">
+                        <input type="file" id="widget-img-input" accept="image/*" style="display:none">
+                        <div class="chat-input-bar" style="flex:1">
+                            <button class="chat-icon-btn" type="button" title="Gửi ảnh" onclick="document.getElementById('widget-img-input').click()">
+                                <i class="bi bi-image"></i>
+                            </button>
+                            <input id="widget-admin-input" placeholder="Nhập tin nhắn..." autocomplete="off" style="flex:1;border:none;background:transparent;outline:none;font-size:13.5px;">
+                            <button class="chat-send-btn" type="submit" title="Gửi"><i class="bi bi-send-fill" style="font-size:14px;margin-left:2px"></i></button>
+                        </div>
+                    </form>
+                    <div class="chat-footer-brand">
+                        <span>••• Tổng hợp – Chưa có đánh giá</span>
+                        <span><span class="dot-green2"></span> Được hỗ trợ bởi SportsHub</span>
+                    </div>
+                </div>
+            @else
+                <div style="padding:28px 20px;text-align:center">
+                    <i class="bi bi-headset" style="font-size:40px;color:#ff6b1a"></i>
+                    <p class="mb-0 mt-3" style="color:#64748b;font-size:13px">Tài khoản quản trị sử dụng khu vực Chat Admin trong menu quản lý.</p>
+                </div>
+            @endif
+        @else
+            <div style="padding:28px 20px;text-align:center">
+                <i class="bi bi-headset" style="font-size:40px;color:#ff6b1a"></i>
+                <p style="color:#64748b;font-size:13px;margin:12px 0 16px">Đăng nhập để bắt đầu chat trực tiếp với Admin.</p>
+                <a class="admin-chat-link" href="{{ route('login') }}">Đăng nhập để chat Admin</a>
+            </div>
+        @endauth
+    </div>
+
+    <p id="reply" style="display:none"></p>
+</div>
  
 <main class="site-content container-fluid mt-4 px-0">
     <!-- NOTE: Images in the main content body should use loading="lazy" -->
@@ -650,35 +966,53 @@
 
 <script>
 
-async function sendMessage() {
+/* ── Helper: render a chat row with avatar + bubble ── */
+function appendChatRow(chatBody, text, isUser) {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('vi-VN', {hour:'2-digit', minute:'2-digit'});
+    const row = document.createElement('div');
+    row.className = 'msg-row' + (isUser ? ' me' : '');
+    if (isUser) {
+        row.innerHTML = `<div><div class="msg-bubble">${escapeHtmlChat(text)}</div><span class="msg-time">${timeStr} ✓✓</span></div>`;
+    } else {
+        row.innerHTML = `<div class="msg-avatar" style="background:#ff6b1a;font-size:16px;">🤖</div><div><div class="msg-bubble">${escapeHtmlChat(text)}</div><span class="msg-time">${timeStr}</span></div>`;
+    }
+    chatBody.appendChild(row);
+    chatBody.scrollTop = chatBody.scrollHeight;
+    return row;
+}
 
+function escapeHtmlChat(v) {
+    return String(v||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+
+async function sendMessage(textOverride) {
     let input = document.getElementById("message");
-    let text = input.value.trim();
-
-    if(!text) return;
+    let text = textOverride || input.value.trim();
+    if (!text) return;
 
     let chatBody = document.getElementById("chat-body");
+    if (!textOverride) input.value = "";
 
-    input.value = "";
+    /* User bubble */
+    appendChatRow(chatBody, text, true);
 
-    const userMessage = document.createElement('div');
-    userMessage.className = 'message-user';
-    userMessage.textContent = text;
-    chatBody.appendChild(userMessage);
+    /* Bot typing bubble */
+    const botRow = document.createElement('div');
+    botRow.className = 'msg-row';
+    botRow.innerHTML = `<div class="msg-avatar" style="background:#ff6b1a;font-size:16px;">🤖</div><div><div class="msg-bubble" id="bot-typing-bubble" style="color:#94a3b8;">Đang xử lý...</div></div>`;
+    chatBody.appendChild(botRow);
+    chatBody.scrollTop = chatBody.scrollHeight;
 
-    const botMessage = document.createElement('div');
-    botMessage.className = 'message-bot';
-    botMessage.textContent = 'Đang xử lý...';
-    chatBody.appendChild(botMessage);
+    const typingBubble = botRow.querySelector('#bot-typing-bubble');
 
     try {
-        const history = Array.from(chatBody.querySelectorAll('.message-user, .message-bot'))
+        const history = Array.from(chatBody.querySelectorAll('.msg-row:not(:last-child)'))
             .slice(-10)
-            .filter(message => message !== botMessage && message.textContent.trim() !== 'Đang xử lý...')
-            .map(message => ({
-                role: message.classList.contains('message-user') ? 'user' : 'model',
-                text: message.textContent.trim()
-            }));
+            .map(row => ({
+                role: row.classList.contains('me') ? 'user' : 'model',
+                text: row.querySelector('.msg-bubble')?.textContent?.trim() || ''
+            })).filter(m => m.text);
 
         let response = await fetch("{{ route('chatbot.message') }}", {
             method: "POST",
@@ -691,51 +1025,246 @@ async function sendMessage() {
         });
 
         let data = await response.json();
-        if (!response.ok) {
-            throw new Error(data.message || 'Không thể kết nối chatbot.');
-        }
+        if (!response.ok) throw new Error(data.message || 'Không thể kết nối chatbot.');
 
-        botMessage.textContent = data.reply || 'Mình chưa có câu trả lời phù hợp.';
+        typingBubble.id = '';
+        typingBubble.style.color = '';
+        typingBubble.textContent = data.reply || 'Mình chưa có câu trả lời phù hợp.';
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('vi-VN', {hour:'2-digit', minute:'2-digit'});
+        const timeEl = document.createElement('span');
+        timeEl.className = 'msg-time';
+        timeEl.textContent = timeStr;
+        botRow.querySelector('div:last-child').appendChild(timeEl);
     } catch (error) {
-        botMessage.textContent = error.message || 'Không thể kết nối chatbot. Vui lòng thử lại.';
+        typingBubble.style.color = '#ef4444';
+        typingBubble.textContent = error.message || 'Không thể kết nối chatbot. Vui lòng thử lại.';
     }
-
     chatBody.scrollTop = chatBody.scrollHeight;
 }
 
+/* Quick reply shortcut – gửi tin nhắn user rồi gọi API */
+function sendQuickReply(text) {
+    document.getElementById('message').value = text;
+    sendMessage();
+}
 
-// xử lý Enter gửi tin nhắn
+/* Quick reply với link – hiển thị bubble trả lời trực tiếp kèm link */
+function sendQuickReplyLink(btn) {
+    const label    = btn.dataset.label    || btn.textContent.trim();
+    const reply    = btn.dataset.reply    || 'Bạn có thể truy cập tại đây:';
+    const link     = btn.dataset.link     || '#';
+    const linkText = btn.dataset.linkText || 'Bấm vào đây';
+
+    const chatBody = document.getElementById('chat-body');
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('vi-VN', {hour:'2-digit', minute:'2-digit'});
+
+    /* 1. Bubble của user */
+    const userRow = document.createElement('div');
+    userRow.className = 'msg-row me';
+    userRow.innerHTML = `<div><div class="msg-bubble">${escapeHtmlChat(label)}</div><span class="msg-time">${timeStr} ✓✓</span></div>`;
+    chatBody.appendChild(userRow);
+
+    /* 2. Bubble của bot với link */
+    const botRow = document.createElement('div');
+    botRow.className = 'msg-row';
+    botRow.innerHTML = `
+        <div class="msg-avatar" style="background:#ff6b1a;font-size:16px;">🤖</div>
+        <div>
+            <div class="msg-bubble">
+                ${escapeHtmlChat(reply)}<br>
+                <a href="${link}" class="chat-link-btn" target="_self">${linkText} →</a>
+            </div>
+            <span class="msg-time">${timeStr}</span>
+        </div>`;
+    chatBody.appendChild(botRow);
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+/* Enter to send */
 const inputMessage = document.getElementById("message");
 if (inputMessage) {
     inputMessage.addEventListener("keydown", function(e) {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            sendMessage();
-        }
+        if (e.key === "Enter") { e.preventDefault(); sendMessage(); }
     });
 }
 
-// open chat
+</script>
 
-// close chat
-if (typeof closeChat !== 'undefined' && typeof chatBox !== 'undefined') {
-    closeChat.onclick = () => chatBox.style.display = "none";
-}
-
-</script> 
 
 <script>
 const mascot = document.getElementById('mascot');
 const chatBox = document.getElementById('chat-box');
 const closeChat = document.getElementById('close-chat');
 
+document.querySelectorAll('[data-chat-tab]').forEach(tab => {
+    tab.addEventListener('click', () => {
+        const target = tab.dataset.chatTab;
+        document.querySelectorAll('[data-chat-tab]').forEach(item => {
+            const active = item === tab;
+            item.classList.toggle('active', active);
+            item.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+        document.getElementById('chatbot-panel').classList.toggle('active', target === 'bot');
+        document.getElementById('admin-chat-panel').classList.toggle('active', target === 'admin');
+    });
+});
+
+const widgetAdminBody = document.getElementById('widget-admin-body');
+const widgetAdminForm = document.getElementById('widget-admin-form');
+const widgetAdminInput = document.getElementById('widget-admin-input');
+let widgetConversationId = null;
+function renderWidgetAdminMessage(m){
+    const isMe = String(m.sender_id) === '{{ auth()->id() }}';
+    const now = m.created_at ? m.created_at.substring(11,16) : new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});
+    const text = m.message || '';
+    const el = document.createElement('div');
+    el.className = 'msg-row' + (isMe ? ' me' : '');
+
+    /* Build bubble content: text + optional image */
+    let bubbleInner = text ? `<span>${escapeHtmlChat(text)}</span>` : '';
+    if (m.attachment_is_image && m.attachment_url) {
+        bubbleInner += `<br><a href="${m.attachment_url}" target="_blank"><img src="${m.attachment_url}" alt="${escapeHtmlChat(m.attachment_name||'ảnh')}" class="chat-img-thumb"></a>`;
+    } else if (m.attachment_url) {
+        bubbleInner += `<br><a href="${m.attachment_url}" target="_blank" class="chat-link-btn" style="margin-top:6px;">📎 ${escapeHtmlChat(m.attachment_name||'Tệp đính kèm')}</a>`;
+    }
+
+    if (isMe) {
+        el.innerHTML = `<div><div class="msg-bubble">${bubbleInner}</div><span class="msg-time">${now} ✓✓</span></div>`;
+    } else {
+        const initials = (m.sender_name||'A').charAt(0).toUpperCase();
+        el.innerHTML = `<div class="msg-avatar" style="background:#6366f1;">${initials}</div><div><div class="msg-bubble">${bubbleInner}</div><span class="msg-time">${now}</span></div>`;
+    }
+    widgetAdminBody.appendChild(el);
+    widgetAdminBody.scrollTop = widgetAdminBody.scrollHeight;
+}
+
+async function loadWidgetAdmin(){
+    if(!widgetAdminBody) return;
+    try {
+        const r = await fetch('/user/chat/widget-data', {headers:{'Accept':'application/json'}});
+        const d = await r.json();
+        widgetConversationId = d.conversation_id;
+        widgetAdminBody.innerHTML = '';
+        d.messages.forEach(renderWidgetAdminMessage);
+        if (!d.messages.length) widgetAdminBody.innerHTML = '<div class="text-center text-muted small p-3">Chưa có tin nhắn. Hãy gửi lời nhắn cho Admin.</div>';
+        /* Thêm anchor vô hình ở cuối để scroll */
+        let anchor = document.getElementById('widget-scroll-anchor');
+        if (!anchor) {
+            anchor = document.createElement('div');
+            anchor.id = 'widget-scroll-anchor';
+            anchor.style.cssText = 'height:1px;flex-shrink:0;';
+        }
+        widgetAdminBody.appendChild(anchor);
+        widgetAdminBody.scrollTop = widgetAdminBody.scrollHeight;
+    } catch(e) {
+        widgetAdminBody.innerHTML = '<div class="text-center text-danger small p-3">Không tải được hội thoại.</div>';
+    }
+}
+
+/* Image picker preview */
+const widgetImgInput = document.getElementById('widget-img-input');
+if (widgetImgInput) {
+    widgetImgInput.addEventListener('change', () => {
+        const file = widgetImgInput.files[0];
+        if (!file) return;
+        const preview = document.getElementById('widget-img-preview');
+        const previewImg = document.getElementById('widget-img-preview-img');
+        previewImg.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+    });
+}
+function clearWidgetImage() {
+    const widgetImgInput = document.getElementById('widget-img-input');
+    widgetImgInput.value = '';
+    document.getElementById('widget-img-preview').style.display = 'none';
+    document.getElementById('widget-img-preview-img').src = '';
+}
+
+if(widgetAdminForm){
+    widgetAdminForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        const text = widgetAdminInput.value.trim();
+        const imgFile = widgetImgInput ? widgetImgInput.files[0] : null;
+        if (!text && !imgFile) return;
+
+        /* --- Optimistic render: show bubble immediately --- */
+        const now = new Date().toLocaleTimeString('vi-VN', {hour:'2-digit', minute:'2-digit'});
+        const tempRow = document.createElement('div');
+        tempRow.className = 'msg-row me';
+        let optimisticInner = text ? `<span>${escapeHtmlChat(text)}</span>` : '';
+        let blobUrl = null;
+        if (imgFile) {
+            blobUrl = URL.createObjectURL(imgFile);
+            optimisticInner += `<br><img src="${blobUrl}" class="chat-img-thumb" alt="ảnh">`;
+        }
+        tempRow.innerHTML = `<div><div class="msg-bubble">${optimisticInner}</div><span class="msg-time">${now} ⏳</span></div>`;
+        widgetAdminBody.querySelector('.text-center')?.remove();
+        widgetAdminBody.appendChild(tempRow);
+        widgetAdminBody.scrollTop = widgetAdminBody.scrollHeight;
+
+        /* Clear inputs immediately */
+        widgetAdminInput.value = '';
+        clearWidgetImage();
+
+        /* --- Send to server --- */
+        const fd = new FormData();
+        fd.append('_token', document.querySelector('meta[name="csrf-token"]').content);
+        if (text) fd.append('message', text);
+        if (imgFile) fd.append('attachment', imgFile);
+        fd.append('client_temp_id', 'widget-' + Date.now());
+        try {
+            const r = await fetch('{{ route('user.chat.send') }}', {
+                method: 'POST',
+                headers: {'Accept':'application/json','X-Requested-With':'XMLHttpRequest'},
+                body: fd
+            });
+            const d = await r.json();
+            if (d.status === 'ok') {
+                /* Replace optimistic row with real server row */
+                const realRow = document.createElement('div');
+                realRow.className = 'msg-row me';
+                let realInner = d.message.message ? `<span>${escapeHtmlChat(d.message.message)}</span>` : '';
+                if (d.message.attachment_is_image && d.message.attachment_url) {
+                    realInner += `<br><a href="${d.message.attachment_url}" target="_blank"><img src="${d.message.attachment_url}" class="chat-img-thumb" alt="ảnh"></a>`;
+                } else if (d.message.attachment_url) {
+                    realInner += `<br><a href="${d.message.attachment_url}" target="_blank" class="chat-link-btn" style="margin-top:6px;">📎 ${escapeHtmlChat(d.message.attachment_name||'Tệp đính kèm')}</a>`;
+                }
+                const t = d.message.created_at ? d.message.created_at.substring(11,16) : now;
+                realRow.innerHTML = `<div><div class="msg-bubble">${realInner}</div><span class="msg-time">${t} ✓✓</span></div>`;
+                tempRow.replaceWith(realRow);
+                if (blobUrl) URL.revokeObjectURL(blobUrl);
+            } else {
+                /* Mark failed */
+                tempRow.querySelector('.msg-time').textContent += ' ❌';
+            }
+        } catch {
+            tempRow.querySelector('.msg-time').textContent += ' ❌';
+        }
+    });
+}
+loadWidgetAdmin();
+
 let isDragging = false;
 let offsetX = 0, offsetY = 0;
 
-// click mở chat
+// click mở chat – scroll to bottom
+let chatAlreadyOpened = false;
 mascot.addEventListener('click', () => {
     chatBox.style.display = 'flex';
+    setTimeout(() => {
+        /* chatbot panel */
+        const botAnchor = document.getElementById('chat-scroll-anchor');
+        if (botAnchor) botAnchor.scrollIntoView(false);
+        else { const cb = document.getElementById('chat-body'); if(cb) cb.scrollTop = cb.scrollHeight; }
+        /* admin panel */
+        const adminAnchor = document.getElementById('widget-scroll-anchor');
+        if (adminAnchor) adminAnchor.scrollIntoView(false);
+        else if (widgetAdminBody) widgetAdminBody.scrollTop = widgetAdminBody.scrollHeight;
+    }, 80);
 });
+
 
 // kéo mascot
 mascot.addEventListener('mousedown', (e) => {

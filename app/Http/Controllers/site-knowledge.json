@@ -1,0 +1,276 @@
+{
+  "schema_version": "2.0",
+  "source_note": "Tài liệu này được tổng hợp từ routes, controllers, models và chatbot của ứng dụng Laravel. Dữ liệu thay đổi theo database/cấu hình; chỉ khẳng định thông tin động khi chatbot có dữ liệu trực tiếp. Có route hoặc mã nguồn không đồng nghĩa tích hợp bên ngoài đang được cấu hình và hoạt động.",
+  "site": {
+    "name": "SportsHub",
+    "language": "vi",
+    "description": "Nền tảng trực tuyến về bóng đá phong trào, kết hợp tìm hiểu sân bóng, đặt lịch, mua sản phẩm thể thao và nhận hỗ trợ.",
+    "main_sections": [
+      "Trang chủ, giới thiệu và phản hồi",
+      "Danh sách sản phẩm, danh mục và chi tiết sản phẩm",
+      "Danh sách sân, thông tin sân và đặt lịch",
+      "Giỏ hàng, thanh toán, đơn mua và theo dõi giao hàng",
+      "Tài khoản, địa chỉ, lịch sử mua hàng và lịch sử đặt sân",
+      "Chatbot tự động và chat hỗ trợ với quản trị viên"
+    ]
+  },
+  "introduction": {
+    "short": "SportsHub là website hỗ trợ cộng đồng bóng đá phong trào tìm hiểu sân, đặt lịch chơi bóng và mua các sản phẩm thể thao trên cùng một nền tảng.",
+    "long": "SportsHub hướng tới giải quyết những bất tiện khi tổ chức một trận bóng: phải hỏi nhiều nơi mới biết thông tin sân, khó so sánh vị trí và giá, hoặc phải trao đổi thủ công để sắp xếp lịch. Trên website, người dùng có thể xem thông tin sân và sản phẩm, tạo tài khoản, đặt lịch theo ngày giờ, quản lý đơn mua và booking, chọn thanh toán, theo dõi giao hàng khi có dữ liệu vận chuyển, xem phản hồi và liên hệ bộ phận hỗ trợ.",
+    "audiences": [
+      "Người chơi bóng đá phong trào muốn tìm sân và sắp xếp lịch chơi.",
+      "Khách hàng muốn tham khảo hoặc mua sản phẩm thể thao và dịch vụ liên quan.",
+      "Chủ sân và nhân viên vận hành cần quản lý sân, lịch booking, sản phẩm, đơn hàng và hỗ trợ khách."
+    ],
+    "purpose": "Kết nối người chơi, sân bóng và dịch vụ liên quan; giúp việc tìm hiểu thông tin, đặt lịch và quản lý hoạt động thể thao thuận tiện, rõ ràng hơn.",
+    "history": "Theo nội dung trang giới thiệu, SportsHub bắt đầu từ một dự án nhỏ năm 2025, tập trung vào bài toán đặt sân phong trào và được định hướng mở rộng thêm quản lý lịch, dịch vụ đi kèm, thanh toán và đánh giá.",
+    "mission": "Đơn giản hóa việc tìm sân, đặt lịch và sử dụng dịch vụ đi kèm; hướng tới thông tin giá cả, dịch vụ rõ ràng và trải nghiệm thể thao thuận tiện.",
+    "vision": "Trang giới thiệu nêu định hướng phát triển SportsHub thành một hệ sinh thái số kết nối người chơi, chủ sân và dịch vụ thể thao trên phạm vi rộng. Đây là mục tiêu định hướng, không phải cam kết về quy mô hoặc tính năng hiện đã triển khai.",
+    "brand_story_caveat": "Nội dung lịch sử, sứ mệnh và tầm nhìn được lấy từ trang giới thiệu; một số nội dung trang có thể được quản trị viên cấu hình và diễn đạt theo định hướng thương hiệu."
+  },
+  "website_experience": {
+    "visitor": [
+      "Trang chủ giới thiệu SportsHub và dẫn tới đăng nhập hoặc đăng ký.",
+      "Khách có thể tham khảo sân, danh sách sản phẩm, thông tin giới thiệu và phản hồi công khai.",
+      "Trang sân thể hiện tên, mô tả, địa điểm, giá theo giờ và đánh giá nếu có; giao diện có tìm kiếm và tùy chọn sắp xếp.",
+      "Trang sản phẩm hỗ trợ tìm theo tên, lọc danh mục, sắp xếp và xem giá/đánh giá; nội dung và sản phẩm phụ thuộc dữ liệu hiện tại."
+    ],
+    "registered_customer": [
+      "Sau khi đăng nhập, khách dùng giỏ hàng, checkout, quản lý địa chỉ, thanh toán và xem đơn mua.",
+      "Khách tạo booking từ trang sân, chọn thời gian, tiếp tục qua bước thanh toán và quản lý lịch đặt trong tài khoản.",
+      "Khách có thể gửi phản hồi và chat riêng với admin để nhờ nhân viên kiểm tra vấn đề cần truy cập dữ liệu tài khoản."
+    ],
+    "operator": [
+      "Admin và Boss có các khu vực quản trị tương ứng để cập nhật nội dung và theo dõi hoạt động.",
+      "Nhân viên shipper có khu vực riêng để cập nhật tiến trình giao hàng."
+    ],
+    "navigation_hint": "Các mục chính hiển thị với tên như Trang chủ, Sân, Dịch vụ/Sản phẩm, Feedback, Đăng nhập và Đăng ký. Một số thao tác như đặt sân, giỏ hàng và thanh toán yêu cầu đăng nhập."
+  },
+  "access_and_accounts": {
+    "public": [
+      "Khách có thể xem trang giới thiệu, danh sách sản phẩm, chi tiết sản phẩm, phản hồi và thông tin sân.",
+      "Chatbot tự động nhận câu hỏi qua POST /chatbot/message và endpoint này không yêu cầu đăng nhập."
+    ],
+    "customer_account": [
+      "Đăng ký và đăng nhập bằng email/mật khẩu; đăng nhập Google hoặc Facebook phụ thuộc cấu hình OAuth.",
+      "Các trang giỏ hàng, thanh toán, hồ sơ, địa chỉ, đơn mua, lịch đặt sân và chat với quản trị viên nằm trong khu vực cần đăng nhập.",
+      "Nếu chưa đăng nhập khi đặt sân, khách được yêu cầu đăng nhập."
+    ],
+    "staff_roles": [
+      "Admin quản lý danh mục, sản phẩm, sân, người dùng, đơn mua, lịch đặt sân, voucher, cài đặt và hội thoại hỗ trợ.",
+      "Boss có các trang quản lý và thống kê riêng.",
+      "Shipper có trang xem và cập nhật trạng thái giao hàng."
+    ]
+  },
+  "products": {
+    "source_of_truth": "Database hiện tại; danh sách có thể thay đổi.",
+    "customer_actions": [
+      "Xem và tìm sản phẩm theo tên hoặc danh mục.",
+      "Sắp xếp theo giá tăng/giảm, đánh giá hoặc tên.",
+      "Xem chi tiết, giá, tồn kho hiển thị và đánh giá."
+    ],
+    "availability_rules": [
+      "Chatbot chỉ nên tư vấn như đang bán các sản phẩm status=active và quantity lớn hơn 0.",
+      "Chatbot có thể nhận ngữ cảnh sản phẩm đang bán gồm tên, danh mục, giá, tồn kho và mô tả trực tiếp từ database.",
+      "Một số câu hỏi về sản phẩm, tồn kho, giá cao nhất/thấp nhất và bóng được xử lý bằng truy vấn database; không dùng dữ liệu ví dụ tĩnh để khẳng định giá hay tồn kho.",
+      "Giá hiển thị hoặc giá cuối cùng có thể chịu quy tắc giảm giá theo khung giờ và cấu hình hiện tại."
+    ]
+  },
+  "shopping_and_orders": {
+    "flow": [
+      "Khách chọn sản phẩm, thêm vào giỏ, chỉnh số lượng hoặc xóa sản phẩm.",
+      "Khu vực mua hàng yêu cầu tài khoản; checkout hỗ trợ mua ngay, mua các sản phẩm đã chọn hoặc xử lý giỏ hàng.",
+      "Ở bước checkout, khách chọn địa chỉ giao hàng, phương thức giao, voucher nếu đủ điều kiện và phương thức thanh toán.",
+      "Đơn được tạo ở trạng thái chờ xử lý/thanh toán; chỉ coi là đã xác nhận khi trạng thái thanh toán và đơn hàng được hệ thống cập nhật."
+    ],
+    "customer_pages": [
+      "Giỏ hàng: /user/cart",
+      "Thanh toán và voucher: /user/payment/order/{order}",
+      "Đơn mua và lịch sử: /user/my-services",
+      "Chi tiết đơn: /user/order/{id}",
+      "Theo dõi giao hàng: /user/order/{order}/tracking"
+    ],
+    "order_statuses": [
+      "pending",
+      "confirmed",
+      "processing",
+      "in_progress",
+      "completed",
+      "cancelled"
+    ],
+    "rules": [
+      "Voucher có thể theo số tiền cố định, phần trăm hoặc miễn phí giao hàng; cần kiểm tra mã, thời hạn, trạng thái và mức đơn tối thiểu trên website.",
+      "Ngưỡng miễn phí giao hàng và phí cuối cùng phụ thuộc cài đặt, địa chỉ và phương thức giao hàng; không tự báo số tiền nếu không có dữ liệu đơn hiện tại.",
+      "Khách tự xem đơn mua, thanh toán và theo dõi trong tài khoản; chatbot không tra cứu đơn theo mã hoặc thay đổi/hủy đơn."
+    ]
+  },
+  "shipping": {
+    "customer_flow": [
+      "Địa chỉ nhận hàng được chọn hoặc nhập tại checkout.",
+      "Phí giao hàng được tính theo địa chỉ và phương thức giao hàng khả dụng tại thời điểm đặt.",
+      "Thông tin theo dõi gồm mã vận đơn và trạng thái khi đơn có dữ liệu giao hàng."
+    ],
+    "tracking_statuses": [
+      "created: Đã tạo đơn",
+      "picked_up: Đã lấy hàng",
+      "transporting: Đang vận chuyển",
+      "delivering: Đang giao hàng",
+      "delivered: Đã giao thành công"
+    ],
+    "limits": [
+      "Không khẳng định đơn đã được hãng vận chuyển nhận, thời gian giao dự kiến hoặc vị trí shipper nếu không có dữ liệu theo dõi cập nhật.",
+      "Mã nguồn có hỗ trợ một số luồng GHN và dữ liệu giao hàng demo; không mặc định mọi đơn đều đang được GHN xử lý trực tiếp."
+    ]
+  },
+  "field_booking": {
+    "catalog_snapshot": {
+      "source": "app/football_booking (13).sql",
+      "note": "Danh sách sân trích từ snapshot SQL; giá tính bằng VND/giờ. Thông tin có thể cũ hoặc không phản ánh dữ liệu đang chạy. Khi có dữ liệu sân trực tiếp từ database, ưu tiên dữ liệu trực tiếp.",
+      "fields": [
+        {
+          "id": 1,
+          "name": "Old Trafford",
+          "location": "England",
+          "description": "Dự án xây dựng sân vận động mới với sức chứa 100.000 chỗ ngồi thay thế sân Old Trafford hiện tại; dự kiến hoàn thành khoảng năm 2030.",
+          "price_per_hour_vnd": 9000000,
+          "status": "active"
+        },
+        {
+          "id": 2,
+          "name": "Santiago Bernabéu",
+          "location": "Spain",
+          "description": "Sân vận động ở Madrid, Tây Ban Nha và là sân nhà của Real Madrid từ khi hoàn thành năm 1947.",
+          "price_per_hour_vnd": 8000000,
+          "status": "active"
+        },
+        {
+          "id": 3,
+          "name": "Etihad Stadium",
+          "location": "England",
+          "description": "Sân vận động Thành phố Manchester, sân nhà của Manchester City.",
+          "price_per_hour_vnd": 10000000,
+          "status": "active"
+        },
+        {
+          "id": 4,
+          "name": "Emirates vô địch EPL 2025",
+          "location": "England",
+          "description": "Sân vận động Emirates ở Highbury, Luân Đôn, sân nhà của câu lạc bộ Arsenal.",
+          "price_per_hour_vnd": 7000000,
+          "status": "active"
+        },
+        {
+          "id": 5,
+          "name": "Camp Nou",
+          "location": "Spain",
+          "description": "Sân nhà của FC Barcelona từ khi hoàn thành năm 1957.",
+          "price_per_hour_vnd": 9000000,
+          "status": "active"
+        },
+        {
+          "id": 6,
+          "name": "Wembley",
+          "location": "England",
+          "description": "Sân vận động bóng đá tại Wembley, Luân Đôn, khai trương năm 2007.",
+          "price_per_hour_vnd": 6000000,
+          "status": "active"
+        },
+        {
+          "id": 7,
+          "name": "Allianz Arena",
+          "location": "Germany",
+          "description": "Sân vận động bóng đá ở Munich, Bavaria, Đức; nổi bật với mặt ngoài có thể đổi màu.",
+          "price_per_hour_vnd": 9000000,
+          "status": "active"
+        },
+        {
+          "id": 8,
+          "name": "Anfield Stadium",
+          "location": "England",
+          "description": "Sân vận động đạt chuẩn UEFA tại Anh, từng tổ chức nhiều trận đấu quốc tế và các trận tại Euro 1996.",
+          "price_per_hour_vnd": 7000000,
+          "status": "active"
+        },
+        {
+          "id": 9,
+          "name": "Allianz Stadium,",
+          "location": "Italia",
+          "description": "Mô tả trong snapshot SQL ghi Allianz Arena ở München, Đức; tên sân và địa điểm trong dữ liệu có thể không khớp, cần xác nhận trên website.",
+          "price_per_hour_vnd": 8000000,
+          "status": "active"
+        }
+      ]
+    },
+    "customer_flow": [
+      "Khách xem danh sách sân, khu vực, mô tả và giá theo giờ.",
+      "Đăng nhập, chọn sân, ngày, giờ bắt đầu/kết thúc và có thể chọn thêm sản phẩm/dịch vụ.",
+      "Hệ thống kiểm tra trùng lịch; giá sân dựa trên thời lượng, giá sân và các quy tắc giá đang bật.",
+      "Booking ban đầu ở trạng thái pending và tiếp tục qua bước thanh toán.",
+      "Khách xem, lọc lịch đặt, xem chi tiết, xuất hóa đơn và hủy booking trong tài khoản theo điều kiện của hệ thống."
+    ],
+    "booking_statuses": [
+      "pending",
+      "confirmed",
+      "in_progress",
+      "completed",
+      "cancelled",
+      "expired"
+    ],
+    "availability": [
+      "Backend có API POST /api/v1/bookings/check-available để kiểm tra một sân, ngày và khoảng giờ cụ thể.",
+      "Ngữ cảnh chatbot chỉ nhận thông tin sân active như tên, địa điểm, mô tả và giá/giờ; chatbot hiện không gọi API kiểm tra lịch.",
+      "Không xác nhận còn sân hoặc nhận đặt sân trong cuộc chat; hướng dẫn khách kiểm tra lịch trên trang Đặt sân sau khi chọn ngày và giờ."
+    ]
+  },
+  "payments": {
+    "order_and_booking_methods": [
+      "Form thanh toán hiện chấp nhận MoMo, tiền mặt và chuyển khoản ngân hàng; phương thức thực tế có thể phụ thuộc loại giao dịch và cấu hình."
+    ],
+    "rules": [
+      "Thanh toán chuyển khoản hiển thị QR và chờ webhook/hệ thống xác nhận; ảnh chụp chuyển khoản không đủ để khẳng định đã thanh toán.",
+      "Luồng MoMo cần cấu hình thông tin đối tác và xác nhận kết quả giao dịch.",
+      "Một số luồng MoMo trong mã nguồn trỏ đến môi trường test; không cam kết thanh toán MoMo production đang bật.",
+      "Trạng thái thanh toán của từng đơn/booking chỉ xem được trong tài khoản hoặc qua nhân viên hỗ trợ có quyền."
+    ]
+  },
+  "customer_support": {
+    "automated_chat": [
+      "Chatbot xử lý câu hỏi theo thứ tự: truy vấn trực tiếp một số câu hỏi sản phẩm, sau đó khớp intent/keyword đang active trong database, cuối cùng mới gọi Gemini nếu có cấu hình API key.",
+      "Phản hồi intent có thể là câu trả lời mẫu; không xem đó là xác nhận dữ liệu trực tiếp về giá, lịch trống, voucher hay đơn hàng.",
+      "Khi gọi Gemini, hệ thống gửi lịch sử tối đa 10 lượt theo yêu cầu và có thể bổ sung danh mục, sản phẩm còn kinh doanh và sân đang hoạt động từ database.",
+      "Lỗi hoặc thiếu cấu hình AI khiến chatbot trả lời chưa thể xác nhận và hướng khách đến hỗ trợ."
+    ],
+    "human_chat": [
+      "Chat với Admin là kênh riêng, cần đăng nhập và lưu hội thoại để nhân viên trả lời.",
+      "Khách có thể gửi nội dung và tệp đính kèm; giới hạn tệp theo controller hiện tại là 10 MB.",
+      "Chatbot tự động không tự tạo yêu cầu hỗ trợ, không tự chuyển hội thoại cho nhân viên và không gửi tin trong kênh Chat với Admin."
+    ],
+    "handoff_message": "Mình chưa có thông tin chính xác. Bạn vui lòng đăng nhập và vào mục Chat với Admin để nhân viên kiểm tra giúp nhé."
+  },
+  "api_capabilities": {
+    "public": [
+      "GET /api/v1/fields và GET /api/v1/fields/{field}: danh sách/chi tiết sân active.",
+      "GET /api/v1/services và GET /api/v1/services/{service}: danh sách/chi tiết sản phẩm active.",
+      "POST /api/v1/bookings/check-available: kiểm tra khung giờ sân."
+    ],
+    "authenticated": [
+      "API v1 hỗ trợ đăng ký, đăng nhập, xem tài khoản hiện tại, đăng xuất bằng Sanctum token.",
+      "Người dùng đã xác thực có thể tạo, xem, cập nhật và hủy booking qua API; dữ liệu booking chỉ truy cập được bởi chủ booking."
+    ],
+    "chatbot_boundary": "Các API này là chức năng của website; chatbot không tự gọi chúng để thực hiện booking, kiểm tra lịch hay thao tác tài khoản."
+  },
+  "answering_rules": [
+    "Trả lời tiếng Việt tự nhiên, lịch sự, rõ ràng và ngắn gọn; phân biệt hướng dẫn chung với dữ liệu thực tế.",
+    "Chỉ nêu giá, tồn kho và danh sách sân khi có dữ liệu hiện tại trong ngữ cảnh; nói rõ dữ liệu có thể thay đổi.",
+    "Không đoán trạng thái đơn/booking, phí ship, voucher đang hiệu lực, lịch trống, thời gian giao hoặc phương thức thanh toán đang bật.",
+    "Không yêu cầu hoặc tiết lộ mật khẩu, OTP, thông tin thanh toán, địa chỉ, dữ liệu cá nhân hay nội dung hội thoại riêng.",
+    "Chatbot chỉ tư vấn và hướng dẫn thao tác trên website; không tự đặt hàng, đặt sân, thanh toán, hủy đơn, hủy booking hoặc sửa tài khoản.",
+    "Nếu thiếu dữ liệu, hỏi một câu làm rõ phù hợp hoặc hướng dẫn khách đăng nhập, mở đúng trang chức năng hay liên hệ qua Chat với Admin."
+  ],
+  "chat_limits": [
+    "Không dùng ví dụ từ seeder hoặc nội dung quảng cáo trong giao diện làm bằng chứng giá, khuyến mãi hay hàng còn.",
+    "Không khẳng định tích hợp MoMo, GHN, OAuth hoặc Gemini đang hoạt động nếu chưa có xác nhận cấu hình và trạng thái thực tế.",
+    "Không khẳng định chatbot có thể xem dữ liệu riêng của khách; chatbot không tra cứu đơn, giao dịch, booking hoặc hồ sơ theo danh tính.",
+    "Thông tin sản phẩm/sân được chatbot nạp từ database chỉ là snapshot ở thời điểm trả lời; khách cần xác nhận lại trên website trước khi giao dịch."
+  ]
+}

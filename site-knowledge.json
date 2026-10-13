@@ -1,0 +1,44 @@
+﻿{
+  "source_note": "Tóm tắt suy ra từ schema MySQL football_booking.sql. Schema cho biết có cấu trúc lưu dữ liệu; không xác nhận mọi luồng đang bật hoặc tích hợp ngoài đang hoạt động.",
+  "site_type": "Website thể thao kết hợp cửa hàng đồ thể thao và đặt sân bóng.",
+  "features": [
+    {
+      "name": "Danh mục và sản phẩm thể thao",
+      "details": "Có danh mục sản phẩm và bảng services dùng làm catalog: tên, mô tả, giá, ảnh, trạng thái, số lượng và điểm đánh giá. Dump mẫu có áo thể thao, giày, bóng, khăn tập và nước uống."
+    },
+    {
+      "name": "Giỏ hàng và đặt mua",
+      "details": "Có giỏ hàng, các dòng sản phẩm trong giỏ, đơn hàng và chi tiết đơn. Đơn hàng lưu tổng tiền, phí giao hàng, ghi chú, phương thức thanh toán, mã giảm giá và trạng thái."
+    },
+    {
+      "name": "Trạng thái đơn hàng",
+      "details": "Schema cho phép các trạng thái pending, confirmed, processing, in_progress, completed và cancelled. Chỉ giải thích trạng thái chung; không tra cứu hoặc tiết lộ đơn hàng của khách cụ thể."
+    },
+    {
+      "name": "Vận chuyển",
+      "details": "Có cấu trúc lưu phương thức giao hàng, mã vận đơn, mã GHN, trạng thái giao hàng và thông tin tuyến giao. Schema gợi ý có tích hợp hoặc chuẩn bị tích hợp GHN, nhưng không xác nhận hệ thống giao hàng đang hoạt động."
+    },
+    {
+      "name": "Voucher và ưu đãi",
+      "details": "Có bảng voucher với mã, loại và giá trị giảm, mức đơn tối thiểu, giới hạn sử dụng, thời gian hiệu lực và trạng thái. Có bảng quy tắc giảm giá cho sản phẩm. Không tự bịa mã hoặc chương trình đang chạy."
+    },
+    {
+      "name": "Đặt sân bóng",
+      "details": "Có danh sách sân với địa điểm, mô tả, giá theo giờ, ảnh và đánh giá. Booking lưu ngày, giờ bắt đầu/kết thúc, tổng giá, ghi chú và trạng thái pending, confirmed, in_progress, completed, cancelled hoặc expired. Chat hiện không kiểm tra lịch sân trực tiếp."
+    },
+    {
+      "name": "Thanh toán",
+      "details": "Có dữ liệu thanh toán đơn hàng và thanh toán booking. Schema booking ghi nhận các phương thức MoMo, VNPay, tiền mặt và chuyển khoản; không khẳng định phương thức nào đang khả dụng cho đơn hàng mua sản phẩm."
+    },
+    {
+      "name": "Tài khoản và hỗ trợ",
+      "details": "Schema có tài khoản, địa chỉ giao hàng, vai trò quản trị/shipper, đánh giá và phản hồi của quản trị viên, cùng hội thoại hỗ trợ. Không truy cập, tiết lộ hay suy đoán thông tin cá nhân, mật khẩu, địa chỉ hoặc nội dung chat riêng."
+    }
+  ],
+  "chat_limits": [
+    "Chỉ dùng catalog.json để báo tên sản phẩm và giá mẫu; đây là dữ liệu dump tĩnh nên có thể cũ.",
+    "Không khẳng định còn hàng, voucher còn hiệu lực, vận đơn đang ở đâu, lịch sân còn trống, hoặc đơn hàng đã được tạo/đổi trạng thái.",
+    "Không tự thực hiện đặt sân, đặt hàng, thanh toán, đổi/hủy đơn hoặc tra cứu tài khoản; các chức năng đó chưa được kết nối vào API chat.",
+    "Nếu khách cần thông tin trực tiếp như tồn kho, lịch sân, vận chuyển, thanh toán hoặc trạng thái đơn, hướng dẫn kiểm tra website hoặc liên hệ cửa hàng."
+  ]
+}

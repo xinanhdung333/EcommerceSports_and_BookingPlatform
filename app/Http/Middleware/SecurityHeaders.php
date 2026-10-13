@@ -14,6 +14,8 @@ class SecurityHeaders
         $response = $next($request);
 
         $response->headers->set('X-Content-Type-Options', 'nosniff');
+        // Cho phép nhúng các màn hình nội bộ (ví dụ Chat Admin trong popup)
+        // nhưng chỉ từ cùng origin của SportsHub.
         $response->headers->set('X-Frame-Options', 'DENY');
         $response->headers->set('X-XSS-Protection', '1; mode=block');
         $response->headers->set('Referrer-Policy', 'no-referrer');

@@ -86,6 +86,23 @@ class ChatController extends Controller
         return view('user.chat', compact('conversation', 'messages'));
     }
 
+    public function widgetData()
+    {
+        $conversation = Conversation::firstOrCreate(
+            ['user_id' => auth()->id()],
+            ['target_type' => null, 'target_id' => null, 'admin_id' => null]
+        );
+
+        $messages = $conversation->messages()->with('sender')->orderBy('created_at')->get()
+            ->map(fn (Message $message) => $this->messagePayload($message));
+
+        return response()->json([
+            'conversation_id' => $conversation->id,
+            'messages' => $messages,
+            'admin_name' => $conversation->admin?->name,
+        ]);
+    }
+
     public function send(Request $request)
     {
         $data = $this->validateMessageRequest($request);

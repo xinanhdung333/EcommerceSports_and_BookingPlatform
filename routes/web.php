@@ -372,6 +372,7 @@ Route::post('/user/cart/update-item', [CartController::class, 'updateItem'])
     Route::middleware(['auth'])->group(function () {
         // User chat support
         Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+        Route::get('/chat/widget-data', [ChatController::class, 'widgetData'])->name('chat.widget-data');
         Route::post('/chat/send', [ChatController::class, 'send'])->name('chat.send');
     });
 
