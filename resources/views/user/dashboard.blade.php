@@ -366,6 +366,48 @@
             @endforelse
         </div>
     </section>
+
+    @foreach($categories as $category)
+        @if($category->services->isNotEmpty())
+            <section class="az-dashboard-panel">
+                <div class="az-sec-hd" style="align-items:center;">
+                    <h4 class="az-sec-title">{{ $category->name }}</h4>
+                    <a href="{{ route('user.services', ['category_id' => $category->id]) }}" class="az-sec-link">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+                </div>
+                <div class="az-dashboard-products">
+                    @foreach($category->services->take(4) as $service)
+                        <article class="az-dashboard-product">
+                            <a href="{{ route('user.serviceDetail', $service->id) }}" class="az-dashboard-product-link">
+                                <div style="position:relative;">
+                                    <img loading="lazy" src="{{ $service->image ? asset('uploads/services/' . $service->image) : asset('assets/images/default.png') }}" alt="{{ $service->name }}" class="az-dashboard-product-image">
+                                    @if(($service->discount_percent ?? 0) > 0)
+                                        <span class="az-product-badge sale">-{{ round($service->discount_percent) }}%</span>
+                                    @endif
+                                </div>
+                                <div class="az-dashboard-product-info">
+                                    <p class="az-dashboard-product-name">{{ $service->name }}</p>
+                                    <div class="az-price-row">
+                                        @if(($service->discount_percent ?? 0) > 0)
+                                            <span class="az-price">{{ formatCurrency($service->final_price) }}</span>
+                                            <span class="az-price-old">{{ formatCurrency($service->price) }}</span>
+                                        @else
+                                            <span class="az-price">{{ formatCurrency($service->price) }}</span>
+                                        @endif
+                                    </div>
+                                    <p class="az-product-meta">Còn {{ $service->quantity }} sản phẩm</p>
+                                </div>
+                            </a>
+                            <div style="padding:0 10px 10px;">
+                                <button type="button" class="az-dashboard-add-cart" data-service-id="{{ $service->id }}" data-stock="{{ $service->quantity }}">
+                                    <i class="bi bi-cart-plus"></i> Thêm vào giỏ
+                                </button>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            </section>
+        @endif
+    @endforeach
 </div>
 </div>
 </div>
