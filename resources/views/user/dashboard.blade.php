@@ -40,26 +40,63 @@
 .az-price-item:last-child{border-bottom:none;}.az-price-item:hover{color:var(--az-lh);}
 .az-price-item input[type=checkbox]{accent-color:var(--az-orange);}
 .az-content{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px;}
-.az-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.az-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+.az-dashboard-stat{min-height:118px;background:#0f172a;color:#fff;border:0;border-radius:14px;padding:18px 16px;position:relative;overflow:hidden;box-shadow:0 7px 16px rgba(15,23,42,.14);}
+.az-dashboard-stat::after{content:"";position:absolute;width:90px;height:90px;right:-35px;top:-35px;border-radius:50%;background:rgba(255,255,255,.035);}
+.az-dashboard-stat .az-stat-label{color:#94a3b8;font-size:.62rem;font-weight:800;letter-spacing:.12em;}
+.az-dashboard-stat .az-stat-value{color:#fff;font-size:1.65rem;font-weight:900;margin:20px 0 6px;}
+.az-dashboard-stat .az-stat-note{color:#a8b3c7;font-size:.62rem;}
+.az-dashboard-stat .az-stat-note .up,.az-dashboard-stat .az-stat-note .confirmed-dot,.az-dashboard-stat .az-stat-note .shipping-dot{display:inline-block;padding:3px 7px;border-radius:999px;background:#d1fae5;color:#047857;font-weight:800;}
+.az-dashboard-stat .az-stat-note .confirmed-dot{margin-right:3px;}
+.az-dashboard-stat .az-stat-note .shipping-dot{background:#fef3c7;color:#b45309;}
+.az-dashboard-stat-icon{position:absolute;top:16px;right:16px;width:24px;height:24px;border-radius:50%;background:#283247;display:grid;place-items:center;font-size:12px;z-index:1;}
+.az-dashboard-stat-icon.is-confirmed{background:#065f46;color:#22c55e;font-weight:900;}
+.az-dashboard-panel{background:#fff;border:1px solid #edf0f5;border-radius:16px;padding:16px;box-shadow:0 3px 12px rgba(15,23,42,.035);}
+.az-court-grid,.az-dashboard-products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+.az-court-card{display:block;padding:12px;background:#fbfcfe;border:1px solid #edf0f5;border-radius:12px;color:var(--az-text);text-decoration:none;transition:border-color .15s,transform .15s;position:relative;}
+.az-court-card:hover{border-color:#cbd5e1;color:var(--az-text);transform:translateY(-2px);}
+.az-court-icon{width:36px;height:36px;margin-bottom:8px;border-radius:8px;display:grid;place-items:center;font-size:18px;}
+.az-court-card::after{content:"";position:absolute;right:12px;top:20px;width:6px;height:6px;border-radius:50%;background:#22c55e;}
+.az-court-card:nth-child(2)::after{background:#3b82f6}.az-court-card:nth-child(3)::after{background:#eab308}.az-court-card:nth-child(4)::after{background:#f97316}
+.az-court-book{display:inline-block;margin-top:8px;padding:3px 9px;border-radius:999px;background:#0f172a;color:#fff;font-size:.58rem;font-weight:800;}
+.az-dashboard-product{min-width:0;background:#fff;border:1px solid #f1f5f9;border-radius:12px;overflow:hidden;}
+.az-dashboard-products .az-dashboard-product{border-radius:12px;}
+.az-dashboard-product-link{display:block;color:var(--az-text);text-decoration:none;}
+.az-dashboard-product-link:hover{color:var(--az-text);}
+.az-dashboard-product-image{display:block;width:100%;height:160px;object-fit:contain;background:#f0f3ff;padding:12px;}
+.az-dashboard-product:nth-child(2) .az-dashboard-product-image{background:#fff0ee}
+.az-dashboard-product:nth-child(3) .az-dashboard-product-image{background:#e9fbf1}
+.az-dashboard-product:nth-child(4) .az-dashboard-product-image{background:#fff8df}
+.az-dashboard-product-info{padding:10px;}
+.az-dashboard-product-name{min-height:34px;margin:4px 0;font-size:.82rem;font-weight:600;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.az-dashboard-add-cart{width:100%;margin-top:10px;padding:8px;border:0;border-radius:8px;background:#0f172a;color:#fff;font-size:.75rem;font-weight:700;}
+.az-dashboard-add-cart:hover{background:#232f3e;}
+.az-dashboard-add-cart:disabled{opacity:.6;cursor:wait;}
 .az-stat-card{background:var(--az-card);border:1px solid var(--az-border);border-radius:4px;padding:20px 18px;position:relative;overflow:hidden;}
 .az-stat-label{font-size:.8rem;color:var(--az-muted);text-transform:uppercase;letter-spacing:.4px;margin:0 0 6px;}
 .az-stat-value{font-size:1.85rem;font-weight:700;color:var(--az-text);line-height:1.1;margin:0 0 6px;}
 .az-stat-note{font-size:.78rem;color:var(--az-muted);margin:0;display:flex;align-items:center;gap:4px;}
 .az-stat-note .up{color:#067d62;}.az-stat-ico{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:2.4rem;opacity:.08;color:var(--az-text);}
-.az-flash{background:var(--az-card);border:1px solid var(--az-border);border-left:5px solid var(--az-red);border-radius:4px;padding:14px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
-.az-flash-badge{background:var(--az-red);color:#fff;font-weight:800;font-size:.82rem;padding:5px 12px;border-radius:3px;display:flex;align-items:center;gap:5px;white-space:nowrap;}
-.az-flash-info{flex:1;min-width:160px;}.az-flash-title{font-size:.9rem;color:var(--az-text);margin:0 0 2px;}.az-flash-title strong{color:var(--az-red);font-size:1.1em;}
-.az-flash-meta{font-size:.75rem;color:var(--az-muted);}.az-flash-right{display:flex;align-items:center;gap:12px;margin-left:auto;}
-.az-flash-sold{font-size:.78rem;color:var(--az-muted);}
-.az-buy-btn{background:var(--az-yellow);color:#111;border:1px solid #a88734;border-radius:3px;padding:8px 18px;font-size:.88rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:background .15s;}
-.az-buy-btn:hover{background:#dba52e;color:#111;}
+.az-flash{position:relative;overflow:hidden;background:linear-gradient(105deg,#ff6b00,#ff8500);border:0;border-radius:15px;padding:14px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:#fff;box-shadow:0 7px 18px rgba(255,107,0,.2);}
+.az-flash-mark{width:40px;height:40px;flex:0 0 40px;display:grid;place-items:center;background:#fff;color:#ff6b00;border-radius:11px;font-size:18px;}
+.az-flash-copy{flex:1;min-width:200px;}
+.az-flash-topline{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+.az-flash-badge{background:#121827;color:#fff;font-weight:900;font-size:.62rem;padding:4px 8px;border-radius:999px;display:flex;align-items:center;gap:5px;white-space:nowrap;}
+.az-flash-applies{background:rgba(255,255,255,.24);color:#fff;font-size:.62rem;font-weight:700;padding:4px 8px;border-radius:999px;}
+.az-flash-title{font-size:.88rem;color:#fff;font-weight:900;margin:0 0 2px;}.az-flash-title strong{color:#fff;font-size:1.1em;}
+.az-flash-meta{font-size:.63rem;color:rgba(255,255,255,.9);margin:0;}
+.az-flash-right{display:flex;align-items:center;gap:12px;margin-left:auto;}
+.az-flash-timer{display:flex;align-items:center;gap:5px;padding:6px 10px;border-radius:10px;background:rgba(139,62,0,.45);font-size:.58rem;font-weight:800;white-space:nowrap;}
+.az-flash-time-unit{display:inline-grid;min-width:23px;place-items:center;padding:4px 5px;border-radius:5px;background:#111827;color:#fff;font-size:.78rem;font-variant-numeric:tabular-nums;}
+.az-buy-btn{background:#fff;color:#c2410c;border:0;border-radius:999px;padding:7px 13px;font-size:.72rem;font-weight:800;text-decoration:none;white-space:nowrap;transition:background .15s;}
+.az-buy-btn:hover{background:#fff7ed;color:#9a3412;}
 .az-sec-hd{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px;}
 .az-sec-title{font-size:1.05rem;font-weight:700;color:var(--az-text);margin:0;}
 .az-sec-link{font-size:.82rem;color:var(--az-link);text-decoration:none;white-space:nowrap;}
 .az-sec-link:hover{color:var(--az-lh);text-decoration:underline;}
-.az-filter-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
-.az-filter-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;border:1px solid var(--az-border);background:var(--az-card);color:var(--az-text);font-size:.83rem;cursor:pointer;transition:all .15s;}
-.az-filter-btn:hover{border-color:#aaa;}.az-filter-btn.active{background:var(--az-text);color:#fff;border-color:var(--az-text);}
+.az-filter-bar{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.az-filter-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:999px;border:1px solid #e5e7eb;background:var(--az-card);color:var(--az-text);font-size:.7rem;cursor:pointer;transition:all .15s;}
+.az-filter-btn:hover{border-color:#aaa;}.az-filter-btn.active{background:#ffdc35;color:#111;border-color:#ffdc35;}
 .az-product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
 .az-product-card{background:var(--az-card);border:1px solid var(--az-border);border-radius:4px;overflow:hidden;text-decoration:none;color:var(--az-text);transition:box-shadow .2s;position:relative;display:block;}
 .az-product-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.15);color:var(--az-text);}
@@ -114,8 +151,8 @@
 .toast-content{flex:1;font-size:.82rem;}.toast-content strong{display:block;margin-bottom:2px;}.toast-content p{margin:0;font-size:.78rem;color:var(--az-muted);}
 .toast-close{cursor:pointer;font-size:1.1rem;color:#bbb;padding:4px;}.toast-close:hover{color:var(--az-text);}
 @media(max-width:1100px){.az-product-grid{grid-template-columns:repeat(3,1fr);}}
-@media(max-width:900px){.az-sidebar{display:none;}.az-product-grid{grid-template-columns:repeat(3,1fr);}}
-@media(max-width:640px){.az-product-grid{grid-template-columns:repeat(2,1fr);}.az-stats{grid-template-columns:1fr;}.az-topbar-inner{flex-wrap:wrap;}.az-search{order:3;flex:0 0 100%;}.az-deliver{display:none;}}
+@media(max-width:900px){.az-sidebar{display:none;}.az-product-grid{grid-template-columns:repeat(3,1fr);}.az-court-grid,.az-dashboard-products{grid-template-columns:repeat(2,minmax(0,1fr));}}
+@media(max-width:640px){.az-product-grid{grid-template-columns:repeat(2,1fr);}.az-stats{grid-template-columns:1fr;}.az-topbar-inner{flex-wrap:wrap;}.az-search{order:3;flex:0 0 100%;}.az-deliver{display:none;}.az-dashboard-panel{padding:12px;}.az-dashboard-product-image{height:130px;}}
 </style>
 
 
@@ -207,141 +244,128 @@
 {{-- CONTENT --}}
 <div class="az-content">
     <div class="az-stats">
-        <div class="az-stat-card">
-            <p class="az-stat-label">Tổng đơn hàng</p>
+        <div class="az-dashboard-stat">
+            <p class="az-stat-label">TỔNG ĐƠN HÀNG</p>
             <p class="az-stat-value">{{ $stats_total }}</p>
-            <p class="az-stat-note"><span class="up">↑ 12%</span>&nbsp;so với tháng trước</p>
-            <i class="bi bi-bag az-stat-ico"></i>
+            <p class="az-stat-note"><span class="up">● {{ $stats_pending }} chờ xác nhận</span></p>
+            <span class="az-dashboard-stat-icon" aria-hidden="true">📦</span>
         </div>
-        <div class="az-stat-card">
-            <p class="az-stat-label">Đã xác nhận</p>
+        <div class="az-dashboard-stat">
+            <p class="az-stat-label">ĐÃ XÁC NHẬN</p>
             <p class="az-stat-value">{{ $stats_confirmed }}</p>
-            <p class="az-stat-note">@php $pending=$stats_total-$stats_confirmed; @endphp{{ $pending>0 ? $pending.' chờ xác nhận' : 'Tất cả đã xác nhận' }}</p>
-            <i class="bi bi-check-circle az-stat-ico"></i>
+            <p class="az-stat-note"><span class="confirmed-dot">●</span> Đơn hàng đã được xác nhận</p>
+            <span class="az-dashboard-stat-icon is-confirmed" aria-hidden="true">✓</span>
         </div>
-        <div class="az-stat-card">
-            <p class="az-stat-label">Tổng doanh thu</p>
-            <p class="az-stat-value" style="font-size:1.4rem;">{{ formatCurrency($stats_revenue) }}</p>
-            <p class="az-stat-note"><span class="up">↑ 8%</span>&nbsp;so với tháng trước</p>
-            <i class="bi bi-calendar3 az-stat-ico"></i>
+        <div class="az-dashboard-stat">
+            <p class="az-stat-label">ĐANG GIAO HÀNG</p>
+            <p class="az-stat-value">{{ $stats_shipping }}</p>
+            <p class="az-stat-note"><span class="shipping-dot">↗</span> Đơn đang trên đường giao</p>
+            <span class="az-dashboard-stat-icon" aria-hidden="true">🚚</span>
         </div>
     </div>
+
     <div class="az-flash">
-        <span class="az-flash-badge"><i class="bi bi-lightning-fill"></i> FLASH SALE</span>
-        <div class="az-flash-info">
+        <span class="az-flash-mark"><i class="bi bi-fire"></i></span>
+        <div class="az-flash-copy">
+            <div class="az-flash-topline">
+                <span class="az-flash-badge">FLASH SALE</span>
+                <span class="az-flash-applies">Ưu đãi sản phẩm thể thao</span>
+            </div>
             @if(($flashSaleInfo['percent'] ?? 0) > 0)
-                <p class="az-flash-title">Giảm tới <strong>{{ round($flashSaleInfo['percent']) }}%</strong>@if($flashSaleInfo['note']) · {{ $flashSaleInfo['note'] }}@endif</p>
-                <p class="az-flash-meta">Kết thúc sau {{ $flashSaleInfo['end'] }} · Áp dụng cho tất cả sản phẩm</p>
+                <p class="az-flash-title">Giảm đến {{ round($flashSaleInfo['percent']) }}% hôm nay! @if(!empty($flashSaleInfo['note'])){{ $flashSaleInfo['note'] }}@endif</p>
+                <p class="az-flash-meta">Ưu đãi kết thúc khi hết khung giờ · Miễn phí vận chuyển cho đơn từ {{ number_format($freeShippingThreshold, 0, ',', '.') }}đ</p>
             @else
-                <p class="az-flash-title">Khung giờ vàng đang tạm đóng</p>
-                <p class="az-flash-meta">Quay lại sau để không bỏ lỡ ưu đãi</p>
+                <p class="az-flash-title">Flash Sale hiện chưa diễn ra</p>
+                <p class="az-flash-meta">Quay lại sau để không bỏ lỡ ưu đãi sản phẩm thể thao</p>
             @endif
         </div>
-        <div class="az-flash-right"><span class="az-flash-sold">Đã bán 1.2k</span><a href="{{ route('user.services') }}" class="az-buy-btn">Mua ngay</a></div>
+        <div class="az-flash-right">
+            @if(($flashSaleInfo['percent'] ?? 0) > 0 && !empty($flashSaleInfo['end']))
+                <div class="az-flash-timer" data-flash-end="{{ $flashSaleInfo['end'] }}">
+                    <i class="bi bi-stopwatch"></i> KẾT THÚC SAU:
+                    <span class="az-flash-time-unit" data-time-hours>00</span>:
+                    <span class="az-flash-time-unit" data-time-minutes>00</span>:
+                    <span class="az-flash-time-unit" data-time-seconds>00</span>
+                </div>
+            @endif
+        </div>
     </div>
-    <div>
-        <div class="az-sec-hd">
-            <h4 class="az-sec-title">Gợi ý sản phẩm</h4>
-            <div style="display:flex;align-items:center;gap:10px;font-size:.78rem;color:var(--az-muted);">
-                <span>Dựa trên sở thích, lịch sử mua hàng và sản phẩm tương tự</span> &bull; <a href="{{ route('user.services') }}" class="az-sec-link">Xem tất cả sản phẩm</a>
+
+    <section class="az-dashboard-panel">
+        <div class="az-sec-hd" style="align-items:center;">
+            <div>
+                <h4 class="az-sec-title">Dịch Vụ Đặt Sân Thể Thao Trực Tuyến</h4>
+                <p style="margin:3px 0 0;font-size:.68rem;color:var(--az-muted);">Giảm thêm <strong style="padding:1px 4px;border-radius:3px;background:#ffdc35;color:#111;">10%</strong> khi đặt qua ứng dụng SportsHub!</p>
             </div>
+            <a href="{{ route('user.fields') }}" class="az-sec-link">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+        </div>
+        <div class="az-court-grid">
+            @php($courts = [
+                ['icon' => '⚽', 'name' => 'Sân bóng đá', 'color' => '#dbeafe'],
+                ['icon' => '🏸', 'name' => 'Sân cầu lông', 'color' => '#fef3c7'],
+                ['icon' => '🎾', 'name' => 'Sân tennis', 'color' => '#e0e7ff'],
+                ['icon' => '🏓', 'name' => 'Sân pickleball', 'color' => '#dcfce7'],
+            ])
+            @foreach($courts as $court)
+                <a href="{{ route('user.fields') }}" class="az-court-card">
+                    <span class="az-court-icon" style="background:{{ $court['color'] }};">{{ $court['icon'] }}</span>
+                    <strong style="display:block;font-size:.82rem;">{{ $court['name'] }}</strong>
+                    <small style="color:var(--az-muted);">Xem sân và lịch trống</small>
+                    <span class="az-court-book">Đặt ngay</span>
+                </a>
+            @endforeach
+        </div>
+    </section>
+
+    <section class="az-dashboard-panel">
+        <div class="az-sec-hd" style="align-items:center;flex-wrap:wrap;">
+            <div>
+                <h4 class="az-sec-title">Gợi Ý Sản Phẩm</h4>
+                <p style="margin:3px 0 0;font-size:.68rem;color:var(--az-muted);">Dựa trên sở thích của bạn</p>
+            </div>
+            <a href="{{ route('user.services') }}" class="az-sec-link">Xem tất cả sản phẩm <i class="bi bi-arrow-right"></i></a>
         </div>
         <div class="az-filter-bar">
-            <button class="az-filter-btn active" onclick="setFilter(this,'all')"><i class="bi bi-funnel"></i> Bộ lọc</button>
-            <button class="az-filter-btn active" onclick="setFilter(this,'all')">Tất cả</button>
-            @foreach($categories->take(4) as $cat)
-            <button class="az-filter-btn" onclick="setFilter(this,'{{ $cat->id }}')">{{ $cat->name }}</button>
+            <button type="button" class="az-filter-btn active" onclick="setFilter(this,'all')">Tất cả</button>
+            @foreach($categories->take(3) as $cat)
+                <button type="button" class="az-filter-btn" onclick="setFilter(this,'{{ $cat->id }}')">{{ $cat->name }}</button>
             @endforeach
         </div>
-        <div class="az-product-grid" id="suggested-grid">
-            @forelse($featuredServices as $service)
-            <a href="{{ route('user.serviceDetail', $service->id) }}" class="az-product-card" data-cat="{{ $service->category_id ?? '' }}">
-                <div class="az-product-img-wrap">
-                    @if($service->image)<img loading="lazy" src="{{ asset('uploads/services/'.$service->image) }}" alt="{{ $service->name }}" class="az-product-img">
-                    @else<div class="az-product-img" style="display:flex;align-items:center;justify-content:center;color:#ccc;font-size:2rem;"><i class="bi bi-image"></i></div>@endif
-                    @if($service->quantity == 0)<span class="az-product-badge">Hết hàng</span>
-                    @elseif(($service->discount_percent ?? 0) > 0)<span class="az-product-badge sale">-{{ round($service->discount_percent) }}%</span>
-                    @elseif($loop->index < 3)<span class="az-product-badge hot">Bán chạy</span>
-                    @endif
-                </div>
-                <div class="az-product-info">
-                    <p class="az-product-name">{{ $service->name }}</p>
-                    <div class="az-price-row">
-                        @if(($service->discount_percent ?? 0) > 0)
-                            <span class="az-price">{{ formatCurrency($service->final_price) }}</span>
-                            <span class="az-price-old">{{ formatCurrency($service->price) }}</span>
-                        @else
-                            <span class="az-price">{{ formatCurrency($service->price) }}</span>
-                        @endif
+        <div class="az-dashboard-products" id="suggested-grid">
+            @forelse($featuredServices->take(4) as $service)
+                <article class="az-dashboard-product az-product-card" data-cat="{{ $service->category_id ?? '' }}">
+                    <a href="{{ route('user.serviceDetail', $service->id) }}" class="az-dashboard-product-link">
+                        <div style="position:relative;">
+                            <img loading="lazy" src="{{ $service->image ? asset('uploads/services/' . $service->image) : asset('assets/images/default.png') }}" alt="{{ $service->name }}" class="az-dashboard-product-image">
+                            @if(($service->discount_percent ?? 0) > 0)
+                                <span class="az-product-badge sale">-{{ round($service->discount_percent) }}%</span>
+                            @endif
+                        </div>
+                        <div class="az-dashboard-product-info">
+                            <small style="color:var(--az-muted);">{{ $service->category?->name ?? 'Tổng hợp' }}</small>
+                            <p class="az-dashboard-product-name">{{ $service->name }}</p>
+                            <div class="az-price-row">
+                                @if(($service->discount_percent ?? 0) > 0)
+                                    <span class="az-price">{{ formatCurrency($service->final_price) }}</span>
+                                    <span class="az-price-old">{{ formatCurrency($service->price) }}</span>
+                                @else
+                                    <span class="az-price">{{ formatCurrency($service->price) }}</span>
+                                @endif
+                            </div>
+                            <p class="az-product-meta">{{ $service->quantity > 0 ? 'Còn ' . $service->quantity . ' sản phẩm' : 'Hết hàng' }}</p>
+                        </div>
+                    </a>
+                    <div style="padding:0 10px 10px;">
+                        <button type="button" class="az-dashboard-add-cart" data-service-id="{{ $service->id }}" data-stock="{{ $service->quantity }}" @disabled($service->quantity <= 0)>
+                            <i class="bi bi-cart-plus"></i> Thêm vào giỏ
+                        </button>
                     </div>
-                    <p class="az-product-meta">@if($service->quantity > 0)Còn {{ $service->quantity }} sp@else<span style="color:var(--az-red);">Hết hàng</span>@endif</p>
-                </div>
-            </a>
+                </article>
             @empty
-            <div style="grid-column:1/-1;text-align:center;padding:32px;color:var(--az-muted);">Chưa có sản phẩm. <a href="{{ route('user.services') }}" style="color:var(--az-link);">Xem cửa hàng</a></div>
+                <div style="grid-column:1/-1;text-align:center;padding:24px;color:var(--az-muted);">Chưa có sản phẩm gợi ý. <a href="{{ route('user.services') }}" class="az-sec-link">Xem cửa hàng</a></div>
             @endforelse
         </div>
-    </div>
-    @foreach($categories as $category)
-    @if($category->services->isNotEmpty())
-    <div class="az-cat-group">
-        <div class="az-cat-group-hd">
-            <h4 class="az-cat-group-title">{{ $category->name }}</h4>
-            <a href="{{ route('user.services', ['category' => $category->id]) }}" class="az-sec-link">Xem tất cả</a>
-        </div>
-        <div class="az-product-grid">
-            @foreach($category->services as $service)
-            <a href="{{ route('user.serviceDetail', $service->id) }}" class="az-product-card">
-                <div class="az-product-img-wrap">
-                    @if($service->image)<img src="{{ asset('uploads/services/'.$service->image) }}" alt="{{ $service->name }}" class="az-product-img">
-                    @else<div class="az-product-img" style="display:flex;align-items:center;justify-content:center;color:#ccc;font-size:2rem;"><i class="bi bi-image"></i></div>@endif
-                    @if(($service->discount_percent ?? 0) > 0)<span class="az-product-badge sale">Ưu đãi</span>@endif
-                </div>
-                <div class="az-product-info">
-                    <p class="az-product-name">{{ $service->name }}</p>
-                    <div class="az-price-row">
-                        @if(($service->discount_percent ?? 0) > 0)
-                            <span class="az-price">{{ formatCurrency($service->final_price) }}</span>
-                            <span class="az-price-old">{{ formatCurrency($service->price) }}</span>
-                        @else
-                            <span class="az-price">{{ formatCurrency($service->price) }}</span>
-                        @endif
-                    </div>
-                    <p class="az-product-meta">@if($service->quantity > 0)Còn {{ $service->quantity }} sp@else<span style="color:var(--az-red);">Hết hàng</span>@endif</p>
-                </div>
-            </a>
-            @endforeach
-        </div>
-    </div>
-    @endif
-    @endforeach
-    <div class="az-orders">
-        <div class="az-orders-hd"><i class="bi bi-receipt"></i> Đơn hàng gần đây</div>
-        @if($bookings && count($bookings) > 0)
-        <table class="az-table">
-            <thead><tr><th>Sân</th><th>Ngày</th><th>Giờ</th><th>Giá</th><th>Trạng thái</th><th></th></tr></thead>
-            <tbody>
-                @foreach(array_slice($bookings->toArray(), 0, 6) as $b)
-                <tr>
-                    <td><strong>{{ $b['field']['name'] ?? 'N/A' }}</strong></td>
-                    <td>{{ date('d/m/Y', strtotime($b['booking_date'])) }}</td>
-                    <td>{{ $b['start_time'] }} – {{ $b['end_time'] }}</td>
-                    <td><strong>{{ formatCurrency($b['total_price']) }}</strong></td>
-                    <td>
-                        @if($b['status']=='confirmed')<span class="az-badge az-badge-ok"><i class="bi bi-check-circle-fill"></i> Xác nhận</span>
-                        @elseif($b['status']=='pending')<span class="az-badge az-badge-wait"><i class="bi bi-clock"></i> Chờ</span>
-                        @else<span class="az-badge az-badge-no"><i class="bi bi-x-circle"></i> Hủy</span>@endif
-                    </td>
-                    <td><a href="{{ route('user.bookingdetail', ['id' => $b['id']]) }}" style="color:var(--az-link);font-size:.82rem;text-decoration:none;">Xem chi tiết</a></td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        @else
-        <div style="padding:28px;text-align:center;color:var(--az-muted);">Chưa có đơn hàng. <a href="{{ route('user.fields') }}" style="color:var(--az-link);">Đặt ngay</a></div>
-        @endif
-        <div class="az-orders-ft"><a href="{{ route('user.myBookings') }}" class="az-view-all">Xem tất cả đơn hàng <i class="bi bi-arrow-right"></i></a></div>
-    </div>
+    </section>
 </div>
 </div>
 </div>
@@ -369,12 +393,57 @@ function closeShippingOverlay(){_closeOverlay(document.getElementById('shippingO
 function copyVoucherCode(){const code=document.getElementById('voucherCodeText')?.innerText?.trim();if(!code)return;const btn=document.querySelector('.voucher-copy-btn');const doCopy=()=>{if(btn){btn.textContent='✓ Đã sao chép!';setTimeout(()=>{btn.textContent='Sao chép mã';},1400);}};if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(code).then(doCopy).catch(()=>{});return;}const t=document.createElement('textarea');t.value=code;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);doCopy();}
 function showToast(id,idx=0){const t=document.getElementById(id);if(!t)return;t.style.top=((window.innerWidth<=576?60:80)+idx*90)+'px';t.classList.add('show');setTimeout(()=>hideToast(id),8000);}
 function hideToast(id){const t=document.getElementById(id);if(!t)return;t.classList.remove('show');}
-function setFilter(btn,catId){document.querySelectorAll('.az-filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const grid=document.getElementById('suggested-grid');if(!grid)return;grid.querySelectorAll('.az-product-card').forEach(card=>{card.style.display=(catId==='all'||card.dataset.cat==catId)?'':'none';});}
+function setFilter(btn,catId){document.querySelectorAll('.az-filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const grid=document.getElementById('suggested-grid');if(!grid)return;grid.querySelectorAll('.az-dashboard-product').forEach(card=>{card.style.display=(catId==='all'||card.dataset.cat==catId)?'':'none';});}
 document.addEventListener('DOMContentLoaded',function(){
+    document.querySelectorAll('.az-flash-timer[data-flash-end]').forEach(timer=>{
+        const [hours,minutes]=timer.dataset.flashEnd.split(':').map(Number);
+        const end=new Date();
+        end.setHours(hours,minutes,0,0);
+        if(end<=new Date())end.setDate(end.getDate()+1);
+        const updateCountdown=()=>{
+            const secondsLeft=Math.max(0,Math.floor((end.getTime()-Date.now())/1000));
+            timer.querySelector('[data-time-hours]').textContent=String(Math.floor(secondsLeft/3600)).padStart(2,'0');
+            timer.querySelector('[data-time-minutes]').textContent=String(Math.floor((secondsLeft%3600)/60)).padStart(2,'0');
+            timer.querySelector('[data-time-seconds]').textContent=String(secondsLeft%60).padStart(2,'0');
+        };
+        updateCountdown();
+        setInterval(updateCountdown,1000);
+    });
     setTimeout(()=>showToast('toast-rule',0),1200);
     setTimeout(()=>showToast('toast-news',1),1700);
     const v=document.getElementById('voucherOverlay'),s=document.getElementById('shippingOverlay');
     if(v)setTimeout(()=>_openOverlay(v),600);else if(s)setTimeout(()=>_openOverlay(s),600);
+    document.querySelectorAll('.az-dashboard-add-cart').forEach(button=>{
+        button.addEventListener('click',async function(){
+            if(this.disabled)return;
+            const stock=Number(this.dataset.stock||0);
+            if(stock<1){alert('Sản phẩm đã hết hàng.');return;}
+            const originalText=this.innerHTML;
+            this.disabled=true;
+            this.innerHTML='<i class="bi bi-hourglass-split"></i> Đang thêm...';
+            try{
+                const response=await fetch("{{ route('user.cart.add.ajax') }}",{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json',
+                        'Accept':'application/json',
+                        'X-CSRF-TOKEN':"{{ csrf_token() }}"
+                    },
+                    body:JSON.stringify({service_id:this.dataset.serviceId,quantity:1})
+                });
+                const data=await response.json();
+                if(!response.ok||!data.success)throw new Error(data.error||'Không thể thêm sản phẩm vào giỏ hàng.');
+                const cartCount=document.querySelector('.az-cart-count');
+                if(cartCount)cartCount.textContent=data.totalItems;
+                this.innerHTML='<i class="bi bi-check2"></i> Đã thêm';
+                setTimeout(()=>{this.innerHTML=originalText;this.disabled=false;},1200);
+            }catch(error){
+                alert(error.message||'Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.');
+                this.innerHTML=originalText;
+                this.disabled=false;
+            }
+        });
+    });
 });
 </script>
 @endsection

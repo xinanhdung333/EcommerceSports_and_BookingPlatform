@@ -132,10 +132,19 @@ class PagesController extends Controller
     {
         $user = Auth::user();
         
-        // Get booking stats
-        $stats_total = $user ? $user->bookings()->count() : 0;
-        $stats_confirmed = $user ? $user->bookings()->where('status', 'confirmed')->count() : 0;
-        $stats_revenue = $user ? $user->bookings()->sum('total_price') : 0;
+        // Get this user's order and shipping stats.
+        $userOrders = Order::where('user_id', $user->id);
+        $stats_total = (clone $userOrders)->count();
+        $stats_pending = (clone $userOrders)->where('status', 'pending')->count();
+        $stats_confirmed = (clone $userOrders)->where('status', 'confirmed')->count();
+        $stats_shipping = (clone $userOrders)
+            ->whereHas('shipment', function ($query) {
+                $query->whereIn('status', [
+                    \App\Models\OrderShipment::STATUS_TRANSPORTING,
+                    \App\Models\OrderShipment::STATUS_DELIVERING,
+                ]);
+            })
+            ->count();
             
         // Get recent bookings
         $bookings = $user ? $user->bookings()->with('field')->latest()->take(5)->get() : [];
@@ -206,8 +215,9 @@ class PagesController extends Controller
         return view('user.dashboard', [
             'user' => $user,
             'stats_total' => $stats_total,
+            'stats_pending' => $stats_pending,
             'stats_confirmed' => $stats_confirmed,
-            'stats_revenue' => $stats_revenue,
+            'stats_shipping' => $stats_shipping,
             'bookings' => $bookings,
             'rule' => $rule,
             'ruleService' => $ruleService,
