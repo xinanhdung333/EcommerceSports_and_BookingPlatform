@@ -169,9 +169,32 @@ class PagesController extends Controller
                 ->get();
         });
 
-        $featuredServices = Cache::remember('dashboard:featured_services', 300, function () {
-            return Service::where('status', 'active')->latest()->take(50)->get();
-        });
+        // Personalised product suggestions for the USER dashboard. Keep this
+        // query user-specific (it must not be shared through the dashboard cache).
+        $purchasedServiceIds = OrderItem::whereHas('order', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })
+            ->pluck('service_id')
+            ->filter()
+            ->unique();
+
+        $preferredCategoryIds = Service::whereIn('id', $purchasedServiceIds)
+            ->whereNotNull('category_id')
+            ->pluck('category_id')
+            ->unique();
+
+        $featuredServices = Service::query()
+            ->where('status', 'active')
+            ->where('quantity', '>', 0)
+            ->whereNotIn('id', $purchasedServiceIds)
+            ->when($preferredCategoryIds->isNotEmpty(), function ($query) use ($preferredCategoryIds) {
+                $query->orderByRaw('CASE WHEN category_id IN (' . $preferredCategoryIds->implode(',') . ') THEN 0 ELSE 1 END');
+            })
+            ->orderByDesc('avg_rating')
+            ->orderByDesc('total_reviews')
+            ->latest()
+            ->take(50)
+            ->get();
 
         // Use one discount calculation for every product shown on the homepage.
         ServiceDiscountHelper::applyDiscountToCollection($featuredServices);

@@ -241,9 +241,9 @@
     </div>
     <div>
         <div class="az-sec-hd">
-            <h4 class="az-sec-title">Gợi ý cho bạn</h4>
+            <h4 class="az-sec-title">Gợi ý sản phẩm</h4>
             <div style="display:flex;align-items:center;gap:10px;font-size:.78rem;color:var(--az-muted);">
-                {{ $featuredServices->count() }} sản phẩm &bull; <a href="{{ route('user.services') }}" class="az-sec-link">Xem tất cả sản phẩm</a>
+                <span>Dựa trên sở thích, lịch sử mua hàng và sản phẩm tương tự</span> &bull; <a href="{{ route('user.services') }}" class="az-sec-link">Xem tất cả sản phẩm</a>
             </div>
         </div>
         <div class="az-filter-bar">
