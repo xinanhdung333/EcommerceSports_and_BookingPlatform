@@ -24,28 +24,19 @@
         <!-- FLASH SALE -->
         @if($flashPercent > 0)
         <div class="flash-sale-banner">
-
             <div class="flash-sale-inner">
-
-                <div style="font-weight:bold;">
-                    🔥 FLASH SALE
-                    <span style="background:rgba(255,255,255,0.2); padding:2px 6px; border-radius:6px; font-size:13px; margin-left:5px;">
-                        {{ $flashStart }} - {{ $flashEnd }}
-                    </span>
+                <div class="flash-sale-title">
+                    <span class="flash-sale-fire" aria-hidden="true">🔥</span>
+                    <span>FLASH SALE</span>
+                    <span class="flash-sale-time">{{ $flashStart }} - {{ $flashEnd }}</span>
                 </div>
-
-                <div style="font-weight:bold;">
-                    -{{ round($flashPercent) }}%
+                <div class="flash-sale-discount">
+                    -{{ round($flashPercent) }}% <small>GIẢM</small>
                 </div>
-
             </div>
-
             @if($flashnote)
-                <div style="font-size:12px; margin-top:5px; opacity:0.9;">
-                    {{ $flashnote }}
-                </div>
+                <div class="flash-sale-note">{{ $flashnote }}</div>
             @endif
-
         </div>
         @endif
 
@@ -200,10 +191,28 @@
 }
 
 .flash-sale-banner {
-    flex:1; min-width:0; text-align:center; background:#fff; color:#0f1111; padding:10px 15px; border:1px solid #d5d9d9; border-left:5px solid #cc0c39; border-radius:8px;
+    position:relative; flex:1; min-width:0; overflow:hidden; padding:14px 20px; border:0; border-radius:14px;
+    color:#fff; text-align:left; background:linear-gradient(110deg,#b8002d 0%,#ed174c 55%,#ff7518 100%);
+    box-shadow:0 6px 18px rgba(204,12,57,.24);
 }
 .flash-sale-inner {
-    display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap;
+    display:flex; justify-content:space-between; align-items:center; gap:14px; flex-wrap:wrap;
+}
+.flash-sale-title {
+    display:flex; align-items:center; gap:8px; font-size:20px; font-weight:800; letter-spacing:.04em;
+}
+.flash-sale-fire { font-size:22px; }
+.flash-sale-time {
+    padding:5px 10px; border:1px solid rgba(255,255,255,.45); border-radius:999px;
+    background:rgba(255,255,255,.16); font-size:13px; font-weight:700; letter-spacing:0;
+}
+.flash-sale-discount {
+    padding:6px 13px; border-radius:10px; color:#b8002d; background:#ffe15a;
+    box-shadow:0 3px 10px rgba(75,0,0,.18); font-size:24px; font-weight:900; line-height:1.1;
+}
+.flash-sale-discount small { font-size:11px; font-weight:800; }
+.flash-sale-note {
+    margin-top:5px; color:rgba(255,255,255,.92); font-size:13px; font-weight:600;
 }
 
 .search-form-wrap {
@@ -327,7 +336,12 @@
         padding: 5px 8px !important;
     }
     .cart-icon-link { font-size: 35px; }
-    .flash-sale-inner { flex-direction: column; gap: 4px; }
+    .flash-sale-banner { padding:12px 14px; }
+    .flash-sale-inner { justify-content:center; gap:8px; }
+    .flash-sale-title { justify-content:center; flex-wrap:wrap; font-size:17px; }
+    .flash-sale-time { font-size:12px; }
+    .flash-sale-discount { font-size:21px; }
+    .flash-sale-note { text-align:center; }
     .search-input { flex-basis: 100%; min-width: 100%; }
     .search-select { flex: 1; }
     .search-btn { width: 100%; }

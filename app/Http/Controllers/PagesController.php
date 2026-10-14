@@ -1618,10 +1618,10 @@ public function searchServices(Request $request)
 
     $myServices = $query->latest('created_at')
         ->paginate(5)
-        ->withQueryString()
+        ->appends($request->except(['page', 'partial']))
         ->withPath(route('user.services.search'));
 
-    if ($request->ajax() || $request->boolean('partial')) {
+    if ($request->ajax()) {
         return view('user.service-table', compact('myServices'))->render();
     }
 

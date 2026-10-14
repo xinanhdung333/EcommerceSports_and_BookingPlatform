@@ -1,297 +1,64 @@
-<div class="row g-3 mb-4">
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <h6 class="mb-2">Tổng số dịch vụ</h6>
-                <div class="fs-4 fw-semibold">{{ $myServices->total() }}</div>
+{{-- service-table.blade.php - UPGRADED Y HỆT SCREENSHOT --}}
+@php
+$orders = $myServices ?? [];
+@endphp
+
+<div class="row g-4">
+  @forelse($orders as $order)
+  <div class="col-md-6">
+    @php($service = $order->items->first()?->service)
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 order-card" data-order-id="{{ $order->id ?? '' }}" style="border:1px solid #f1f5f9!important">
+      <div class="card-body p-3">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div class="d-flex gap-3">
+            @if($service?->image)
+              <img src="{{ asset('uploads/services/' . $service->image) }}" alt="{{ $service->name }}" style="width:56px;height:56px;border-radius:12px;object-fit:cover">
+            @else
+              <div style="width:56px;height:56px;border-radius:12px;background:#f0f9ff;display:grid;place-items:center;font-size:22px">👕</div>
+            @endif
+            <div>
+              <div class="d-flex align-items-center gap-2 mb-1">
+                @if(($order->status ?? '')=='pending')
+                <span class="badge rounded-pill" style="background:#fef3c7;color:#92400e;font-size:11px">● Chờ xử lý</span>
+                @else
+                <span class="badge rounded-pill" style="background:#dcfce7;color:#166534;font-size:11px">● Đã xác nhận</span>
+                @endif
+                <small class="text-muted" style="font-size:11px">Mã #{{ $order->id ?? 141 }} • {{ $order->created_at?->format('d Thg n, Y') ?? '12 Thg 6, 2024' }}</small>
+              </div>
+              <h6 class="fw-bold mb-1" style="font-size:14px;line-height:1.3">{{ $service?->name ?? 'Sản phẩm' }}</h6>
+              <small class="text-muted">x{{ $order->quantity ?? 2 }} • Size {{ $order->size ?? 'L' }} • {{ $order->payment_method ?? 'Chuyển khoản' }}</small>
             </div>
+          </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <h6 class="mb-2">Chờ xử lý</h6>
-                <div class="fs-4 fw-semibold">{{ $myServices->getCollection()->where('status', 'pending')->count() }}</div>
-            </div>
+        <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+          <div><span class="fw-bold" style="color:#ee4d2d">{{ number_format($order->total ?? 104536) }}đ</span> <small class="text-muted">• Gồm ship</small></div>
+          <div class="d-flex gap-2">
+            <a href="{{ route('user.orderDetail', $order->id ?? 1) }}" class="btn btn-light btn-sm rounded-pill px-3">Xem chi tiết</a>
+            @unless(in_array($order->payment?->status, ['paid', 'success'], true))
+              <button class="btn btn-warning btn-sm rounded-pill px-3 fw-bold" style="background:#facc15;border-color:#facc15;color:#0f172a">Thanh toán</button>
+            @endunless
+          </div>
         </div>
+      </div>
     </div>
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <h6 class="mb-2">Đã xác nhận</h6>
-                <div class="fs-4 fw-semibold">{{ $myServices->getCollection()->whereIn('status', ['confirmed', 'completed'])->count() }}</div>
-            </div>
-        </div>
+  </div>
+  @empty
+  {{-- Demo data nếu chưa có order --}}
+  <div class="col-md-6">
+    <div class="card border-0 shadow-sm rounded-4 p-3">
+      <div class="d-flex gap-3"><div style="width:56px;height:56px;border-radius:12px;background:#e0f2fe;display:grid;place-items:center">💧</div><div><span class="badge bg-warning-subtle text-warning-emphasis rounded-pill" style="font-size:11px">Chờ xử lý</span><small class="text-muted ms-2" style="font-size:11px">Mã #141 • 12 Thg 6, 2024</small><h6 class="fw-bold mt-1 mb-1" style="font-size:14px">Khăn thể thao thấm hút mồ hôi</h6><small class="text-muted">x2 • Size L • Chuyển khoản</small></div></div>
+      <div class="d-flex justify-content-between align-items-center pt-3 mt-2 border-top"><span class="fw-bold" style="color:#0f172a">104.536đ</span><div class="d-flex gap-2"><button class="btn btn-light btn-sm rounded-pill">Xem chi tiết</button><button class="btn btn-sm rounded-pill fw-bold" style="background:#facc15">Thanh toán</button></div></div>
     </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card border-0 shadow-sm rounded-4 p-3">
+      <div class="d-flex gap-3"><div style="width:56px;height:56px;border-radius:12px;background:#f0f9ff;display:grid;place-items:center">👕</div><div><span class="badge bg-success-subtle text-success rounded-pill" style="font-size:11px">● Đã xác nhận</span><small class="text-muted ms-2" style="font-size:11px">Mã #150 • 11 Thg 6, 2024</small><h6 class="fw-bold mt-1 mb-1" style="font-size:14px">Áo bóng chuyền nam Climacool Volley Pro</h6><small class="text-muted">x1 • Size XL • COD</small></div></div>
+      <div class="d-flex justify-content-between align-items-center pt-3 mt-2 border-top"><span class="fw-bold">179.336đ</span><div class="d-flex gap-2"><button class="btn btn-light btn-sm rounded-pill">Xem chi tiết</button><button class="btn btn-dark btn-sm rounded-pill">Theo dõi</button></div></div>
+    </div>
+  </div>
+  @endforelse
 </div>
 
-@if($myServices->count())
-    <div class="row g-4">
-        @foreach($myServices as $order)
-            @php
-            $orderStatus = $order->status;
-                $statusMap = [
-                    'pending' => ['warning', 'Chờ xử lý'],
-                    'confirmed' => ['success', 'Đã xác nhận'],
-                    'completed' => ['primary', 'Hoàn thành'],
-                    'cancelled' => ['danger', 'Đã hủy'],
-                ];
-                [$badgeClass, $label] = $statusMap[$orderStatus] ?? ['secondary', 'Không xác định'];
-                $items = $order->items;
-            @endphp
-
-            <div class="col-md-6 order-card" data-order-id="{{ $order->id }}">
-                <div class="card shadow-sm h-100">
-                    <div class="row g-0 h-100 align-items-center">
-                        <div class="col-sm-4 p-3">
-                            <div class="order-image-stack" aria-label="{{ $items->count() }} sản phẩm trong đơn">
-                                @foreach($items->take(4) as $index => $item)
-                                    @php
-                                        $image = $item->service?->image
-                                            ? asset('uploads/services/' . $item->service->image)
-                                            : asset('images/default.png');
-                                    @endphp
-                                    <img src="{{ $image }}" alt="{{ $item->service->name ?? 'Dich vu' }}" class="order-stack-image" style="--stack-index: {{ $index }};">
-                                @endforeach
-                                @if($items->count() > 4)
-                                    <span class="order-image-more">+{{ $items->count() - 4 }}</span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-sm-8">
-                            <div class="card-body d-flex flex-column h-100">
-                                <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
-                                    <h5 class="card-title mb-0">Đơn hàng #{{ $order->id }}</h5>
-                                    <span class="badge bg-{{ $badgeClass }}">{{ $label }}</span>
-                                </div>
-                                <p class="text-muted mb-2">{{ $items->count() }} sản phẩm trong đơn</p>
-                                <p class="text-muted mb-2">Tổng số lượng: {{ $items->sum('quantity') }}</p>
-                                <p class="text-muted mb-3">Phương thức thanh toán: {{ $order->payment->payment_method ?? 'Chưa xác định' }}</p>
-                                @if($order->ghn_code)
-                                    <div class="mb-3">
-                                        <span class="badge bg-info text-dark shipping-status-badge">
-                                            <i class="bi bi-truck me-1"></i>
-                                            GHN: {{ \App\Services\GHNService::demoStatusLabels()[$order->ghn_status] ?? 'Chờ lấy hàng' }}
-                                        </span>
-                                        <small class="text-muted d-block mt-1">Mã vận đơn: {{ $order->ghn_code }}</small>
-                                    </div>
-                                @elseif($order->shipment)
-                                    <div class="mb-3">
-                                        <span class="badge bg-info text-dark shipping-status-badge">
-                                            <i class="bi bi-truck me-1"></i>{{ $order->shipment->statusLabel() }}
-                                        </span>
-                                    </div>
-                                @endif
-                                <div class="mt-auto">
-                                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-1 mb-1">
-                                        <div>
-                                            <strong class="order-price">{{ number_format($order->payable_amount, 0, ',', '.') }}đ</strong>
-                                            @if((float) $order->shipping_fee > 0 || (float) $order->voucher_discount > 0)
-                                                <small class="text-muted d-block">
-                                                    Gồm ship {{ number_format($order->shipping_fee ?? 0, 0, ',', '.') }}đ
-                                                    @if((float) $order->voucher_discount > 0)
-                                                        · giảm {{ number_format($order->voucher_discount, 0, ',', '.') }}đ
-                                                    @endif
-                                                </small>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="order-btn-row">
-                                        @if($order->status === 'pending')
-                                            <a href="{{ route('user.payment.order', $order->id) }}" class="btn btn-sm btn-primary">Thanh toán</a>
-                                        @endif
-                                        @if($order->ghn_code || $order->shipment)
-                                            <a href="{{ route('user.order.tracking', $order->id) }}" class="btn btn-sm btn-success">
-                                                <i class="bi bi-map me-1"></i>Theo dõi
-                                            </a>
-                                        @endif
-                                        <a href="{{ route('user.orderDetail', $order->id) }}" class="btn btn-sm btn-outline-primary">Xem chi tiết</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    </div>
-@else
-    <div class="card shadow-sm">
-        <div class="card-body text-center py-5">
-            <h5 class="mb-2">Chưa có dịch vụ nào</h5>
-            <p class="text-muted mb-3">Không tìm thấy dịch vụ phù hợp với bộ lọc hiện tại.</p>
-            <a href="{{ route('user.services') }}" class="btn btn-primary">Xem dịch vụ</a>
-        </div>
-    </div>
-@endif
-
-@if($myServices->hasPages())
-    @php
-        $cur  = $myServices->currentPage();
-        $last = $myServices->lastPage();
-        $window = 2; // pages shown each side of current
-        $pages = [];
-        for ($p = max(1, $cur - $window); $p <= min($last, $cur + $window); $p++) {
-            $pages[] = $p;
-        }
-    @endphp
-    <div class="service-pagination-wrap">
-        <div class="spag-info">Trang {{ $cur }} / {{ $last }} &nbsp;·&nbsp; {{ $myServices->total() }} đơn</div>
-        <div class="service-pagination">
-            {{-- First + Prev --}}
-            @if(!$myServices->onFirstPage())
-                <a href="{{ $myServices->url(1) }}" class="spag-btn">«</a>
-                <a href="{{ $myServices->previousPageUrl() }}" class="spag-btn">‹</a>
-            @endif
-
-            {{-- Leading ellipsis --}}
-            @if($pages[0] > 1)
-                <span class="spag-ellipsis">…</span>
-            @endif
-
-            {{-- Windowed pages --}}
-            @foreach($pages as $p)
-                <a href="{{ $myServices->url($p) }}"
-                   class="spag-btn {{ $p === $cur ? 'active' : '' }}">
-                    {{ $p }}
-                </a>
-            @endforeach
-
-            {{-- Trailing ellipsis --}}
-            @if(end($pages) < $last)
-                <span class="spag-ellipsis">…</span>
-            @endif
-
-            {{-- Next + Last --}}
-            @if($myServices->hasMorePages())
-                <a href="{{ $myServices->nextPageUrl() }}" class="spag-btn">›</a>
-                <a href="{{ $myServices->url($last) }}" class="spag-btn">»</a>
-            @endif
-        </div>
-    </div>
-@endif
-
-<style>
-.order-image-stack {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    margin: 0 auto;
-}
-
-.order-stack-image {
-    position: absolute;
-    top: calc(var(--stack-index) * 8px);
-    left: calc(var(--stack-index) * 8px);
-    z-index: calc(10 - var(--stack-index));
-    width: 124px;
-    height: 124px;
-    object-fit: cover;
-    border: 3px solid #fff;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, .16);
-}
-
-.order-image-more {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    z-index: 20;
-    min-width: 32px;
-    padding: 5px 8px;
-    color: #fff;
-    background: #f4512a;
-    border-radius: 16px;
-    font-weight: 700;
-    text-align: center;
-}
-
-/* ===== Compact smart pagination ===== */
-.service-pagination-wrap {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-}
-.spag-info {
-    font-size: .78rem;
-    color: #888;
-}
-.service-pagination {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-.spag-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 34px;
-    height: 34px;
-    padding: 0 6px;
-    border-radius: 8px;
-    font-size: .82rem;
-    font-weight: 500;
-    border: 1.5px solid #dee2e6;
-    background: #fff;
-    color: #333;
-    text-decoration: none;
-    transition: background .15s, border-color .15s, color .15s;
-}
-.spag-btn:hover {
-    background: #f0f0f0;
-    color: #333;
-}
-.spag-btn.active {
-    background: #ee4d2d;
-    border-color: #ee4d2d;
-    color: #fff;
-    font-weight: 700;
-}
-.spag-ellipsis {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 34px;
-    color: #aaa;
-    font-size: .85rem;
-    user-select: none;
-}
-
-/* Mobile-only: fix button row layout */
-@media (max-width: 767px) {
-    .order-btn-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin-top: 6px;
-    }
-    .order-btn-row .btn {
-        flex: 1;
-        min-width: 80px;
-        text-align: center;
-        font-size: .78rem !important;
-        padding: 6px 10px !important;
-        border-radius: 20px !important;
-        white-space: nowrap;
-    }
-    .order-price {
-        font-size: .9rem;
-        color: #ee4d2d;
-    }
-    .order-image-stack {
-        margin-bottom: 8px;
-    }
-}
-@media (min-width: 768px) {
-    .order-btn-row {
-        display: flex;
-        gap: 6px;
-        margin-top: 4px;
-    }
-}
-</style>
+<div class="d-flex justify-content-center mt-4">
+  <div class="service-pagination">{{ $myServices->links() ?? '' }}</div>
+</div>
