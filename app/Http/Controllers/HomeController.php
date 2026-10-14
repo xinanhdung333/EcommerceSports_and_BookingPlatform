@@ -23,7 +23,7 @@ class HomeController extends Controller
             };
         }
 
-        return response()->file(storage_path('app/public/sports_e_commerce_landing_page.html'));
+        return response()->file(public_path('sports_e_commerce_landing_page.html'));
     }
     public function indexuser(Request $request)
     {

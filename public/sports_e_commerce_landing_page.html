@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportsHub | Trang thiết bị thể thao</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- GSAP & ScrollTrigger CDNs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Perspective and 3D depth styles */
+        .perspective-container {
+            perspective: 1200px;
+        }
+
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.2s cubic-bezier(0.1, 0.4, 0.2, 1);
+        }
+
+        .translate-z-1 { transform: translateZ(30px); }
+        .translate-z-2 { transform: translateZ(60px); }
+        .translate-z-3 { transform: translateZ(90px); }
+
+        /* Glassmorphism Header */
+        .navbar-scrolled {
+            background-color: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+        }
+
+        /* Dynamic word split span animations */
+        .word-span {
+            display: inline-block;
+            will-change: transform, opacity;
+        }
+
+        /* Subtle Grid Pattern Background */
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #52525b;
+        }
+
+        /* Laser scanning line animation */
+        @keyframes scan-laser {
+            0% { top: 0%; opacity: 0.8; }
+            50% { top: 95%; opacity: 1; }
+            100% { top: 0%; opacity: 0.8; }
+        }
+        .animate-scan-laser {
+            animation: scan-laser 2.5s ease-in-out infinite;
+        }
+    </style>
+    <style>
+        /* SportsHub shared visitor chrome */
+        #navbar{background:#131921!important;border-bottom:1px solid #232f3e!important;padding-top:14px!important;padding-bottom:14px!important}
+        #navbar .text-zinc-300,#navbar nav a{color:#fff!important}
+        #navbar nav a:hover{color:#ffd814!important}
+        #navbar .bg-white{background:#ffd814!important;color:#0f1111!important;border:1px solid #fcd200!important;border-radius:8px!important;box-shadow:none!important}
+        #navbar .bg-white:hover{background:#f7ca00!important}
+        #mobile-menu{background:#232f3e!important;border-color:#3a4553!important}
+        #mobile-menu a{color:#fff!important}
+        #mobile-menu a.bg-white{color:#0f1111!important}
+        #cta-buttons a:first-child{background:#ffd814!important;color:#0f1111!important;border:1px solid #fcd200!important;border-radius:8px!important;box-shadow:none!important}
+        #cta-buttons a:first-child:hover{background:#f7ca00!important}
+        #cta-buttons a:last-child{background:#fff!important;color:#0f1111!important;border:1px solid #d5d9d9!important;border-radius:8px!important}
+        #copy-curl-btn{color:#007185!important}
+        footer{background:#232f3e!important;border-top:1px solid #3a4553!important}
+        footer a:hover{color:#ffd814!important}
+        footer .bg-white{background:#ffd814!important;color:#0f1111!important}
+    </style>
+</head>
+<body class="relative text-zinc-100 antialiased selection:bg-white selection:text-black bg-grid-pattern">
+    <!-- Page Veil Overlay -->
+    <div id="page-veil" aria-hidden="true" style="position:fixed;inset:0;z-index:99999;background:#09090b;opacity:1;transition:opacity .28s ease;pointer-events:none"></div>
+
+    <!-- Top Solid Progress Bar -->
+    <div id="scroll-progress-bar" class="fixed top-0 left-0 h-1 bg-white z-50 w-0 transition-all duration-75"></div>
+
+    <!-- Corner Scroll Percentage & Layer Indicator Badge -->
+    <div class="fixed bottom-6 right-6 z-40 bg-zinc-950/90 backdrop-blur-md border border-zinc-800 px-4 py-2 rounded-full shadow-2xl flex items-center gap-3 text-xs font-mono text-zinc-300 pointer-events-none">
+        <span class="w-2.5 h-2.5 rounded-full bg-white animate-pulse"></span>
+        <span>SPORTSHUB</span>
+        <span class="text-zinc-600">|</span>
+        <span>SCROLL: <strong id="scroll-percent" class="text-white">0%</strong></span>
+    </div>
+
+    <!-- Navigation Header -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-40 py-5 transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-6 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-white text-black font-extrabold flex items-center justify-center text-xl shadow-lg transform group-hover:rotate-12 transition-transform">
+                    ⚡
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-extrabold text-xl tracking-tight text-white uppercase"><span class="text-orange-400">◉</span> SportsHub</span>
+                    <span class="text-[9px] font-mono tracking-widest text-zinc-400 uppercase">Sports Equipment & Services</span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8 text-xs font-semibold text-zinc-300 tracking-wide uppercase">
+                <a href="#hero" class="hover:text-white transition-colors">Trang Bị</a>
+                <a href="#narrative" class="hover:text-white transition-colors">Công Nghệ</a>
+                <a href="#depth" class="hover:text-white transition-colors">Kiến Trúc Đệm</a>
+                <a href="#pinned-steps" class="hover:text-white transition-colors">Quy Trình</a>
+                <a href="#cards" class="hover:text-white transition-colors">Tính Năng</a>
+                <a href="#showcase" class="hover:text-white transition-colors">Bộ Sưu Tập</a>
+            </nav>
+
+            <!-- CTA Button Header -->
+            <div class="hidden sm:flex items-center gap-4">
+                <a href="/login" class="px-5 py-2.5 rounded-full bg-white text-black text-xs font-extrabold hover:bg-zinc-200 transition-all shadow-lg hover:scale-105">
+                    Đặt Hàng Ngay
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="mobile-menu-btn" class="md:hidden p-2 text-zinc-300 hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden md:hidden flex-col bg-zinc-950/95 border-b border-zinc-800 px-6 py-4 gap-4 text-sm font-semibold">
+            <a href="#hero" class="hover:text-white">Trang Bị</a>
+            <a href="#narrative" class="hover:text-white">Công Nghệ</a>
+            <a href="#depth" class="hover:text-white">Kiến Trúc Đệm</a>
+            <a href="#pinned-steps" class="hover:text-white">Quy Trình</a>
+            <a href="#cards" class="hover:text-white">Tính Năng</a>
+            <a href="#showcase" class="hover:text-white">Bộ Sưu Tập</a>
+            <a href="#contact" class="px-5 py-2.5 rounded-full bg-white text-black text-center font-extrabold mt-2">Đặt Hàng Ngay</a>
+        </div>
+    </header>
+
+
+    <!-- 2. NARRATIVE SECTION WITH HORIZONTAL TEXT DRIFT & LAYERED IMAGES -->
+    <section id="narrative" class="py-36 px-6 relative bg-zinc-950 border-y border-zinc-900 overflow-hidden">
+        
+        <!-- Large Background Horizontal Scrolling Text -->
+        <div id="horizon-text-1" class="whitespace-nowrap font-extrabold text-[12vw] text-zinc-900/60 uppercase tracking-tighter select-none pointer-events-none mb-[-4vw]">
+            AERODYNAMIC • CARBON FIBER • BIOMETRIC SENSORS • ULTRALIGHT HIGH PERFORMANCE
+        </div>
+
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left: Layered Text Content -->
+                <div class="lg:col-span-6 space-y-6">
+                    <span id="narrative-badge" class="inline-block text-zinc-400 font-mono text-xs tracking-widest uppercase border-b border-zinc-700 pb-1">Công Nghệ Thể Thao Tương Lai</span>
+                    <h2 id="narrative-title" class="text-3xl sm:text-5xl font-extrabold text-white leading-tight">
+                        Tối ưu từng miligiây chuyển động cho vận động viên.
+                    </h2>
+                    <p id="narrative-desc-1" class="text-zinc-400 text-base sm:text-lg leading-relaxed">
+                        <strong>Khung Carbon Đàn Hồi Cực Đại:</strong> Mỗi đôi giày chạy Aero Sport được tích hợp tấm đế Carbon đúc nguyên khối giúp hoàn trả tới 89.4% năng lượng sau mỗi bước đạp nền, giảm tổn hao cơ bắp trên cự ly marathon.
+                    </p>
+                    <p id="narrative-desc-2" class="text-zinc-400 text-base sm:text-lg leading-relaxed">
+                        <strong>Vải Nén Sinh Học Biometric 3D:</strong> Trang bị trang phục thi đấu tích hợp vi sợi thu hồi mồ hôi tự động, duy trì nhiệt độ cơ thể tối ưu 36.5°C ngay cả dưới điều kiện thời tiết khắc nghiệt nhất.
+                    </p>
+
+                    <div id="narrative-button-box" class="pt-4">
+                        <a href="#depth" class="inline-flex items-center gap-3 px-7 py-3.5 rounded-full bg-white text-black font-extrabold text-sm hover:bg-zinc-200 transition-all shadow-xl hover:scale-105">
+                            <span>Khám phá cấu trúc kiến trúc đệm Carbon</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right: Overlapping Image Stack (Dual Parallax Layers) -->
+                <div class="lg:col-span-6 relative min-h-[480px] flex items-center justify-center">
+                    
+                    <!-- Background Card (Scrolls Faster Upward) -->
+                    <div id="narrative-card-back" class="absolute -top-6 -left-4 w-4/5 bg-zinc-900 border border-zinc-800 rounded-2xl p-4 shadow-2xl z-0">
+                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80" 
+                             alt="Pro Athletic Carbon Shoe" 
+                             class="w-full h-56 object-cover rounded-xl grayscale contrast-125"
+                             onerror="this.onerror=null; this.src='https://placehold.co/800x450/000000/ffffff?text=Pro+Carbon+Shoe';" />
+                        <div class="mt-3 text-xs font-mono text-zinc-500">CARBON SOLE: FULL LENGTH MONOCOQUE</div>
+                    </div>
+
+                    <!-- Foreground Card (Scrolls Slower / Overlaps) -->
+                    <div id="narrative-card-front" class="absolute -bottom-6 -right-4 w-4/5 bg-zinc-900/90 backdrop-blur-xl border border-zinc-700 rounded-2xl p-5 shadow-2xl z-10">
+                        <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80" 
+                             alt="High Performance Athlete Training" 
+                             class="w-full h-56 object-cover rounded-xl grayscale contrast-125"
+                             onerror="this.onerror=null; this.src='https://placehold.co/800x450/000000/ffffff?text=Pro+Athlete+Training';" />
+                        <div class="mt-3 flex items-center justify-between text-xs font-mono">
+                            <span class="text-white font-bold">CẢM BIẾN NHỊP TIM 24/7</span>
+                            <span class="text-zinc-400">TRỌNG LƯỢNG: 165G</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. PSEUDO 3D DEPTH & MOUSE INTERACTION SECTION -->
+    <section id="depth" class="py-36 px-6 relative bg-black overflow-hidden border-b border-zinc-900">
+        <div class="max-w-6xl mx-auto">
+            
+            <div class="text-center max-w-2xl mx-auto mb-20 space-y-4">
+                <span id="depth-tag" class="text-zinc-400 font-mono text-xs tracking-widest uppercase">Kiến Trúc Vật Liệu Đa Tầng</span>
+                <h2 id="depth-title" class="text-3xl sm:text-5xl font-extrabold text-white">Đế Giày Carbon Matrix 5 Lớp</h2>
+                <p id="depth-sub" class="text-zinc-400 text-base">Cấu trúc đa lớp giúp triệt tiêu chấn động gót chân và khuếch đại lực đẩy khi bứt tốc.</p>
+            </div>
+
+            <div class="perspective-container flex justify-center">
+                <!-- 3D Card with multiple TranslateZ inner layers -->
+                <div id="perspective-card" class="card-3d relative w-full max-w-2xl bg-zinc-950 border border-zinc-800 rounded-3xl p-8 sm:p-12 shadow-2xl hover:border-zinc-600 transition-colors">
+                    
+                    <div class="flex items-center justify-between mb-8 translate-z-1">
+                        <span class="px-3.5 py-1.5 rounded-full bg-white text-black font-mono text-xs font-bold">SOLE ARCHITECTURE</span>
+                        <span class="text-xs text-zinc-500 font-mono">3K CARBON + NITROGEN FOAM</span>
+                    </div>
+
+                    <h3 class="text-3xl sm:text-4xl font-extrabold text-white mb-4 translate-z-2">Đế Giày Chạy Tốc Độ Cao Hóa Cương</h3>
+                    <p class="text-zinc-400 text-base mb-8 leading-relaxed translate-z-1">
+                        Lớp đế giữa bơm bọt Nitơ siêu tới hạn kết hợp khung đĩa Carbon hình sóng độc quyền giúp bảo vệ khớp gối tối đa trên từng ki-lô-mét.
+                    </p>
+
+                    <div class="translate-z-3 rounded-2xl overflow-hidden bg-black border border-zinc-800 shadow-2xl relative group mb-8">
+                        <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=1200&q=80" 
+                             alt="Carbon Sole Tech Diagram" 
+                             class="w-full h-64 sm:h-80 object-cover grayscale contrast-125 group-hover:scale-105 transition-transform duration-500"
+                             onerror="this.onerror=null; this.src='https://placehold.co/1200x600/000000/ffffff?text=Carbon+Sole+Architecture';" />
+                        
+                        <div class="absolute bottom-4 left-4 bg-black/90 backdrop-blur-md px-4 py-2 rounded-xl text-xs font-mono text-white border border-zinc-700">
+                            Carbon Matrix Composite: 100% Ultra-Rigid
+                        </div>
+                    </div>
+
+                    <!-- Floating Action Button inside 3D Perspective -->
+                    <div class="translate-z-3 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-zinc-800">
+                        <div class="text-xs text-zinc-500 font-mono">Di chuột để xoay mô hình 3D góc nhìn</div>
+                        <a href="#pinned-steps" class="w-full sm:w-auto px-7 py-3 rounded-full bg-white text-black font-extrabold text-sm shadow-xl hover:bg-zinc-200 transition-all text-center">
+                            Xem quy trình đặt hàng ↓
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 4. PINNED MULTI-STEP SCROLL EXPERIENCE -->
+    <section id="pinned-steps" class="py-32 px-6 relative bg-zinc-950 border-b border-zinc-900">
+        <div class="max-w-6xl mx-auto">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- Sticky Left Column (Pins while right column scrolls) -->
+                <div class="lg:col-span-5 lg:sticky lg:top-32 h-fit space-y-6">
+                    <span class="text-zinc-400 font-mono text-xs tracking-widest uppercase border-b border-zinc-700 pb-1">Quy Trình Đặt Hàng & Đo Size</span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-white leading-tight">
+                        3 Bước Sở Hữu Trang Bị Thể Thao Độc Bản
+                    </h2>
+                    <p class="text-zinc-400 text-base leading-relaxed">
+                        Chỉ mất vài phút để quét chọn thông số cơ thể và tùy chỉnh thiết kế riêng chuẩn vận động viên thi đấu.
+                    </p>
+                    <div class="pt-4">
+                        <a href="#cards" class="inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-white text-black font-extrabold text-sm hover:bg-zinc-200 transition-all shadow-xl">
+                            Xem Tính Năng Sản Phẩm
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Scrolling Right Column Cards -->
+                <div class="lg:col-span-7 space-y-16">
+                    
+                    <!-- Step Card 1 -->
+                    <div class="step-card bg-black border border-zinc-800 rounded-3xl p-8 sm:p-10 relative overflow-hidden shadow-2xl">
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="w-12 h-12 rounded-2xl bg-white text-black font-extrabold font-mono text-xl flex items-center justify-center">01</span>
+                            <span class="text-xs font-mono text-zinc-500">PERFORMANCE MODEL SELECT</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Lựa Chọn Dòng Trang Bị Thi Đấu</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-6">Chọn dòng giày chạy marathon, áo nén áp lực hoặc phụ kiện tập luyện theo từng cự ly thi đấu mục tiêu.</p>
+                        <img src="https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?auto=format&fit=crop&w=800&q=80" alt="Step 1 Gear Selection" class="w-full h-48 object-cover rounded-xl grayscale contrast-125 border border-zinc-800" onerror="this.onerror=null; this.src='https://placehold.co/800x400/000000/ffffff?text=Gear+Selection';" />
+                    </div>
+
+                    <!-- Step Card 2 -->
+                    <div class="step-card bg-black border border-zinc-800 rounded-3xl p-8 sm:p-10 relative overflow-hidden shadow-2xl">
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="w-12 h-12 rounded-2xl bg-white text-black font-extrabold font-mono text-xl flex items-center justify-center">02</span>
+                            <span class="text-xs font-mono text-zinc-500">3D BIOMETRIC SCAN</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Đo Size 3D & Hiệu Chỉnh Cương Độ</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-6">Sử dụng ứng dụng AERO Fit quét dạng bàn chân 3D, tính toán độ uốn cong khung Carbon phù hợp với dáng chạy của bạn.</p>
+                        <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=800&q=80" alt="Step 2 Biometric Scan" class="w-full h-48 object-cover rounded-xl grayscale contrast-125 border border-zinc-800" onerror="this.onerror=null; this.src='https://placehold.co/800x400/000000/ffffff?text=Biometric+3D+Scan';" />
+                    </div>
+
+                    <!-- Step Card 3 -->
+                    <div class="step-card bg-black border border-zinc-800 rounded-3xl p-8 sm:p-10 relative overflow-hidden shadow-2xl">
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="w-12 h-12 rounded-2xl bg-white text-black font-extrabold font-mono text-xl flex items-center justify-center">03</span>
+                            <span class="text-xs font-mono text-zinc-500">EXPRESS DELIVERY</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Giao Hàng Siêu Tốc & Bảo Hành 2 Năm</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-6">Đóng gói chuẩn vacuum cao cấp, đóng dấu mã QR xác thực chính hãng và giao tới tận nhà trong 24h.</p>
+                        <img src="https://images.unsplash.com/photo-1556906781-9a412961c28c?auto=format&fit=crop&w=800&q=80" alt="Step 3 Express Delivery" class="w-full h-48 object-cover rounded-xl grayscale contrast-125 border border-zinc-800" onerror="this.onerror=null; this.src='https://placehold.co/800x400/000000/ffffff?text=Express+Delivery';" />
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 5. CARDS GRID WITH OFFSET PARALLAX -->
+    <section id="cards" class="py-36 px-6 relative bg-black border-b border-zinc-900">
+        <div class="max-w-6xl mx-auto">
+            
+            <div class="text-center max-w-2xl mx-auto mb-20 space-y-4">
+                <span class="text-zinc-400 font-mono text-xs tracking-widest uppercase">Đặc Tính Kỹ Thuật</span>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-white">Công Nghệ Thể Thao Đột Phá</h2>
+                <p class="text-zinc-400 text-base">Giải pháp trang bị thi đấu toàn diện dành cho marathon, triathlon và tập luyện cường độ cao.</p>
+            </div>
+
+            <!-- 4 Feature Cards Grid with Left / Right Parallax Speeds -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                
+                <!-- Left Column (Offset Downward) -->
+                <div id="cards-col-left" class="space-y-8 md:mt-12">
+                    
+                    <!-- Card 1 -->
+                    <div class="feature-card bg-zinc-950 border border-zinc-800 rounded-3xl p-8 hover:border-white transition-all duration-300 relative group">
+                        <div class="w-14 h-14 rounded-2xl bg-zinc-900 border border-zinc-700 text-white flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-white group-hover:text-black transition-all">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Tấm Đệm Đàn Hồi Carbon 3K</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-6">Chất liệu carbon đúc sóng giảm tác động nén dồn lực, tăng sức bật vọt cho các bước chạy bứt tốc giai đoạn đích.</p>
+                        <a href="#showcase" class="inline-flex items-center gap-2 text-xs font-bold text-white hover:underline">
+                            <span>Khám phá công nghệ đệm</span> →
+                        </a>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="feature-card bg-zinc-950 border border-zinc-800 rounded-3xl p-8 hover:border-white transition-all duration-300 relative group">
+                        <div class="w-14 h-14 rounded-2xl bg-zinc-900 border border-zinc-700 text-white flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-white group-hover:text-black transition-all">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 001-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Sợi Dệt Aerodynamic 3D Flow</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-6">Mặt vải thoáng khí ma sát thấp giúp tối ưu luồng không khí lướt qua cơ thể, giảm lực cản gió khi đạp xe và chạy bộ.</p>
+                        <a href="#showcase" class="inline-flex items-center gap-2 text-xs font-bold text-white hover:underline">
+                            <span>Khám phá công nghệ đệm</span> →
+                        </a>
+                    </div>
+
+                </div>
+
+                <!-- Right Column (Offset Upward) -->
+                <div id="cards-col-right" class="space-y-8">
+                    
+                    <!-- Card 3 -->
+                    <div class="feature-card bg-zinc-950 border border-zinc-800 rounded-3xl p-8 hover:border-white transition-all duration-300 relative group">
+                        <div class="w-14 h-14 rounded-2xl bg-zinc-900 border border-zinc-700 text-white flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-white group-hover:text-black transition-all">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Cảm Biến Sinh Học Biometric Telemetry</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-6">Tích hợp chip đo tần số bước chạy, lực tiếp đất lệch và chỉ số nhịp tim kết nối trực tiếp với ứng dụng đồng hồ thông minh.</p>
+                        <a href="#showcase" class="inline-flex items-center gap-2 text-xs font-bold text-white hover:underline">
+                            <span>Khám phá công nghệ đệm</span> →
+                        </a>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="feature-card bg-zinc-950 border border-zinc-800 rounded-3xl p-8 hover:border-white transition-all duration-300 relative group">
+                        <div class="w-14 h-14 rounded-2xl bg-zinc-900 border border-zinc-700 text-white flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-white group-hover:text-black transition-all">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Đế Hợp Kim Cao Su Continental Pro</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-6">Khả năng bám đường tuyệt đối trên bề mặt trơn trượt, giảm nguy cơ té ngã khi ôm cua ở tốc độ cao trên đường đua ướt.</p>
+                        <a href="#showcase" class="inline-flex items-center gap-2 text-xs font-bold text-white hover:underline">
+                            <span>Khám phá công nghệ đệm</span> →
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 6. STATIC USER PRODUCT RECOMMENDATIONS -->
+    <section id="recommendations" class="py-32 px-6 relative bg-zinc-950 border-b border-zinc-900">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
+                <div class="space-y-4">
+                    <span class="text-zinc-400 font-mono text-xs tracking-widest uppercase">Dành cho User</span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-white">Gợi ý sản phẩm</h2>
+                    <p class="text-zinc-400 max-w-2xl">Dựa trên sở thích, lịch sử mua hàng và các sản phẩm tương tự.</p>
+                </div>
+                <a href="/login" class="inline-flex items-center justify-center px-6 py-3 rounded-full border border-zinc-700 text-white text-sm font-bold hover:bg-white hover:text-black transition-all">Xem thêm sản phẩm →</a>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <a href="/login" class="group bg-black border border-zinc-800 rounded-2xl overflow-hidden hover:border-white transition-all">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80" alt="Giày chạy Carbon Aero" class="w-full h-56 object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500">
+                    <div class="p-5"><p class="text-xs text-zinc-500 font-mono mb-2">RUNNING / CARBON</p><h3 class="text-lg font-bold text-white">Giày chạy Carbon Aero</h3><p class="text-zinc-400 text-sm mt-2">Tối ưu tốc độ và độ bền.</p></div>
+                </a>
+                <a href="/login" class="group bg-black border border-zinc-800 rounded-2xl overflow-hidden hover:border-white transition-all">
+                    <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=80" alt="Ba lô thể thao" class="w-full h-56 object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500">
+                    <div class="p-5"><p class="text-xs text-zinc-500 font-mono mb-2">TRAINING / GEAR</p><h3 class="text-lg font-bold text-white">Ba lô thể thao Pro</h3><p class="text-zinc-400 text-sm mt-2">Gọn nhẹ cho mọi buổi tập.</p></div>
+                </a>
+                <a href="/login" class="group bg-black border border-zinc-800 rounded-2xl overflow-hidden hover:border-white transition-all">
+                    <img src="https://images.unsplash.com/photo-1576243345690-4e4b79b63288?auto=format&fit=crop&w=700&q=80" alt="Đồng hồ thể thao" class="w-full h-56 object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500">
+                    <div class="p-5"><p class="text-xs text-zinc-500 font-mono mb-2">BIOMETRIC / SMART</p><h3 class="text-lg font-bold text-white">Đồng hồ Athlete Smart</h3><p class="text-zinc-400 text-sm mt-2">Theo dõi hiệu suất theo thời gian thực.</p></div>
+                </a>
+                <a href="/login" class="group bg-black border border-zinc-800 rounded-2xl overflow-hidden hover:border-white transition-all">
+                    <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=700&q=80" alt="Phụ kiện tập luyện" class="w-full h-56 object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500">
+                    <div class="p-5"><p class="text-xs text-zinc-500 font-mono mb-2">RECOVERY / ACCESSORIES</p><h3 class="text-lg font-bold text-white">Bộ phụ kiện phục hồi</h3><p class="text-zinc-400 text-sm mt-2">Sẵn sàng cho buổi tập tiếp theo.</p></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. SHOWCASE / GIANT PSEUDO 3D ZOOM SECTION -->
+    <section id="showcase" class="py-36 px-6 relative bg-zinc-950 border-b border-zinc-900 min-h-[120vh] flex items-center justify-center overflow-hidden">
+        
+        <div class="max-w-5xl mx-auto w-full relative">
+            
+            <div class="text-center mb-16 space-y-4">
+                <span class="text-zinc-400 font-mono text-xs tracking-widest uppercase">Bộ Sưu Tập Trang Bị Độc Bản</span>
+                <h2 class="text-3xl sm:text-6xl font-extrabold text-white">Bảng Điều Khiển Vận Động Viên</h2>
+                <p class="text-zinc-400 text-base max-w-xl mx-auto">Cuộn xuống để trải nghiệm phóng to trang bị đỉnh cao và chỉ số phân tích thi đấu.</p>
+            </div>
+
+            <!-- Zoom Showcase Image Container -->
+            <div id="zoom-container" class="relative rounded-3xl overflow-hidden border border-zinc-800 shadow-2xl bg-black group">
+                
+                <img id="zoom-image" 
+                     src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=1600&q=80" 
+                     alt="Athletic Gear Dashboard Showcase" 
+                     class="w-full h-[65vh] object-cover object-center grayscale contrast-125 transform scale-125"
+                     onerror="this.onerror=null; this.src='https://placehold.co/1600x900/000000/ffffff?text=Aero+Sport+Locker+Room';"
+                />
+
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+
+                <!-- Floating Parallax Badge 1 (Drifts Top-Left) -->
+                <div id="zoom-float-left" class="absolute top-8 left-8 bg-black/90 backdrop-blur-md border border-zinc-700 px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+                    <div class="w-3 h-3 rounded-full bg-white animate-ping"></div>
+                    <div>
+                        <div class="text-[10px] text-zinc-400 font-mono uppercase">AERO ATHLETE STATUS</div>
+                        <div class="text-xs font-bold text-white">Energy Efficiency +14.2%</div>
+                    </div>
+                </div>
+
+                <!-- Floating Parallax Badge 2 (Drifts Bottom-Right) -->
+                <div id="zoom-float-right" class="absolute bottom-10 right-8 bg-black/90 backdrop-blur-md border border-zinc-700 p-5 rounded-2xl shadow-2xl max-w-xs hidden sm:block">
+                    <div class="text-xs text-zinc-300 font-bold mb-1">AERO Performance Guarantee</div>
+                    <p class="text-xs text-zinc-400 leading-relaxed">Mọi trang bị AERO SPORT đều trải qua 500km thử nghiệm áp lực nghiêm ngặt trong phòng Lab.</p>
+                </div>
+
+                <!-- Center Content Overlay -->
+                <div class="absolute inset-0 flex flex-col items-center justify-end p-8 sm:p-12 text-center z-10">
+                    <h3 class="text-2xl sm:text-4xl font-extrabold text-white mb-3">Trải Nghiệm Trang Bị Thể Thao Đỉnh Cao</h3>
+                    <p class="text-zinc-400 text-sm max-w-lg mb-6">Hỗ trợ chính sách đổi trả size 30 ngày và dùng thử miễn phí trong 14 ngày.</p>
+                    <a href="#contact" class="px-8 py-3.5 rounded-full bg-white text-black font-extrabold text-sm shadow-2xl hover:scale-105 transition-transform">
+                        Đặt Mua Ngay Hôm Nay
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 7. CALL TO ACTION (CTA) SECTION -->
+    <section id="contact" class="py-36 px-6 relative bg-black overflow-hidden">
+        
+        <div id="cta-bg-glow" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-zinc-900/40 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-4xl mx-auto text-center relative z-10 space-y-8">
+            
+            <div id="cta-icon" class="inline-flex p-4 rounded-3xl bg-zinc-950 border border-zinc-800 text-white shadow-2xl">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+
+            <h2 id="cta-title" class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight">Sẵn Sàng Sát Cánh Trên Mọi Đường Đua</h2>
+            <p id="cta-sub" class="text-zinc-400 text-base sm:text-xl max-w-2xl mx-auto leading-relaxed">
+                Nâng cấp hiệu suất vận động của bạn với trang bị chuẩn Olympic từ thương hiệu AERO SPORT ngay hôm nay.
+            </p>
+
+            <div id="cta-buttons" class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-5">
+                <a href="#hero" class="w-full sm:w-auto px-10 py-4 rounded-full bg-white text-black font-extrabold text-base shadow-2xl hover:bg-zinc-200 hover:scale-105 active:scale-95 transition-all text-center">
+                    Đặt Mua Trang Bị Độc Bản
+                </a>
+                <a href="#hero" class="w-full sm:w-auto px-9 py-4 rounded-full bg-zinc-950 hover:bg-zinc-900 text-zinc-300 font-semibold text-base transition-all text-center border border-zinc-800">
+                    Trở lại đầu trang ↑
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-zinc-900 bg-zinc-950 text-zinc-100">
+        <div class="max-w-6xl mx-auto py-14 px-6 grid gap-10 md:grid-cols-[1.2fr_1fr_1fr]">
+            <div>
+                <a href="#" class="inline-flex items-center gap-2 font-semibold tracking-tight text-white">
+                    <div class="w-8 h-8 rounded-lg bg-white text-black font-extrabold flex items-center justify-center text-sm">⚡</div>
+                    <span class="font-extrabold text-xl">SportsHub</span>
+                </a>
+                <p class="mt-5 max-w-sm text-sm leading-6 text-zinc-400">
+                    Thương hiệu sản xuất & phân phối trang bị thể thao hiệu suất cao, giày chạy carbon và phụ kiện thi đấu chuyên nghiệp.
+                </p>
+                <div class="mt-6 grid gap-2 text-sm text-zinc-400">
+                    <span class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        Hà Nội & TP. Hồ Chí Minh, Việt Nam
+                    </span>
+                    <span class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                        1900 888 999
+                    </span>
+                    <span class="flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        support@sportshub.vn
+                    </span>
+                </div>
+            </div>
+            
+            <div>
+                <h3 class="font-semibold text-white">Sản Phẩm</h3>
+                <div class="mt-4 grid gap-3 text-sm text-zinc-400">
+                    <a href="#" class="transition hover:text-white">Giày Chạy Carbon Speed Pro</a>
+                    <a href="#" class="transition hover:text-white">Áo Nén Cơ Sinh Học</a>
+                    <a href="#" class="transition hover:text-white">Vòng Đeo Cảm Biến Nhịp Tim</a>
+                    <a href="#" class="transition hover:text-white">Balo Hydration Running Pack</a>
+                </div>
+            </div>
+            
+            <div>
+                <h3 class="font-semibold text-white">Hỗ Trợ & Chính Sách</h3>
+                <div class="mt-4 grid gap-3 text-sm text-zinc-400">
+                    <a href="#" class="transition hover:text-white">Hướng Dẫn Đo Size FootScan 3D</a>
+                    <a href="#" class="transition hover:text-white">Chính Sách Bảo Hành 2 Năm</a>
+                    <a href="#" class="transition hover:text-white">Đổi Trả Size Miễn Phí</a>
+                    <a href="#" class="transition hover:text-white">Hệ Thống Store Toàn Quốc</a>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-zinc-800">
+            <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3 py-5 px-6 text-sm text-zinc-500">
+                <span>© 2026 SportsHub. All rights reserved.</span>
+                <span class="inline-flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/></svg>
+                    SportsHub Platform
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC & ANIMATIONS -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            const heroTitle = document.getElementById('hero-title');
+            if (heroTitle) {
+                const words = heroTitle.innerText.split(" ");
+                heroTitle.innerHTML = words.map(word => `<span class="word-span mr-2 sm:mr-3">${word}</span>`).join("");
+            }
+
+            const heroTL = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+            heroTL.to("#hero-badge", {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                startAt: { y: -20, opacity: 0 }
+            })
+            .from("#hero-title .word-span", {
+                opacity: 0,
+                y: 50,
+                rotationX: -45,
+                stagger: 0.07,
+                duration: 0.9
+            }, "-=0.3")
+            .to("#hero-sub", {
+                opacity: 1,
+                y: 0,
+                duration: 0.7,
+                startAt: { y: 30, opacity: 0 }
+            }, "-=0.5")
+            .to("#hero-cta", {
+                opacity: 1,
+                scale: 1,
+                duration: 0.7,
+                ease: "back.out(1.7)",
+                startAt: { opacity: 0, scale: 0.85 }
+            }, "-=0.4")
+            .to("#hero-image-wrapper", {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                startAt: { y: 70, opacity: 0 }
+            }, "-=0.5");
+
+            gsap.to("#hero-layer-bg-1", {
+                y: 350,
+                scrollTrigger: { trigger: "#hero", start: "top top", end: "bottom top", scrub: 1 }
+            });
+            gsap.to("#hero-layer-bg-2", {
+                y: -250,
+                scrollTrigger: { trigger: "#hero", start: "top top", end: "bottom top", scrub: 1.5 }
+            });
+
+            gsap.to("#hero-float-num-1", {
+                y: -300,
+                scrollTrigger: { trigger: "#hero", start: "top top", end: "bottom top", scrub: 0.8 }
+            });
+            gsap.to("#hero-float-num-2", {
+                y: -450,
+                scrollTrigger: { trigger: "#hero", start: "top top", end: "bottom top", scrub: 0.5 }
+            });
+
+            gsap.to("#hero-sub", {
+                y: -100,
+                opacity: 0.3,
+                scrollTrigger: { trigger: "#hero", start: "top top", end: "80% top", scrub: true }
+            });
+
+            gsap.to(".hero-btn-primary", {
+                y: -140,
+                scrollTrigger: { trigger: "#hero", start: "top top", end: "80% top", scrub: 1 }
+            });
+
+            gsap.to(".hero-btn-secondary", {
+                y: -90,
+                scrollTrigger: { trigger: "#hero", start: "top top", end: "80% top", scrub: 1.2 }
+            });
+
+            gsap.to("#hero-image-wrapper", {
+                y: 80,
+                scale: 0.95,
+                scrollTrigger: { trigger: "#hero", start: "top top", end: "bottom top", scrub: 2 }
+            });
+
+            gsap.to("#horizon-text-1", {
+                xPercent: -30,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#narrative",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            gsap.to("#narrative-card-back", {
+                y: -90,
+                scrollTrigger: {
+                    trigger: "#narrative",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1
+                }
+            });
+
+            gsap.to("#narrative-card-front", {
+                y: 60,
+                scrollTrigger: {
+                    trigger: "#narrative",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1.5
+                }
+            });
+
+            const perspectiveCard = document.getElementById('perspective-card');
+            if (perspectiveCard) {
+                perspectiveCard.addEventListener('mousemove', (e) => {
+                    const rect = perspectiveCard.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    const rotateX = (-y / rect.height) * 20;
+                    const rotateY = (x / rect.width) * 20;
+
+                    perspectiveCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+
+                perspectiveCard.addEventListener('mouseleave', () => {
+                    perspectiveCard.style.transform = `rotateX(0deg) rotateY(0deg)`;
+                });
+            }
+
+            gsap.utils.toArray('.step-card').forEach((card) => {
+                gsap.from(card, {
+                    y: 80,
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+            });
+
+            gsap.to("#cards-col-left", {
+                y: -60,
+                scrollTrigger: {
+                    trigger: "#cards",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1
+                }
+            });
+
+            gsap.to("#cards-col-right", {
+                y: 60,
+                scrollTrigger: {
+                    trigger: "#cards",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1.5
+                }
+            });
+
+            gsap.to("#zoom-image", {
+                scale: 1.0,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#showcase",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            gsap.to("#zoom-float-left", {
+                y: -80,
+                x: -30,
+                scrollTrigger: {
+                    trigger: "#showcase",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1
+                }
+            });
+
+            gsap.to("#zoom-float-right", {
+                y: -120,
+                x: 30,
+                scrollTrigger: {
+                    trigger: "#showcase",
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: 1.5
+                }
+            });
+
+            const navbar = document.getElementById('navbar');
+            const progressBar = document.getElementById('scroll-progress-bar');
+            const percentText = document.getElementById('scroll-percent');
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('navbar-scrolled', 'py-3');
+                    navbar.classList.remove('py-5');
+                } else {
+                    navbar.classList.remove('navbar-scrolled', 'py-3');
+                    navbar.classList.add('py-5');
+                }
+
+                const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                if (totalHeight > 0) {
+                    const progress = (window.scrollY / totalHeight) * 100;
+                    const roundedProgress = Math.min(100, Math.max(0, Math.round(progress)));
+                    progressBar.style.width = roundedProgress + '%';
+                    percentText.innerText = roundedProgress + '%';
+                }
+            });
+
+            const heroCanvas = document.getElementById('hero-particle-canvas');
+            if (heroCanvas) {
+                const ctx = heroCanvas.getContext('2d');
+                let width = heroCanvas.width = heroCanvas.offsetWidth || window.innerWidth;
+                let height = heroCanvas.height = heroCanvas.offsetHeight || window.innerHeight;
+
+                window.addEventListener('resize', () => {
+                    width = heroCanvas.width = heroCanvas.offsetWidth || window.innerWidth;
+                    height = heroCanvas.height = heroCanvas.offsetHeight || window.innerHeight;
+                });
+
+                const particles = Array.from({ length: 45 }, () => ({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.6,
+                    vy: (Math.random() - 0.5) * 0.6,
+                    size: Math.random() * 2 + 1
+                }));
+
+                let mouseX = width / 2;
+                let mouseY = height / 2;
+
+                window.addEventListener('mousemove', (e) => {
+                    mouseX = e.clientX;
+                    mouseY = e.clientY;
+                });
+
+                function renderHeroCanvas() {
+                    ctx.clearRect(0, 0, width, height);
+
+                    particles.forEach((p, i) => {
+                        p.x += p.vx;
+                        p.y += p.vy;
+
+                        if (p.x < 0 || p.x > width) p.vx *= -1;
+                        if (p.y < 0 || p.y > height) p.vy *= -1;
+
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                        ctx.fill();
+
+                        for (let j = i + 1; j < particles.length; j++) {
+                            const p2 = particles[j];
+                            const dx = p.x - p2.x;
+                            const dy = p.y - p2.y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+
+                            if (dist < 120) {
+                                ctx.beginPath();
+                                ctx.moveTo(p.x, p.y);
+                                ctx.lineTo(p2.x, p2.y);
+                                ctx.strokeStyle = `rgba(255, 255, 255, ${0.12 * (1 - dist / 120)})`;
+                                ctx.lineWidth = 0.8;
+                                ctx.stroke();
+                            }
+                        }
+
+                        const mdx = p.x - mouseX;
+                        const mdy = p.y - mouseY;
+                        const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+                        if (mdist < 150) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(mouseX, mouseY);
+                            ctx.strokeStyle = `rgba(255, 255, 255, ${0.25 * (1 - mdist / 150)})`;
+                            ctx.lineWidth = 1;
+                            ctx.stroke();
+                        }
+                    });
+
+                    requestAnimationFrame(renderHeroCanvas);
+                }
+                renderHeroCanvas();
+            }
+
+            document.querySelectorAll('.magnetic-btn').forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = `translate(0px, 0px)`;
+                });
+            });
+
+            const sandboxInput = document.getElementById('sandbox-input');
+            if (sandboxInput) {
+                sandboxInput.addEventListener('input', updateInteractiveQR);
+                updateInteractiveQR();
+            }
+
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                    mobileMenu.classList.toggle('flex');
+                });
+            }
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId !== '#') {
+                        e.preventDefault();
+                        const targetElem = document.querySelector(targetId);
+                        if (targetElem) {
+                            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                                mobileMenu.classList.add('hidden');
+                                mobileMenu.classList.remove('flex');
+                            }
+                            targetElem.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                });
+            });
+        });
+
+        function setPreset(name) {
+            const input = document.getElementById('sandbox-input');
+            if (input) {
+                input.value = name;
+                updateInteractiveQR();
+            }
+        }
+
+        function copyCurlCode() {
+            const snippet = document.getElementById('curl-snippet');
+            if (snippet) {
+                const text = snippet.innerText;
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(text);
+                } else {
+                    document.execCommand('copy');
+                }
+                const btn = document.getElementById('copy-curl-btn');
+                if (btn) {
+                    btn.innerText = '[Đã chép!]';
+                    setTimeout(() => btn.innerText = '[Sao chép]', 2000);
+                }
+            }
+        }
+
+        function updateInteractiveQR() {
+            const canvas = document.getElementById('qr-matrix-canvas');
+            const input = document.getElementById('sandbox-input');
+            const hmacToggle = document.getElementById('toggle-hmac');
+            const otpToggle = document.getElementById('toggle-otp');
+            const curlSnippet = document.getElementById('curl-snippet');
+            const hashPreview = document.getElementById('qr-hash-preview');
+
+            if (!canvas || !input) return;
+
+            const val = input.value || 'AERO PRO';
+            const carbonPlate = hmacToggle ? hmacToggle.checked : false;
+            const nitrogenCushion = otpToggle ? otpToggle.checked : false;
+
+            let hash = 0;
+            const fullStr = val + (carbonPlate ? '_carbon' : '') + (nitrogenCushion ? '_nitro' : '');
+            for (let i = 0; i < fullStr.length; i++) {
+                hash = ((hash << 5) - hash) + fullStr.charCodeAt(i);
+                hash |= 0;
+            }
+
+            const ctx = canvas.getContext('2d');
+            const size = 180;
+            const gridCount = 21;
+            const cellSize = size / gridCount;
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, size, size);
+
+            ctx.fillStyle = '#000000';
+
+            drawFinderPattern(ctx, 0, 0, cellSize);
+            drawFinderPattern(ctx, (gridCount - 7) * cellSize, 0, cellSize);
+            drawFinderPattern(ctx, 0, (gridCount - 7) * cellSize, cellSize);
+
+            for (let row = 0; row < gridCount; row++) {
+                for (let col = 0; col < gridCount; col++) {
+                    if ((row < 8 && col < 8) || (row < 8 && col >= gridCount - 8) || (row >= gridCount - 8 && col < 8)) {
+                        continue;
+                    }
+                    if (row >= 8 && row <= 12 && col >= 8 && col <= 12) {
+                        continue;
+                    }
+
+                    const bit = (Math.abs(hash ^ (row * 31 + col * 17 + fullStr.length * 7)) % 100) > 42;
+                    if (bit) {
+                        ctx.fillRect(col * cellSize, row * cellSize, cellSize - 0.5, cellSize - 0.5);
+                    }
+                }
+            }
+
+            if (curlSnippet) {
+                curlSnippet.innerText = `{
+  "model": "${val}",
+  "carbon_plate_3d": ${carbonPlate},
+  "nitrogen_cushion": ${nitrogenCushion},
+  "energy_return_rate": "${carbonPlate ? '89.4%' : '78.2%'}"
+}`;
+            }
+
+            if (hashPreview) {
+                hashPreview.innerText = `RETURN: ${carbonPlate ? '89.4%' : '78.2%'} | CARBON: ${carbonPlate ? 'YES' : 'NO'}`;
+            }
+        }
+
+        function drawFinderPattern(ctx, x, y, cellSize) {
+            ctx.fillRect(x, y, 7 * cellSize, 7 * cellSize);
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(x + cellSize, y + cellSize, 5 * cellSize, 5 * cellSize);
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(x + 2 * cellSize, y + 2 * cellSize, 3 * cellSize, 3 * cellSize);
+        }
+    </script>
+
+    <script>
+        const hidePageVeil = () => { 
+            const veil = document.getElementById('page-veil'); 
+            if (!veil || veil.dataset.hidden) return; 
+            veil.dataset.hidden = 'true'; 
+            veil.style.opacity = '0'; 
+            setTimeout(() => veil.remove(), 320); 
+        };
+        window.addEventListener('load', () => setTimeout(hidePageVeil, 120));
+        setTimeout(hidePageVeil, 900);
+    </script>
+</body>
+</html>
